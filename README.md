@@ -166,7 +166,7 @@ Full roadmap: [`ROADMAP.md`](ROADMAP.md)
 - **Whitepaper:** [proxyprotocol.org/whitepaper](https://proxyprotocol.org/whitepaper)
 - **Token:** $PROXY on Base via [Flaunch](https://flaunch.gg)
 - **Twitter/X:** [@proxyprotocol](https://x.com/proxyprotocol)
-- **Discord:** [discord.gg/proxy](https://discord.gg/proxy)
+- **Telegram:** [t.me/proxyprotocol](https://t.me/proxyprotocol)
 
 ---
 

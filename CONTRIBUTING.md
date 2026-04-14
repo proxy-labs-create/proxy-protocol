@@ -53,7 +53,7 @@ If you are a developer who wants to integrate the PROXY Agent SDK:
 
 - **Website:** [proxyprotocol.org](https://proxyprotocol.org)
 - **Twitter/X:** [@proxyprotocol](https://x.com/proxyprotocol)
-- **Discord:** [discord.gg/proxy](https://discord.gg/proxy)
+- **Telegram:** [t.me/proxyprotocol](https://t.me/proxyprotocol)
 
 ---
 
