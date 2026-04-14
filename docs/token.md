@@ -145,4 +145,4 @@ $PROXY is a utility token designed for use within the PROXY protocol. It is not 
 
 ---
 
-*See also: [`docs/architecture.md`](architecture.md) · [`docs/agent-sdk.md`](agent-sdk.md) · [Whitepaper](https://proxy.network/whitepaper)*
+*See also: [`docs/architecture.md`](architecture.md) · [`docs/agent-sdk.md`](agent-sdk.md) · [Whitepaper](https://proxyprotocol.org/whitepaper)*

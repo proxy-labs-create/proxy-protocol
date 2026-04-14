@@ -156,14 +156,14 @@ Full roadmap: [`ROADMAP.md`](ROADMAP.md)
 | [`docs/agent-sdk.md`](docs/agent-sdk.md) | Agent Wallet SDK specification |
 | [`ROADMAP.md`](ROADMAP.md) | Development roadmap and milestones |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to contribute to PROXY |
-| [Whitepaper](https://proxy.network/whitepaper) | Full technical whitepaper |
+| [Whitepaper](https://proxyprotocol.org/whitepaper) | Full technical whitepaper |
 
 ---
 
 ## Links
 
-- **Website:** [proxy.network](https://proxy.network)
-- **Whitepaper:** [proxy.network/whitepaper](https://proxy.network/whitepaper)
+- **Website:** [proxyprotocol.org](https://proxyprotocol.org)
+- **Whitepaper:** [proxyprotocol.org/whitepaper](https://proxyprotocol.org/whitepaper)
 - **Token:** $PROXY on Base via [Flaunch](https://flaunch.gg)
 - **Twitter/X:** [@proxyprotocol](https://x.com/proxyprotocol)
 - **Discord:** [discord.gg/proxy](https://discord.gg/proxy)

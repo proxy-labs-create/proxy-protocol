@@ -13,7 +13,7 @@
 The foundation phase establishes the protocol's public presence and community.
 
 - [x] Token launch via Flaunch on Base
-- [x] Website live at proxy.network
+- [x] Website live at proxyprotocol.org
 - [x] Whitepaper published
 - [x] GitHub repository live
 - [x] Protocol architecture published
@@ -81,7 +81,7 @@ We build in public. Protocol decisions, architecture changes, and milestone upda
 
 If you want to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-If you want to be notified of updates, join the early access list at [proxy.network](https://proxy.network).
+If you want to be notified of updates, join the early access list at [proxyprotocol.org](https://proxyprotocol.org).
 
 ---
 

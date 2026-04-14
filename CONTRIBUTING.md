@@ -30,14 +30,14 @@ If you find an issue with any published specification or documentation:
 ### Provider Interest
 If you are interested in running a PROXY provider node when testnet launches:
 
-- Join the early access list at [proxy.network](https://proxy.network)
+- Join the early access list at [proxyprotocol.org](https://proxyprotocol.org)
 - We will notify you when provider registration opens
 
 ### Developer Interest
 If you are a developer who wants to integrate the PROXY Agent SDK:
 
 - Watch this repository for SDK alpha release
-- Join the early access list at [proxy.network](https://proxy.network)
+- Join the early access list at [proxyprotocol.org](https://proxyprotocol.org)
 
 ---
 
@@ -51,7 +51,7 @@ If you are a developer who wants to integrate the PROXY Agent SDK:
 
 ## Contact
 
-- **Website:** [proxy.network](https://proxy.network)
+- **Website:** [proxyprotocol.org](https://proxyprotocol.org)
 - **Twitter/X:** [@proxyprotocol](https://x.com/proxyprotocol)
 - **Discord:** [discord.gg/proxy](https://discord.gg/proxy)
 

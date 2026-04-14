@@ -283,4 +283,4 @@ try {
 
 ---
 
-*See also: [`docs/architecture.md`](architecture.md) · [`docs/token.md`](token.md) · [Whitepaper](https://proxy.network/whitepaper)*
+*See also: [`docs/architecture.md`](architecture.md) · [`docs/token.md`](token.md) · [Whitepaper](https://proxyprotocol.org/whitepaper)*

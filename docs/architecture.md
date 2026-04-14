@@ -243,4 +243,4 @@ The routing layer uses ZK proofs to verify provider eligibility — confirming t
 
 ---
 
-*See also: [`docs/token.md`](token.md) · [`docs/agent-sdk.md`](agent-sdk.md) · [Whitepaper](https://proxy.network/whitepaper)*
+*See also: [`docs/token.md`](token.md) · [`docs/agent-sdk.md`](agent-sdk.md) · [Whitepaper](https://proxyprotocol.org/whitepaper)*
