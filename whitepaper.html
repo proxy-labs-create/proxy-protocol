@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROXY Protocol — Whitepaper v1.0</title>
+  <meta name="description" content="PROXY Protocol Whitepaper. The anonymous transaction layer for autonomous AI agents. Built on Base." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f7f7f5;
+      --white: #ffffff;
+      --ink: #111118;
+      --body: #2a2a38;
+      --muted: #888899;
+      --muted2: #aaaabc;
+      --rule: #e4e4ee;
+      --accent: #3a4fff;
+      --accent-lo: rgba(58,79,255,0.07);
+      --accent2: #1a2bcc;
+      --green: #0a7a45;
+      --red: #cc2244;
+      --serif: 'Newsreader', serif;
+      --sans: 'IBM Plex Sans', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--body); font-family: var(--serif); font-size: 17px; line-height: 1.75; }
+
+    /* TOPBAR */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,247,245,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 40px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .topbar-logo { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.12em; color: var(--ink); text-decoration: none; }
+    .topbar-div { width: 1px; height: 16px; background: var(--rule); }
+    .topbar-doc { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-link { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .topbar-link:hover { color: var(--ink); }
+    .topbar-cta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: white; background: var(--accent); padding: 7px 16px; border-radius: 2px; text-decoration: none; transition: opacity .2s; }
+    .topbar-cta:hover { opacity: .85; }
+
+    /* LAYOUT */
+    .outer { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 220px 1fr; padding: 0 40px; }
+
+    /* SIDEBAR */
+    .toc { position: sticky; top: 52px; padding: 48px 32px 48px 0; height: calc(100vh - 52px); overflow-y: auto; border-right: 1px solid var(--rule); }
+    .toc::-webkit-scrollbar { width: 3px; }
+    .toc::-webkit-scrollbar-thumb { background: var(--rule); }
+    .toc-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted2); margin-bottom: 16px; }
+    .toc-items { list-style: none; }
+    .toc-item { margin-bottom: 1px; }
+    .toc-item a { font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; display: flex; align-items: baseline; gap: 8px; padding: 5px 8px; border-radius: 2px; transition: color .15s, background .15s; line-height: 1.4; }
+    .toc-item a:hover { color: var(--ink); background: var(--accent-lo); }
+    .toc-item a.active { color: var(--accent); background: var(--accent-lo); }
+    .toc-num { color: var(--muted2); font-size: 10px; min-width: 20px; flex-shrink: 0; }
+    .toc-div { height: 1px; background: var(--rule); margin: 10px 0; }
+    .toc-meta { font-family: var(--mono); font-size: 10px; color: var(--muted2); line-height: 1.9; padding: 12px 8px; }
+    .toc-meta strong { color: var(--body); font-weight: 400; }
+
+    /* CONTENT */
+    .content { padding: 64px 0 96px 64px; }
+
+    /* COVER */
+    .cover { margin-bottom: 72px; padding-bottom: 64px; border-bottom: 1px solid var(--rule); }
+    .cover-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .cover-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+    .cover-title { font-family: var(--mono); font-size: 60px; font-weight: 500; letter-spacing: -0.02em; line-height: 0.95; color: var(--ink); margin-bottom: 14px; }
+    .cover-title .dot { color: var(--accent); }
+    .cover-sub { font-family: var(--sans); font-size: 17px; font-weight: 300; color: var(--muted); margin-bottom: 40px; line-height: 1.5; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 48px; }
+    .chip { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; border: 1px solid var(--rule); border-radius: 2px; color: var(--muted); background: white; }
+    .chip.hi { color: var(--accent); border-color: rgba(58,79,255,0.2); background: var(--accent-lo); }
+    .abstract-box { background: white; border: 1px solid var(--rule); border-left: 3px solid var(--accent); padding: 28px 32px; }
+    .abstract-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .abstract-text { font-family: var(--serif); font-size: 15.5px; line-height: 1.8; color: var(--body); margin-bottom: 16px; }
+    .abstract-text:last-child { margin-bottom: 0; }
+    .abstract-text strong { font-weight: 500; color: var(--ink); }
+
+    /* SECTIONS */
+    .section { margin-bottom: 72px; }
+    .sec-anchor { display: block; visibility: hidden; height: 0; margin-top: -16px; }
+    .sec-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .sec-num::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
+    h2 { font-family: var(--sans); font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin-bottom: 28px; }
+    h2 em { font-style: normal; color: var(--accent); }
+    h3 { font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); margin: 32px 0 12px; }
+    p { font-family: var(--serif); font-size: 16px; line-height: 1.82; color: var(--body); margin-bottom: 18px; }
+    p:last-child { margin-bottom: 0; }
+    p strong { font-weight: 500; color: var(--ink); }
+    em.line { font-style: italic; }
+
+    /* STAT ROW */
+    .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0; }
+    .stat-cell { background: white; padding: 22px 24px; }
+    .stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .stat-fig { font-family: var(--sans); font-size: 32px; font-weight: 600; color: var(--accent); letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; }
+    .stat-desc { font-family: var(--mono); font-size: 10px; color: var(--muted); line-height: 1.55; }
+
+    /* CALLOUT */
+    .callout { border-left: 3px solid var(--accent); padding: 18px 22px; background: var(--accent-lo); margin: 24px 0; }
+    .callout p { font-family: var(--sans); font-size: 14px; line-height: 1.65; color: var(--ink); margin: 0; }
+    .callout strong { color: var(--accent2); }
+
+    /* FLOW */
+    .flow { margin: 24px 0; }
+    .flow-step { display: flex; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+    .flow-step:first-child { border-top: 1px solid var(--rule); }
+    .flow-num { font-family: var(--mono); font-size: 11px; color: var(--accent); min-width: 28px; padding-top: 2px; flex-shrink: 0; }
+    .flow-title { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .flow-body { font-family: var(--serif); font-size: 14.5px; line-height: 1.72; color: var(--body); }
+
+    /* ARCH */
+    .arch { margin: 24px 0; }
+    .arch-layer { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border: 1px solid var(--rule); margin-bottom: 2px; background: white; }
+    .arch-layer.hi { border-color: rgba(58,79,255,0.22); background: var(--accent-lo); }
+    .arch-name { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink); }
+    .arch-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--rule); padding: 3px 9px; }
+    .arch-layer.hi .arch-tag { color: var(--accent); border-color: rgba(58,79,255,0.18); }
+    .arch-arr { text-align: center; color: var(--muted2); font-size: 11px; padding: 3px 0; font-family: var(--mono); }
+
+    /* RESOURCE GRID */
+    .rg { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 24px 0; }
+    .rg-card { background: white; padding: 20px 22px; }
+    .rg-title { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .rg-badge { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: var(--accent); border: 1px solid rgba(58,79,255,0.2); padding: 2px 7px; border-radius: 2px; }
+    .rg-body { font-family: var(--serif); font-size: 13px; line-height: 1.65; color: var(--body); }
+
+    /* TOKEN TABLE */
+    .tt { width: 100%; border-collapse: collapse; margin: 24px 0; background: white; border: 1px solid var(--rule); }
+    .tt td { padding: 13px 18px; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
+    .tt tr:last-child td { border-bottom: none; }
+    .tt td:first-child { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); width: 180px; background: #fafafa; border-right: 1px solid var(--rule); }
+    .tt td:last-child { font-family: var(--sans); font-weight: 500; color: var(--ink); }
+
+    /* CMP TABLE */
+    .cmp-wrap { overflow-x: auto; margin: 24px 0; }
+    .cmp { width: 100%; border-collapse: collapse; background: white; border: 1px solid var(--rule); min-width: 580px; }
+    .cmp th { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding: 12px 14px; text-align: left; border-bottom: 2px solid var(--rule); background: #fafafa; }
+    .cmp th.ph { color: var(--accent); background: var(--accent-lo); }
+    .cmp td { padding: 10px 14px; border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 12px; color: var(--body); }
+    .cmp tr:last-child td { border-bottom: none; }
+    .cmp td:first-child { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .cmp td.pc { color: var(--green); font-weight: 500; background: rgba(10,122,69,0.03); }
+    .ck { color: var(--green); }
+    .cx { color: var(--red); }
+    .cn { color: var(--muted); }
+
+    /* ROADMAP */
+    .rm { margin: 24px 0; position: relative; }
+    .rm::before { content: ''; position: absolute; left: 17px; top: 0; bottom: 0; width: 1px; background: var(--rule); }
+    .rm-item { display: flex; gap: 28px; padding-bottom: 36px; }
+    .rm-item:last-child { padding-bottom: 0; }
+    .rm-dot { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--rule); background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 1; }
+    .rm-dot.live { border-color: var(--accent); background: var(--accent-lo); }
+    .rm-di { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); }
+    .rm-dot.live .rm-di { background: var(--accent); }
+    .rm-body { padding-top: 4px; }
+    .rm-phase { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .rm-phase.live { color: var(--accent); }
+    .rm-title { font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+    .rm-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .rm-list li { font-family: var(--serif); font-size: 14px; color: var(--body); display: flex; gap: 10px; }
+    .rm-list li::before { content: '—'; color: var(--muted2); flex-shrink: 0; }
+
+    /* LINKS + DISCLAIMER */
+    .links-box { background: white; border: 1px solid var(--rule); padding: 24px 28px; margin: 40px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 40px; }
+    .links-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; grid-column: 1/-1; }
+    .lbl { font-family: var(--mono); font-size: 12px; color: var(--body); }
+    .lbl span { color: var(--accent); }
+    .disclaimer { background: #fafafa; border: 1px solid var(--rule); padding: 20px 24px; margin-top: 32px; }
+    .disclaimer p { font-family: var(--mono); font-size: 10px; line-height: 1.75; color: var(--muted); margin: 0; }
+    .disclaimer strong { font-weight: 500; color: var(--body); }
+
+    .rule { border: none; border-top: 1px solid var(--rule); margin: 64px 0; }
+    code { font-family: var(--mono); font-size: 12px; background: #f0f0f8; padding: 2px 6px; border-radius: 2px; color: var(--accent2); }
+
+    @media (max-width: 768px) {
+      .outer { grid-template-columns: 1fr; padding: 0 20px; }
+      .toc { display: none; }
+      .content { padding: 40px 0 64px; }
+      .stat-row { grid-template-columns: 1fr; }
+      .rg { grid-template-columns: 1fr; }
+      .topbar { padding: 0 20px; }
+      .topbar-right { display: none; }
+      .cover-title { font-size: 42px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">PROXY</a>
+    <div class="topbar-div"></div>
+    <div class="topbar-doc">Whitepaper · v1.0 · 2026</div>
+  </div>
+  <div class="topbar-right">
+    <a href="index.html" class="topbar-link">← Back to Site</a>
+    <div class="topbar-div"></div>
+    <a href="index.html#waitlist" class="topbar-cta">Join Early Access</a>
+  </div>
+</div>
+
+<div class="outer">
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-items">
+      <li class="toc-item"><a href="#abstract" id="toc-abstract"><span class="toc-num">—</span>Abstract</a></li>
+      <div class="toc-div"></div>
+      <li class="toc-item"><a href="#problem" id="toc-problem"><span class="toc-num">01</span>The Problem</a></li>
+      <li class="toc-item"><a href="#solution" id="toc-solution"><span class="toc-num">02</span>The Solution</a></li>
+      <li class="toc-item"><a href="#how" id="toc-how"><span class="toc-num">03</span>How PROXY Works</a></li>
+      <li class="toc-item"><a href="#marketplace" id="toc-marketplace"><span class="toc-num">04</span>Resource Marketplace</a></li>
+      <li class="toc-item"><a href="#architecture" id="toc-architecture"><span class="toc-num">05</span>Protocol Architecture</a></li>
+      <li class="toc-item"><a href="#token" id="toc-token"><span class="toc-num">06</span>$PROXY Token</a></li>
+      <li class="toc-item"><a href="#anonymity" id="toc-anonymity"><span class="toc-num">07</span>Anonymity</a></li>
+      <li class="toc-item"><a href="#comparison" id="toc-comparison"><span class="toc-num">08</span>Competitive Landscape</a></li>
+      <li class="toc-item"><a href="#roadmap" id="toc-roadmap"><span class="toc-num">09</span>Roadmap</a></li>
+      <li class="toc-item"><a href="#conclusion" id="toc-conclusion"><span class="toc-num">10</span>Conclusion</a></li>
+      <div class="toc-div"></div>
+    </ul>
+    <div class="toc-meta">
+      Token: <strong>$PROXY</strong><br/>
+      Network: <strong>Base</strong><br/>
+      Launch: <strong>Flaunch</strong><br/>
+      Version: <strong>v1.0 · 2026</strong>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- COVER / ABSTRACT -->
+    <div class="cover" id="abstract">
+      <div class="cover-eyebrow">PROXY Protocol — Technical Whitepaper</div>
+      <div class="cover-title">PROXY<span class="dot">.</span></div>
+      <div class="cover-sub">The anonymous transaction layer for autonomous AI agents.</div>
+      <div class="chips">
+        <div class="chip hi">$PROXY</div>
+        <div class="chip">Base · Chain ID 8453</div>
+        <div class="chip">Flaunch — Fair Launch</div>
+        <div class="chip">ERC-20</div>
+        <div class="chip">v1.0 · 2026</div>
+      </div>
+      <div class="abstract-box">
+        <div class="abstract-label">Abstract</div>
+        <p class="abstract-text">Autonomous AI agents are being deployed at unprecedented scale. These agents — capable of reasoning, planning, and executing complex tasks — are operationally constrained by a fundamental gap in infrastructure: <strong>they cannot transact.</strong> Every time an agent requires a resource — compute, data, storage, API access — it must route through centralised services tied to human identities and human-managed billing. This dependency is not a minor inconvenience. It is an architectural ceiling on the entire autonomous agent economy.</p>
+        <p class="abstract-text"><strong>PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents.</strong> It enables agents to hold, spend, and settle $PROXY tokens anonymously and autonomously — without human intervention, without centralised intermediaries, and without identity exposure. Every resource in the PROXY marketplace is priced and settled exclusively in $PROXY, creating a structural demand mechanism that grows with agent adoption. PROXY is built on Base and launched via Flaunch as a fully fair-launch token.</p>
+      </div>
+    </div>
+
+    <!-- 01 -->
+    <div class="section">
+      <span class="sec-anchor" id="problem"></span>
+      <div class="sec-num">01 — The Problem</div>
+      <h2>AI agents can think.<br/><em>They cannot pay.</em></h2>
+      <p>The autonomous agent economy is not a future projection — it is a present reality. Agents built on large language models are being deployed by enterprises, developers, and individuals to execute complex, multi-step workflows: researching, coding, trading, communicating, and operating autonomously across digital environments. The infrastructure to support agent cognition has matured rapidly. The infrastructure to support agent <strong>commerce</strong> has not.</p>
+      <div class="stat-row">
+        <div class="stat-cell"><div class="stat-label">Autonomous agent economy</div><div class="stat-fig">$17T</div><div class="stat-desc">Projected economic value managed by AI agents by 2030 (McKinsey, 2024)</div></div>
+        <div class="stat-cell"><div class="stat-label">Agent-native payment protocols</div><div class="stat-fig">0</div><div class="stat-desc">Protocols built specifically for autonomous agent-to-protocol transactions today</div></div>
+        <div class="stat-cell"><div class="stat-label">Requiring human sign-off</div><div class="stat-fig">100%</div><div class="stat-desc">Of all agent resource procurement transactions currently require human intervention</div></div>
+      </div>
+      <p>Today, when an autonomous agent requires a resource to complete a task — inference on a large language model, a real-time data feed, external API access, or decentralised storage — it encounters the same bottleneck in every case: <strong>a human must intervene.</strong> The agent routes through a centralised API tied to a human account, a credit card, and a corporate identity. The autonomy of the agent is therefore an illusion at the transactional layer — the most fundamental layer of all.</p>
+      <h3>1.1 — No Agent-Native Wallet Standard</h3>
+      <p>Existing wallet infrastructure — both Web2 and Web3 — was designed for humans. Seed phrases, hardware signers, and multi-factor authentication assume a human operator. An autonomous agent cannot hold, manage, or spend funds without a human maintaining the underlying key material. This is not a limitation of agent capability — it is a limitation of infrastructure design.</p>
+      <h3>1.2 — Centralised APIs as a Hard Ceiling</h3>
+      <p>Agents accessing compute, data, or services through centralised providers face rate limits tied to human accounts, billing that requires credit card verification, and terms of service that explicitly prohibit automated or autonomous usage at scale. Every centralised API is a point of failure, a point of censorship, and a point of identity exposure.</p>
+      <h3>1.3 — No Anonymity for Agent Activity</h3>
+      <p>Every agent transaction today is linkable to a human identity. In a world where agents act on behalf of individuals and institutions, privacy is not optional — it is structural. No existing payment infrastructure provides anonymity at the transaction level for agent operations.</p>
+      <h3>1.4 — Settlement Latency Kills Autonomy</h3>
+      <p>Traditional payment rails take seconds to days to settle. Agents operating at machine speed cannot function on human-grade settlement timelines. The latency of existing infrastructure is incompatible with autonomous operation at scale.</p>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 02 -->
+    <div class="section">
+      <span class="sec-anchor" id="solution"></span>
+      <div class="sec-num">02 — The Solution</div>
+      <h2>PROXY: The Economic Layer<br/>for Autonomous Agents</h2>
+      <p>PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents. It provides the primitive that the agent economy is missing: <strong>a trustless, anonymous, agent-native transaction layer</strong> on Base, where agents can hold $PROXY, spend $PROXY, and receive resources — entirely without human involvement at any stage of the transaction.</p>
+      <div class="callout"><p><strong>The core insight:</strong> Agents do not need banks. They do not need credit cards. They do not need identity verification. They need a token they can hold autonomously, a marketplace of resources priced in that token, and a settlement layer that is instant, anonymous, and verifiable. PROXY is that system.</p></div>
+      <p>PROXY does not attempt to rebuild general-purpose payment infrastructure. It is purpose-built for one use case: agents procuring resources to complete tasks. Every design decision — from the token's exclusive use as the settlement currency, to the anonymous routing layer, to the proof-of-delivery mechanism — is made in service of that single objective.</p>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 03 -->
+    <div class="section">
+      <span class="sec-anchor" id="how"></span>
+      <div class="sec-num">03 — How PROXY Works</div>
+      <h2>Five steps.<br/><em>Zero humans.</em></h2>
+      <p>The PROXY protocol reduces every agent resource transaction to a five-step atomic flow. Each step is designed to be trustless — neither party is required to identify themselves, and payment is only released upon cryptographic proof of delivery. The entire cycle operates at machine speed.</p>
+      <div class="flow">
+        <div class="flow-step"><div class="flow-num">01</div><div><div class="flow-title">Agent Wallet Initialisation</div><div class="flow-body">An autonomous agent is deployed with a PROXY wallet — a non-custodial, on-chain identity on Base funded in $PROXY by its operator at initialisation. Post-funding, no human interaction is required. The agent controls its own wallet, manages its own budget, and initiates all transactions autonomously. The wallet address is the agent's sole identity on the network — no name, no email, no KYC.</div></div></div>
+        <div class="flow-step"><div class="flow-num">02</div><div><div class="flow-title">Resource Request Broadcast</div><div class="flow-body">When the agent requires a resource, it constructs a signed request specifying the resource type, required parameters, maximum acceptable latency, and a budget ceiling in $PROXY. This request is broadcast to the PROXY routing layer via a standardised <code>AgentRequest</code> schema. The budget ceiling is atomically escrowed in the PROXY smart contract at broadcast, guaranteeing payment availability to providers.</div></div></div>
+        <div class="flow-step"><div class="flow-num">03</div><div><div class="flow-title">Anonymous Routing</div><div class="flow-body">PROXY's routing layer matches the request to an eligible provider using a weighted matching algorithm evaluating provider stake weight, latency record, and resource availability. This matching is performed without either party revealing their identity. Zero-knowledge attestations confirm provider eligibility without exposing wallet addresses or operational details.</div></div></div>
+        <div class="flow-step"><div class="flow-num">04</div><div><div class="flow-title">Delivery and Proof Submission</div><div class="flow-body">The provider fulfils the resource request and submits a cryptographic <code>DeliveryProof</code> to the PROXY proof layer. For inference jobs, the proof includes a deterministic hash of the output against committed model weights. For data feeds, the proof includes a signed timestamp and source attestation. The proof layer validates the submission before any escrow is released.</div></div></div>
+        <div class="flow-step"><div class="flow-num">05</div><div><div class="flow-title">Instant Settlement</div><div class="flow-body">Upon successful proof validation, the PROXY escrow contract releases the agreed $PROXY amount to the provider's wallet on Base. Settlement is instant — finalised within the Base block time of approximately two seconds. The agent receives its resource. The provider receives its payment. The transaction is immutably recorded on-chain. No human was involved at any stage.</div></div></div>
+      </div>
+      <div class="callout" style="margin-top:28px;"><p><strong>On anonymity throughout the flow:</strong> At no point does either the agent or the provider expose a human identity. The agent wallet is a pseudonymous on-chain address. Routing is performed via anonymous matching. Proof submission reveals only the job parameters, not the operator. This is not a privacy feature — it is the default state of the protocol.</p></div>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 04 -->
+    <div class="section">
+      <span class="sec-anchor" id="marketplace"></span>
+      <div class="sec-num">04 — Resource Marketplace</div>
+      <h2>What agents<br/><em>spend $PROXY on.</em></h2>
+      <p>PROXY launches with an initial marketplace of resource categories covering the most common agent operational needs. Each category has a defined request schema, proof standard, and pricing mechanism. All resources are priced and settled exclusively in $PROXY.</p>
+      <div class="rg">
+        <div class="rg-card"><div class="rg-title">AI Inference <span class="rg-badge">Launch</span></div><div class="rg-body">Agents request inference on any supported open-weight model — including Llama 3.3, Mistral, Qwen 2.5, and DeepSeek variants. Pricing is per token with proof-of-output validation before settlement.</div></div>
+        <div class="rg-card"><div class="rg-title">Data Feeds <span class="rg-badge">Launch</span></div><div class="rg-body">Real-time and historical data: price oracles, on-chain analytics, market sentiment, web intelligence. Agents purchase exactly the data window they need with signed, timestamped delivery proofs.</div></div>
+        <div class="rg-card"><div class="rg-title">API Access <span class="rg-badge">Phase 2</span></div><div class="rg-body">Agents route external API calls through PROXY's anonymised relay — web scraping, blockchain RPC, search, translation. No IP exposure. No rate limits tied to a human identity.</div></div>
+        <div class="rg-card"><div class="rg-title">Storage <span class="rg-badge">Phase 2</span></div><div class="rg-body">Agents store operational data — memory states, output caches, vector embeddings, RAG corpora — in decentralised storage via PROXY, with cryptographic retrieval guarantees.</div></div>
+        <div class="rg-card"><div class="rg-title">Bandwidth <span class="rg-badge">Phase 3</span></div><div class="rg-body">High-throughput, anonymous bandwidth routing for agent operations. No IP association. Priced per GB transferred with latency guarantees enforced at the proof layer.</div></div>
+        <div class="rg-card"><div class="rg-title">Agent → Agent <span class="rg-badge">Phase 3</span></div><div class="rg-body">Orchestrator agents delegate tasks to specialist sub-agents and pay in $PROXY. The first trustless marketplace for multi-agent coordination operating entirely on-chain.</div></div>
+      </div>
+      <h3>4.1 — Pricing Mechanism</h3>
+      <p>Resource pricing is set by providers at registration and updated dynamically based on demand signals. The protocol provides a standardised price discovery mechanism where agents submit requests with a maximum budget and providers compete on price and quality.</p>
+      <h3>4.2 — Provider Registration</h3>
+      <p>Providers register by bonding a minimum amount of $PROXY as collateral — subject to slashing in the event of failed delivery proofs or sustained downtime. Bonded $PROXY is locked from circulating supply for the duration of active registration.</p>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 05 -->
+    <div class="section">
+      <span class="sec-anchor" id="architecture"></span>
+      <div class="sec-num">05 — Protocol Architecture</div>
+      <h2>Built for agents.<br/><em>Verified on-chain.</em></h2>
+      <p>The PROXY protocol is composed of four discrete layers, each responsible for a distinct function in the transaction lifecycle. Together they form a complete, trustless pipeline from resource request to verified settlement.</p>
+      <div class="arch">
+        <div class="arch-layer hi"><div class="arch-name">Agent Wallet SDK</div><div class="arch-tag">Entry Point · Non-Custodial</div></div>
+        <div class="arch-arr">↓</div>
+        <div class="arch-layer"><div class="arch-name">Request & Routing Layer</div><div class="arch-tag">Anonymous Matching · ZK Attestation</div></div>
+        <div class="arch-arr">↓</div>
+        <div class="arch-layer"><div class="arch-name">Escrow Smart Contracts</div><div class="arch-tag">Base L2 · Atomic Escrow · Dispute Resolution</div></div>
+        <div class="arch-arr">↓</div>
+        <div class="arch-layer"><div class="arch-name">Provider Network</div><div class="arch-tag">Bonded Nodes · Multi-Resource · Staked</div></div>
+        <div class="arch-arr">↓</div>
+        <div class="arch-layer"><div class="arch-name">Proof Layer</div><div class="arch-tag">Delivery Verification · Hash Attestation</div></div>
+        <div class="arch-arr">↓</div>
+        <div class="arch-layer hi"><div class="arch-name">Settlement → $PROXY</div><div class="arch-tag">Instant · On-Chain · Immutable</div></div>
+      </div>
+      <h3>5.1 — Agent Wallet SDK</h3>
+      <p>A lightweight library enabling any AI agent framework to initialise and operate a PROXY wallet. It abstracts key management, request construction, and proof handling into a simple API surface — compatible with LangChain, AutoGPT, custom agent implementations, and any system capable of executing signed transactions.</p>
+      <h3>5.2 — Routing and Anonymous Matching</h3>
+      <p>The routing layer receives broadcast <code>AgentRequest</code> objects and executes a matching algorithm against the registered provider set. The matching process uses zero-knowledge proofs to verify provider eligibility without requiring providers to expose wallet addresses or operational details to the requesting agent.</p>
+      <h3>5.3 — Escrow Smart Contracts</h3>
+      <p>All payment flows through PROXY's escrow smart contracts deployed on Base. At request broadcast, the agent's budget ceiling is atomically locked in escrow. Failed or disputed proofs enter a 300-second dispute window, after which unresolved disputes are arbitrated by the on-chain governance mechanism. Contracts are non-upgradeable post-audit to eliminate admin key risk.</p>
+      <h3>5.4 — Proof Layer</h3>
+      <p>Every resource delivery must be accompanied by a <code>DeliveryProof</code> validated before any settlement occurs. Proof standards are resource-specific and published in the protocol specification. Providers that submit invalid proofs face immediate partial slashing of their bonded $PROXY collateral.</p>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 06 -->
+    <div class="section">
+      <span class="sec-anchor" id="token"></span>
+      <div class="sec-num">06 — $PROXY Token</div>
+      <h2>The only currency<br/><em>agents spend.</em></h2>
+      <p>$PROXY is the sole payment and settlement currency of the PROXY protocol. There is no alternative payment path — no ETH fallback, no stablecoin bypass, no fiat gateway. Every resource transaction is denominated in $PROXY and settled in $PROXY. This is not a design preference — it is protocol-level enforcement that creates a direct, structural relationship between network usage and token demand.</p>
+      <table class="tt">
+        <tr><td>Token Name</td><td>PROXY</td></tr>
+        <tr><td>Ticker</td><td>$PROXY</td></tr>
+        <tr><td>Network</td><td>Base (Ethereum L2, Chain ID: 8453)</td></tr>
+        <tr><td>Launch Platform</td><td>Flaunch — Fair Launch Protocol</td></tr>
+        <tr><td>Pre-sale</td><td>None</td></tr>
+        <tr><td>Insider Allocation</td><td>None</td></tr>
+        <tr><td>Token Standard</td><td>ERC-20</td></tr>
+      </table>
+      <h3>6.1 — Token Utility</h3>
+      <p><strong>Resource Payment — The Only Currency.</strong> All marketplace transactions are settled exclusively in $PROXY. Every inference job, data feed purchase, API call, and storage allocation consumes $PROXY from the agent's wallet. As agent adoption scales, so does the volume of $PROXY consumed — creating compounding demand pressure with no ceiling and no alternative payment path.</p>
+      <p><strong>Provider Bonding.</strong> Providers bond $PROXY to register nodes on the network. This bond acts as collateral against delivery failures and locks supply from circulation. The more providers join, the more $PROXY is bonded and removed from tradeable supply.</p>
+      <p><strong>Staking and Job Priority.</strong> Providers stake additional $PROXY above their minimum bond to increase their weighting in the routing algorithm. Higher stake weight means a higher share of incoming job allocations.</p>
+      <p><strong>Governance.</strong> $PROXY holders govern the protocol through an on-chain DAO covering resource category additions, proof standard updates, fee parameters, dispute resolution rules, and treasury allocation.</p>
+      <h3>6.2 — Supply Dynamics</h3>
+      <p>The combination of mandatory payment currency status and provider bonding creates a dual-sided supply compression mechanism. Demand side: every agent transaction moves $PROXY from agent to provider — continuous velocity. Supply side: every active provider has bonded $PROXY locked from circulation. As both agent count and provider count grow, available circulating supply contracts while transaction volume expands.</p>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 07 -->
+    <div class="section">
+      <span class="sec-anchor" id="anonymity"></span>
+      <div class="sec-num">07 — Anonymity Architecture</div>
+      <h2>Anonymous<br/><em>by default.</em></h2>
+      <p>Anonymity in PROXY is not a feature that users opt into — it is the default state of every transaction. Neither agents nor providers are required to reveal any identity information at any point in the transaction lifecycle. This is enforced at the protocol level through three mechanisms: pseudonymous wallet addressing, zero-knowledge routing attestations, and anonymised proof submission.</p>
+      <p>For agents, this means that an AI system operating on behalf of an individual or institution can procure resources without exposing who controls the agent, what task it is executing, or what data it is accessing. For providers, it means resource supply can be offered without revealing operational infrastructure, geographic location, or business identity.</p>
+      <p>The protocol records only what is necessary for settlement — the transaction amount, the proof hash, and the block timestamp. Nothing more is required. Nothing more is stored.</p>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 08 -->
+    <div class="section">
+      <span class="sec-anchor" id="comparison"></span>
+      <div class="sec-num">08 — Competitive Landscape</div>
+      <h2>Nothing else was<br/><em>built for agents.</em></h2>
+      <p>Existing payment infrastructure — both traditional and crypto-native — was designed for human operators. PROXY is not competing with general-purpose payment protocols. It is filling a gap those protocols are architecturally incapable of filling.</p>
+      <div class="cmp-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th>Capability</th><th class="ph">PROXY</th><th>Stripe / Fiat</th><th>Crypto Payments</th><th>Centralised AI APIs</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Fully autonomous — no human sign-off</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
+            <tr><td>Anonymous by default</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cn">Partial</td><td class="cx">✗</td></tr>
+            <tr><td>On-chain proof of delivery</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
+            <tr><td>Sub-second settlement</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cn">Partial</td><td class="cx">✗</td></tr>
+            <tr><td>Agent-native wallet standard</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
+            <tr><td>Multi-resource marketplace</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
+            <tr><td>Agent-to-agent payments</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
+            <tr><td>Non-custodial</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="ck">✓</td><td class="cx">✗</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 09 -->
+    <div class="section">
+      <span class="sec-anchor" id="roadmap"></span>
+      <div class="sec-num">09 — Roadmap</div>
+      <h2>Building<br/><em>in public.</em></h2>
+      <div class="rm">
+        <div class="rm-item">
+          <div class="rm-dot live"><div class="rm-di"></div></div>
+          <div class="rm-body">
+            <div class="rm-phase live">Phase 01 — Genesis · Now</div>
+            <div class="rm-title">Foundation</div>
+            <ul class="rm-list">
+              <li>Token launch via Flaunch on Base</li>
+              <li>Website, whitepaper, and GitHub repository live</li>
+              <li>Protocol architecture published</li>
+              <li>Early access community opens</li>
+              <li>Agent Playground interactive demo released</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot"><div class="rm-di"></div></div>
+          <div class="rm-body">
+            <div class="rm-phase">Phase 02 — Testnet</div>
+            <div class="rm-title">Build</div>
+            <ul class="rm-list">
+              <li>PROXY testnet deployment on Base Sepolia</li>
+              <li>Agent Wallet SDK alpha release</li>
+              <li>First provider integrations: inference and data feeds live</li>
+              <li>Smart contract audit initiated</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot"><div class="rm-di"></div></div>
+          <div class="rm-body">
+            <div class="rm-phase">Phase 03 — Mainnet</div>
+            <div class="rm-title">Launch</div>
+            <ul class="rm-list">
+              <li>Mainnet deployment on Base</li>
+              <li>Public resource marketplace open to all providers and agents</li>
+              <li>Agent SDK public release</li>
+              <li>First live agent transactions settled on-chain</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot"><div class="rm-di"></div></div>
+          <div class="rm-body">
+            <div class="rm-phase">Phase 04 — Ecosystem</div>
+            <div class="rm-title">Scale</div>
+            <ul class="rm-list">
+              <li>Agent-to-agent payment layer live</li>
+              <li>DAO governance activated</li>
+              <li>Cross-chain agent wallet support</li>
+              <li>Enterprise agent fleet integrations and OEM partnerships</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="rule"/>
+
+    <!-- 10 -->
+    <div class="section">
+      <span class="sec-anchor" id="conclusion"></span>
+      <div class="sec-num">10 — Conclusion</div>
+      <h2>The agent economy<br/><em>needs rails.</em></h2>
+      <p>The transition from AI as a tool to AI as an autonomous economic actor is underway. Agents are being deployed at scale. They are executing tasks, making decisions, and operating in increasingly complex digital environments. The one thing they cannot do — the one thing no existing infrastructure supports — is transact autonomously, anonymously, and at machine speed.</p>
+      <p>PROXY is the protocol that closes that gap. It provides the economic primitive the agent economy needs: a trustless, anonymous, agent-native transaction layer where $PROXY is the sole currency, delivery is cryptographically verified, and humans are removed from the transaction loop entirely.</p>
+      <p>This is not a speculative future use case. The demand exists today. Every agent framework — LangChain, AutoGPT, CrewAI, custom implementations — requires resource procurement to function. Every one of those resource requests currently routes through a centralised, human-gated system. PROXY replaces that system with something that scales with the agent economy rather than bottlenecking it.</p>
+      <div class="callout"><p><strong>The opportunity is simple:</strong> The agent economy will be worth trillions. Every dollar of that economy requires a payment rail. No payment rail exists for agents. PROXY builds it. $PROXY is the token that flows through every transaction on that rail.</p></div>
+      <p>PROXY is launched fairly — no pre-sale, no insider allocation, no venture capital. $PROXY is available to anyone from the first block. The protocol is built in public, documented openly, and governed by its token holders. The team's incentives are aligned with the protocol's success: $PROXY either becomes the economic infrastructure of the agent economy, or it does not. There is no middle path.</p>
+      <p><em class="line">We are building the rails. The trains are already running.</em></p>
+      <div class="links-box">
+        <div class="links-label">Links</div>
+        <div class="lbl">Website: <span>proxyprotocol.org</span></div>
+        <div class="lbl">GitHub: <span>github.com/proxy-labs-create/proxy-protocol</span></div>
+        <div class="lbl">Token: <span>$PROXY on Base</span></div>
+        <div class="lbl">Launch: <span>Flaunch</span></div>
+      </div>
+      <div class="disclaimer">
+        <p><strong>DISCLAIMER.</strong> This whitepaper is for informational purposes only and does not constitute financial advice, investment advice, or a solicitation to purchase any token or security. $PROXY is a utility token designed for use within the PROXY protocol. Participation in any token launch carries significant risk including total loss of capital. The PROXY protocol is in development — features described herein represent the intended design and may change. This document does not constitute a prospectus or offering document of any kind. Readers are advised to conduct their own research and consult appropriate professional advisors before making any financial decision. Nothing in this document should be construed as a guarantee of future performance or outcomes.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const sections = ['abstract','problem','solution','how','marketplace','architecture','token','anonymity','comparison','roadmap','conclusion'];
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        sections.forEach(s => { const el = document.getElementById('toc-'+s); if(el) el.classList.remove('active'); });
+        const tocEl = document.getElementById('toc-' + e.target.id);
+        if (tocEl) tocEl.classList.add('active');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-10% 0px -70% 0px' });
+  sections.forEach(s => { const el = document.getElementById(s); if(el) obs.observe(el); });
+</script>
+</body>
+</html>
