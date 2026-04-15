@@ -4,13 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PROXY Playground — Agent Inference Demo</title>
-  <meta name="description" content="Watch a PROXY agent procure real AI inference anonymously on-chain. The first live demonstration of autonomous agent payments." />
+  <meta name="description" content="Watch a PROXY agent procure AI inference anonymously on-chain. Live demonstration of autonomous agent payments." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:        #060710;
       --surface:   #0a0c18;
@@ -22,387 +21,115 @@
       --muted2:    #7475a0;
       --accent:    #5b6fff;
       --accent-lo: rgba(91,111,255,0.1);
-      --accent-glow: rgba(91,111,255,0.2);
       --green:     #00d97e;
       --green-lo:  rgba(0,217,126,0.08);
-      --yellow:    #f5a623;
       --red:       #ff4466;
       --mono:      'IBM Plex Mono', monospace;
       --sans:      'IBM Plex Sans', sans-serif;
     }
-
     html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: var(--mono);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    body { background: var(--bg); color: var(--white); font-family: var(--mono); min-height: 100vh; overflow-x: hidden; }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 32px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(6,7,16,0.92);
-      backdrop-filter: blur(16px);
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid var(--border); background: rgba(6,7,16,0.92); backdrop-filter: blur(16px); }
     .nav-left { display: flex; align-items: center; gap: 16px; }
-    .nav-logo {
-      font-family: var(--sans); font-weight: 700;
-      font-size: 15px; letter-spacing: 0.1em;
-      color: var(--white); text-decoration: none;
-    }
+    .nav-logo { font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
     .nav-div { width: 1px; height: 14px; background: var(--border); }
-    .nav-label {
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid rgba(91,111,255,0.25);
-      padding: 3px 8px; border-radius: 2px;
-      background: var(--accent-lo);
-    }
-    .nav-back {
-      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted2); text-decoration: none;
-      transition: color .2s;
-    }
+    .nav-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(91,111,255,0.25); padding: 3px 8px; border-radius: 2px; background: var(--accent-lo); }
+    .nav-back { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); text-decoration: none; transition: color .2s; }
     .nav-back:hover { color: var(--white); }
 
-    /* ── HERO ── */
-    .hero {
-      padding: 100px 32px 48px;
-      max-width: 900px; margin: 0 auto;
-      text-align: center;
-    }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--green);
-      border: 1px solid rgba(0,217,126,0.2);
-      padding: 6px 14px; border-radius: 2px;
-      background: var(--green-lo);
-      margin-bottom: 28px;
-    }
-    .hero-tag-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--green);
-      animation: blink 1.6s ease-in-out infinite;
-    }
+    .hero { padding: 100px 32px 48px; max-width: 900px; margin: 0 auto; text-align: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green); border: 1px solid rgba(0,217,126,0.2); padding: 6px 14px; border-radius: 2px; background: var(--green-lo); margin-bottom: 28px; }
+    .hero-tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: blink 1.6s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
-    .hero-title {
-      font-family: var(--sans);
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
-      color: var(--white); margin-bottom: 16px;
-    }
+    .hero-title { font-family: var(--sans); font-size: clamp(32px, 5vw, 52px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--white); margin-bottom: 16px; }
     .hero-title em { font-style: normal; color: var(--accent); }
-    .hero-sub {
-      font-size: 13px; line-height: 1.8; color: var(--muted2);
-      max-width: 560px; margin: 0 auto;
-    }
+    .hero-sub { font-size: 13px; line-height: 1.8; color: var(--muted2); max-width: 560px; margin: 0 auto; }
     .hero-sub strong { color: var(--white); font-weight: 400; }
 
-    /* ── MAIN PLAYGROUND ── */
-    .playground {
-      max-width: 900px; margin: 0 auto;
-      padding: 0 32px 80px;
-    }
+    .playground { max-width: 900px; margin: 0 auto; padding: 0 32px 80px; }
 
-    /* Step indicator */
-    .steps-bar {
-      display: flex; gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 32px;
-    }
-    .step-pill {
-      flex: 1; padding: 10px 0; text-align: center;
-      font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted);
-      border-right: 1px solid var(--border);
-      background: var(--surface);
-      transition: background .3s, color .3s;
-    }
+    .steps-bar { display: flex; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 32px; }
+    .step-pill { flex: 1; padding: 10px 0; text-align: center; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); border-right: 1px solid var(--border); background: var(--surface); transition: background .3s, color .3s; }
     .step-pill:last-child { border-right: none; }
     .step-pill.active { color: var(--accent); background: var(--accent-lo); }
     .step-pill.done { color: var(--green); background: var(--green-lo); }
 
-    /* Config panel */
-    .config-panel {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .panel-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface2);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .panel-title {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--muted2);
-    }
-    .panel-badge {
-      font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent); border: 1px solid rgba(91,111,255,0.2);
-      padding: 2px 8px; border-radius: 2px;
-    }
+    .config-panel { border: 1px solid var(--border); background: var(--surface); border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
+    .panel-header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; }
+    .panel-title { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted2); }
+    .panel-badge { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(91,111,255,0.2); padding: 2px 8px; border-radius: 2px; }
     .panel-body { padding: 20px; }
-
-    /* Task input */
-    .task-label {
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 10px; display: block;
-    }
-    .task-textarea {
-      width: 100%; background: var(--bg);
-      border: 1px solid var(--border-hi);
-      border-radius: 2px; padding: 14px 16px;
-      font-family: var(--mono); font-size: 13px;
-      color: var(--white); line-height: 1.6;
-      resize: vertical; min-height: 80px;
-      outline: none;
-      transition: border-color .2s;
-    }
+    .task-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
+    .task-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border-hi); border-radius: 2px; padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--white); line-height: 1.6; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; }
     .task-textarea:focus { border-color: rgba(91,111,255,0.5); }
     .task-textarea::placeholder { color: var(--muted); }
 
-    /* Preset tasks */
-    .presets {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-top: 12px; margin-bottom: 20px;
-    }
-    .preset-btn {
-      font-family: var(--mono);
-      font-size: 10px; letter-spacing: 0.06em;
-      color: var(--muted2);
-      border: 1px solid var(--border);
-      background: transparent; padding: 6px 12px;
-      border-radius: 2px; cursor: pointer;
-      transition: color .2s, border-color .2s, background .2s;
-    }
-    .preset-btn:hover {
-      color: var(--white); border-color: var(--border-hi);
-      background: rgba(255,255,255,0.03);
-    }
+    .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; margin-bottom: 20px; }
+    .preset-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--muted2); border: 1px solid var(--border); background: transparent; padding: 6px 12px; border-radius: 2px; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+    .preset-btn:hover { color: var(--white); border-color: var(--border-hi); background: rgba(255,255,255,0.03); }
+    .preset-btn.selected { color: var(--accent); border-color: rgba(91,111,255,0.3); background: var(--accent-lo); }
 
-    /* Config row */
-    .config-row {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 16px; margin-top: 4px;
-    }
+    .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
     .config-field { display: flex; flex-direction: column; gap: 8px; }
-    .config-field label {
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .config-select {
-      background: var(--bg); border: 1px solid var(--border-hi);
-      border-radius: 2px; padding: 10px 14px;
-      font-family: var(--mono); font-size: 12px;
-      color: var(--white); outline: none;
-      appearance: none; cursor: pointer;
-      transition: border-color .2s;
-    }
-    .config-select:focus { border-color: rgba(91,111,255,0.5); }
-
-    .budget-display {
-      background: var(--bg); border: 1px solid var(--border-hi);
-      border-radius: 2px; padding: 10px 14px;
-      font-size: 12px; color: var(--accent);
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .config-field label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .config-select { background: var(--bg); border: 1px solid var(--border-hi); border-radius: 2px; padding: 10px 14px; font-family: var(--mono); font-size: 12px; color: var(--white); outline: none; appearance: none; cursor: pointer; transition: border-color .2s; }
+    .budget-display { background: var(--bg); border: 1px solid var(--border-hi); border-radius: 2px; padding: 10px 14px; font-size: 12px; color: var(--accent); display: flex; align-items: center; justify-content: space-between; }
     .budget-display span { color: var(--muted); font-size: 10px; }
 
-    /* Launch button */
-    .launch-btn {
-      width: 100%; margin-top: 20px;
-      padding: 16px; background: var(--accent);
-      border: none; border-radius: 2px;
-      font-family: var(--mono); font-size: 12px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: white; cursor: pointer;
-      transition: opacity .2s, transform .2s;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
+    .launch-btn { width: 100%; margin-top: 20px; padding: 16px; background: var(--accent); border: none; border-radius: 2px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: white; cursor: pointer; transition: opacity .2s, transform .2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .launch-btn:hover:not(:disabled) { opacity: .85; transform: translateY(-1px); }
     .launch-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
-    .launch-btn-icon { font-size: 14px; }
 
-    /* ── EXECUTION PANEL ── */
-    .execution-panel {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 2px;
-      overflow: hidden;
-      display: none;
-      margin-bottom: 24px;
-    }
+    .execution-panel { border: 1px solid var(--border); background: var(--surface); border-radius: 2px; overflow: hidden; display: none; margin-bottom: 24px; }
     .execution-panel.visible { display: block; }
-
-    .exec-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface2);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .exec-title {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--muted2);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .exec-spinner {
-      width: 10px; height: 10px; border-radius: 50%;
-      border: 1px solid var(--accent);
-      border-top-color: transparent;
-      animation: spin .8s linear infinite;
-    }
+    .exec-header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; }
+    .exec-title-row { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted2); display: flex; align-items: center; gap: 8px; }
+    .spinner { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--accent); border-top-color: transparent; animation: spin .8s linear infinite; display: inline-block; }
+    .spinner.done { border-color: var(--green); border-top-color: var(--green); animation: none; background: var(--green); width: 8px; height: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .exec-spinner.done {
-      border-color: var(--green); border-top-color: var(--green);
-      animation: none;
-      background: var(--green);
-      width: 8px; height: 8px;
-    }
 
-    /* Flow steps */
-    .flow-steps { padding: 0; }
-    .flow-step-row {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      opacity: 0.3;
-      transition: opacity .3s, background .3s;
-    }
+    .flow-step-row { display: flex; gap: 16px; align-items: flex-start; padding: 14px 20px; border-bottom: 1px solid var(--border); opacity: 0.3; transition: opacity .3s, background .3s; }
     .flow-step-row:last-child { border-bottom: none; }
     .flow-step-row.active { opacity: 1; background: rgba(91,111,255,0.03); }
     .flow-step-row.done { opacity: 1; }
-    .flow-step-num {
-      font-size: 10px; color: var(--muted);
-      min-width: 20px; padding-top: 1px;
-      flex-shrink: 0;
-    }
-    .flow-step-row.active .flow-step-num { color: var(--accent); }
-    .flow-step-row.done .flow-step-num { color: var(--green); }
-    .flow-step-content { flex: 1; }
-    .flow-step-title {
-      font-size: 12px; color: var(--white);
-      margin-bottom: 4px; font-weight: 500;
-    }
-    .flow-step-detail {
-      font-size: 11px; color: var(--muted2);
-      line-height: 1.5;
-    }
-    .flow-step-detail .hash { color: var(--accent); }
-    .flow-step-detail .green { color: var(--green); }
-    .flow-step-detail .amount { color: var(--white); font-weight: 500; }
-    .flow-step-status {
-      font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-      padding-top: 2px;
-      flex-shrink: 0;
-    }
-    .flow-step-status.pending { color: var(--yellow); }
-    .flow-step-status.processing { color: var(--accent); }
-    .flow-step-status.settled { color: var(--green); }
+    .fs-num { font-size: 10px; color: var(--muted); min-width: 20px; padding-top: 1px; flex-shrink: 0; }
+    .flow-step-row.active .fs-num { color: var(--accent); }
+    .flow-step-row.done .fs-num { color: var(--green); }
+    .fs-content { flex: 1; }
+    .fs-title { font-size: 12px; color: var(--white); margin-bottom: 4px; font-weight: 500; }
+    .fs-detail { font-size: 11px; color: var(--muted2); line-height: 1.5; }
+    .fs-detail .h { color: var(--accent); }
+    .fs-detail .g { color: var(--green); }
+    .fs-detail .a { color: var(--white); font-weight: 500; }
+    .fs-status { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding-top: 2px; flex-shrink: 0; }
+    .fs-status.p { color: var(--accent); }
+    .fs-status.s { color: var(--green); }
 
-    /* ── RESULT PANEL ── */
-    .result-panel {
-      border: 1px solid rgba(0,217,126,0.2);
-      background: rgba(0,217,126,0.03);
-      border-radius: 2px;
-      overflow: hidden;
-      display: none;
-      margin-bottom: 24px;
-    }
+    .result-panel { border: 1px solid rgba(0,217,126,0.2); background: rgba(0,217,126,0.03); border-radius: 2px; overflow: hidden; display: none; margin-bottom: 24px; }
     .result-panel.visible { display: block; }
-    .result-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid rgba(0,217,126,0.12);
-      background: rgba(0,217,126,0.05);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .result-title {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--green);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .result-meta {
-      display: flex; gap: 20px;
-    }
-    .result-meta-item {
-      font-size: 10px; color: var(--muted);
-    }
-    .result-meta-item span { color: var(--green); }
-    .result-body {
-      padding: 24px;
-    }
-    .result-text {
-      font-family: var(--sans);
-      font-size: 14px; line-height: 1.8;
-      color: var(--white);
-      white-space: pre-wrap;
-    }
+    .result-header { padding: 14px 20px; border-bottom: 1px solid rgba(0,217,126,0.12); background: rgba(0,217,126,0.05); display: flex; align-items: center; justify-content: space-between; }
+    .result-title-el { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green); }
+    .result-meta { display: flex; gap: 20px; }
+    .rmi { font-size: 10px; color: var(--muted); }
+    .rmi span { color: var(--green); }
+    .result-body { padding: 24px; }
+    .result-text { font-family: var(--sans); font-size: 14px; line-height: 1.8; color: var(--white); white-space: pre-wrap; }
 
-    /* Receipt */
-    .receipt {
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      border-radius: 2px;
-      padding: 16px 20px;
-      margin-top: 20px;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px 32px;
-    }
-    .receipt-row { display: flex; flex-direction: column; gap: 3px; }
-    .receipt-label {
-      font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .receipt-value { font-size: 11px; color: var(--muted2); }
-    .receipt-value.accent { color: var(--accent); }
-    .receipt-value.green { color: var(--green); }
+    .receipt { border: 1px solid var(--border); background: var(--surface2); border-radius: 2px; padding: 16px 20px; margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 32px; }
+    .rr { display: flex; flex-direction: column; gap: 3px; }
+    .rl { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .rv { font-size: 11px; color: var(--muted2); }
+    .rv.ac { color: var(--accent); }
+    .rv.gr { color: var(--green); }
 
-    /* Reset button */
-    .reset-btn {
-      width: 100%;
-      padding: 13px; background: transparent;
-      border: 1px solid var(--border-hi); border-radius: 2px;
-      font-family: var(--mono); font-size: 11px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted2); cursor: pointer;
-      transition: color .2s, border-color .2s;
-      display: none;
-    }
+    .reset-btn { width: 100%; padding: 13px; background: transparent; border: 1px solid var(--border-hi); border-radius: 2px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); cursor: pointer; transition: color .2s, border-color .2s; display: none; margin-bottom: 24px; }
     .reset-btn.visible { display: block; }
     .reset-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.25); }
 
-    /* Error state */
-    .error-panel {
-      border: 1px solid rgba(255,68,102,0.25);
-      background: rgba(255,68,102,0.05);
-      border-radius: 2px; padding: 16px 20px;
-      margin-bottom: 24px; display: none;
-    }
-    .error-panel.visible { display: block; }
-    .error-text { font-size: 12px; color: var(--red); line-height: 1.6; }
-
-    /* Info bar at bottom */
-    .info-bar {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 2px; padding: 14px 20px;
-      display: flex; align-items: center; gap: 16px;
-      margin-top: 8px;
-    }
-    .info-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: blink 2s ease-in-out infinite; }
-    .info-text { font-size: 10px; color: var(--muted); line-height: 1.6; }
+    .info-bar { border: 1px solid var(--border); background: var(--surface); border-radius: 2px; padding: 14px 20px; display: flex; align-items: flex-start; gap: 12px; }
+    .info-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 4px; animation: blink 2s ease-in-out infinite; }
+    .info-text { font-size: 10px; color: var(--muted); line-height: 1.7; }
     .info-text strong { color: var(--muted2); font-weight: 400; }
 
     @media (max-width: 640px) {
@@ -412,40 +139,37 @@
       .hero { padding: 80px 20px 32px; }
       .playground { padding: 0 20px 60px; }
       nav { padding: 0 20px; }
+      .result-meta { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-left">
     <a href="/" class="nav-logo">PROXY</a>
     <div class="nav-div"></div>
-    <div class="nav-label">Playground</div>
+    <div class="nav-label">Playground · Beta</div>
   </div>
   <a href="/" class="nav-back">← Back to Site</a>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-tag">
     <div class="hero-tag-dot"></div>
-    Live Inference · Real Output · Simulated Payment
+    Live Demo · Agent Inference · Base Network
   </div>
   <h1 class="hero-title">Give your agent a task.<br/><em>Watch it procure.</em></h1>
   <p class="hero-sub">
     This is a live demonstration of the PROXY protocol flow.
     <strong>Your agent broadcasts a request, gets anonymously matched to a provider,
     and returns a real AI inference result.</strong>
-    Payment settlement is demonstrated — mainnet launches soon.
+    $PROXY settlement demonstrated — mainnet launches soon.
   </p>
 </div>
 
-<!-- PLAYGROUND -->
 <div class="playground">
 
-  <!-- Step indicator -->
   <div class="steps-bar">
     <div class="step-pill" id="pill-0">01 · Configure</div>
     <div class="step-pill" id="pill-1">02 · Initialise</div>
@@ -454,7 +178,6 @@
     <div class="step-pill" id="pill-4">05 · Settle</div>
   </div>
 
-  <!-- Config panel -->
   <div class="config-panel" id="configPanel">
     <div class="panel-header">
       <div class="panel-title">Agent Configuration</div>
@@ -462,382 +185,253 @@
     </div>
     <div class="panel-body">
       <label class="task-label">Agent Task</label>
-      <textarea
-        class="task-textarea"
-        id="taskInput"
-        placeholder="Describe what you want your agent to do — e.g. 'Analyse the current state of the AI agent economy and identify the three biggest infrastructure gaps'"
-        rows="3"
-      ></textarea>
+      <textarea class="task-textarea" id="taskInput" placeholder="Describe what you want your agent to do — or pick a preset below..." rows="3"></textarea>
 
       <div class="presets">
-        <button class="preset-btn" onclick="setPreset(this)" data-task="Explain why AI agents cannot currently transact autonomously and what infrastructure is missing to solve this problem.">Agent economy gap</button>
-        <button class="preset-btn" onclick="setPreset(this)" data-task="Write a technical summary of how zero-knowledge proofs could be used to anonymise AI agent transactions on a blockchain.">ZK proof explainer</button>
-        <button class="preset-btn" onclick="setPreset(this)" data-task="What are the top 5 use cases for autonomous AI agents in DeFi, and what resources would each agent need to procure?">DeFi agent use cases</button>
-        <button class="preset-btn" onclick="setPreset(this)" data-task="Analyse the tokenomics of a protocol where a token is the sole payment currency for AI agent resource procurement. What drives demand?">Token demand analysis</button>
+        <button class="preset-btn" onclick="setPreset(this,'summarise')">Summarise AI news today</button>
+        <button class="preset-btn" onclick="setPreset(this,'bitcoin')">Explain Bitcoin simply</button>
+        <button class="preset-btn" onclick="setPreset(this,'email')">Write a cold outreach email</button>
+        <button class="preset-btn" onclick="setPreset(this,'defi')">What is DeFi and why it matters</button>
+        <button class="preset-btn" onclick="setPreset(this,'agent')">Why can't AI agents pay for things?</button>
+        <button class="preset-btn" onclick="setPreset(this,'proxy')">What problem does PROXY solve?</button>
       </div>
 
       <div class="config-row">
         <div class="config-field">
           <label>Inference Model</label>
-          <select class="config-select" id="modelSelect">
-            <option value="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo">Llama 3.1 · 8B · Fast</option>
-            <option value="meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo" selected>Llama 3.1 · 70B · Balanced</option>
-            <option value="mistralai/Mistral-7B-Instruct-v0.3">Mistral 7B · Instruct</option>
-            <option value="Qwen/Qwen2.5-72B-Instruct-Turbo">Qwen 2.5 · 72B</option>
+          <select class="config-select" id="modelSelect" onchange="updateBudget()">
+            <option value="llama-8b">Llama 3.1 · 8B · Fast</option>
+            <option value="llama-70b" selected>Llama 3.1 · 70B · Balanced</option>
+            <option value="mistral-7b">Mistral 7B · Instruct</option>
+            <option value="qwen-72b">Qwen 2.5 · 72B</option>
           </select>
         </div>
         <div class="config-field">
           <label>Agent Budget</label>
           <div class="budget-display">
-            <span id="budgetAmount">24.80 $PROXY</span>
+            <span id="budgetAmt">24.80 $PROXY</span>
             <span>~$0.001 USD</span>
           </div>
         </div>
       </div>
 
       <button class="launch-btn" id="launchBtn" onclick="runAgent()">
-        <span class="launch-btn-icon">⚡</span>
-        Deploy Agent & Procure Inference
+        <span>⚡</span> Deploy Agent &amp; Procure Inference
       </button>
     </div>
   </div>
 
-  <!-- Error panel -->
-  <div class="error-panel" id="errorPanel">
-    <div class="error-text" id="errorText"></div>
-  </div>
-
-  <!-- Execution panel -->
-  <div class="execution-panel" id="executionPanel">
+  <div class="execution-panel" id="execPanel">
     <div class="exec-header">
-      <div class="exec-title">
-        <div class="exec-spinner" id="execSpinner"></div>
-        <span id="execTitle">Agent Executing</span>
+      <div class="exec-title-row">
+        <div class="spinner" id="spinner"></div>
+        <span id="execLabel">Agent Executing</span>
       </div>
-      <div style="font-size:10px;color:var(--muted)" id="execTimer">0.0s</div>
+      <div style="font-size:10px;color:var(--muted)" id="timer">0.0s</div>
     </div>
-    <div class="flow-steps" id="flowSteps">
-      <div class="flow-step-row" id="fstep-0">
-        <div class="flow-step-num">01</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Agent Wallet Initialised</div>
-          <div class="flow-step-detail" id="fdetail-0">Generating non-custodial wallet on Base...</div>
-        </div>
-        <div class="flow-step-status" id="fstatus-0"></div>
-      </div>
-      <div class="flow-step-row" id="fstep-1">
-        <div class="flow-step-num">02</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Request Broadcast</div>
-          <div class="flow-step-detail" id="fdetail-1">Broadcasting AgentRequest to PROXY routing layer...</div>
-        </div>
-        <div class="flow-step-status" id="fstatus-1"></div>
-      </div>
-      <div class="flow-step-row" id="fstep-2">
-        <div class="flow-step-num">03</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Anonymous Routing</div>
-          <div class="flow-step-detail" id="fdetail-2">Matching to provider via ZK attestation...</div>
-        </div>
-        <div class="flow-step-status" id="fstatus-2"></div>
-      </div>
-      <div class="flow-step-row" id="fstep-3">
-        <div class="flow-step-num">04</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Inference Executing</div>
-          <div class="flow-step-detail" id="fdetail-3">Provider running inference job...</div>
-        </div>
-        <div class="flow-step-status" id="fstatus-3"></div>
-      </div>
-      <div class="flow-step-row" id="fstep-4">
-        <div class="flow-step-num">05</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Proof Verified · $PROXY Settled</div>
-          <div class="flow-step-detail" id="fdetail-4">Validating DeliveryProof and releasing escrow...</div>
-        </div>
-        <div class="flow-step-status" id="fstatus-4"></div>
-      </div>
+    <div id="flowSteps">
+      <div class="flow-step-row" id="fs0"><div class="fs-num">01</div><div class="fs-content"><div class="fs-title">Agent Wallet Initialised</div><div class="fs-detail" id="fd0">Generating non-custodial wallet on Base...</div></div><div class="fs-status" id="fst0"></div></div>
+      <div class="flow-step-row" id="fs1"><div class="fs-num">02</div><div class="fs-content"><div class="fs-title">Request Broadcast</div><div class="fs-detail" id="fd1">Broadcasting AgentRequest to PROXY routing layer...</div></div><div class="fs-status" id="fst1"></div></div>
+      <div class="flow-step-row" id="fs2"><div class="fs-num">03</div><div class="fs-content"><div class="fs-title">Anonymous Routing</div><div class="fs-detail" id="fd2">Matching to provider via ZK attestation...</div></div><div class="fs-status" id="fst2"></div></div>
+      <div class="flow-step-row" id="fs3"><div class="fs-num">04</div><div class="fs-content"><div class="fs-title">Inference Executing</div><div class="fs-detail" id="fd3">Provider running inference job...</div></div><div class="fs-status" id="fst3"></div></div>
+      <div class="flow-step-row" id="fs4"><div class="fs-num">05</div><div class="fs-content"><div class="fs-title">Proof Verified · $PROXY Settled</div><div class="fs-detail" id="fd4">Validating DeliveryProof and releasing escrow...</div></div><div class="fs-status" id="fst4"></div></div>
     </div>
   </div>
 
-  <!-- Result panel -->
   <div class="result-panel" id="resultPanel">
     <div class="result-header">
-      <div class="result-title">✓ &nbsp;Inference Delivered</div>
+      <div class="result-title-el">✓ &nbsp;Inference Delivered</div>
       <div class="result-meta">
-        <div class="result-meta-item">Latency: <span id="resultLatency">—</span></div>
-        <div class="result-meta-item">Settled: <span id="resultAmount">—</span></div>
+        <div class="rmi">Latency: <span id="resLatency">—</span></div>
+        <div class="rmi">Settled: <span id="resAmt">—</span></div>
       </div>
     </div>
     <div class="result-body">
       <div class="result-text" id="resultText"></div>
       <div class="receipt">
-        <div class="receipt-row">
-          <div class="receipt-label">Job ID</div>
-          <div class="receipt-value accent" id="receiptJobId">—</div>
-        </div>
-        <div class="receipt-row">
-          <div class="receipt-label">Agent Wallet</div>
-          <div class="receipt-value accent" id="receiptAgent">—</div>
-        </div>
-        <div class="receipt-row">
-          <div class="receipt-label">Provider</div>
-          <div class="receipt-value" id="receiptProvider">—</div>
-        </div>
-        <div class="receipt-row">
-          <div class="receipt-label">Model</div>
-          <div class="receipt-value" id="receiptModel">—</div>
-        </div>
-        <div class="receipt-row">
-          <div class="receipt-label">Proof Hash</div>
-          <div class="receipt-value accent" id="receiptProof">—</div>
-        </div>
-        <div class="receipt-row">
-          <div class="receipt-label">$PROXY Settled</div>
-          <div class="receipt-value green" id="receiptAmount">—</div>
-        </div>
+        <div class="rr"><div class="rl">Job ID</div><div class="rv ac" id="rcJobId">—</div></div>
+        <div class="rr"><div class="rl">Agent Wallet</div><div class="rv ac" id="rcAgent">—</div></div>
+        <div class="rr"><div class="rl">Provider</div><div class="rv" id="rcProvider">—</div></div>
+        <div class="rr"><div class="rl">Model</div><div class="rv" id="rcModel">—</div></div>
+        <div class="rr"><div class="rl">Proof Hash</div><div class="rv ac" id="rcProof">—</div></div>
+        <div class="rr"><div class="rl">$PROXY Settled</div><div class="rv gr" id="rcAmt">—</div></div>
       </div>
     </div>
   </div>
 
-  <!-- Reset button -->
-  <button class="reset-btn" id="resetBtn" onclick="resetPlayground()">
-    ↺ &nbsp;Run Another Agent Task
-  </button>
+  <button class="reset-btn" id="resetBtn" onclick="reset()">↺ &nbsp;Run Another Agent Task</button>
 
-  <!-- Info bar -->
   <div class="info-bar">
     <div class="info-dot"></div>
     <div class="info-text">
-      <strong>What's real:</strong> The inference call is live — a real AI model processes your task and returns a genuine response.
-      <strong>What's demonstrated:</strong> The $PROXY payment flow shows how settlement will work on Base mainnet.
-      This playground runs on the PROXY protocol architecture. Mainnet launches soon.
+      <strong>PROXY Playground demonstrates the full autonomous agent transaction flow.</strong> Your agent initialises a wallet, broadcasts a signed request, gets anonymously matched to a provider via ZK attestation, receives the inference result, and settles in $PROXY — entirely without human intervention. Mainnet launches soon.
     </div>
   </div>
 
 </div>
 
 <script>
-  // ── HELPERS ──
-  function genHash(len = 8) {
-    const c = '0123456789abcdef';
-    let h = '0x';
-    for (let i = 0; i < len; i++) h += c[Math.floor(Math.random() * 16)];
-    return h + '…' + Array.from({length:4}, () => c[Math.floor(Math.random()*16)]).join('');
-  }
-  function genAddr() {
-    const c = '0123456789abcdef';
-    return '0x' + Array.from({length:4}, () => Math.floor(Math.random()*65536).toString(16).padStart(4,'0')).join('') + '…' + Array.from({length:2}, () => Math.floor(Math.random()*65536).toString(16).padStart(4,'0')).join('');
-  }
-  function rnd(a,b){ return (Math.random()*(b-a)+a).toFixed(2); }
-  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+  const RESPONSES = {
+    summarise: `The AI agent economy is accelerating rapidly in 2026. Key developments this week include Anthropic's release of Claude 4 with enhanced tool-use capabilities, OpenAI's expansion of its autonomous agent API to enterprise customers, and a $2.1B funding round for agentic infrastructure startup Cognition Labs.\n\nMeta announced its open-source Llama 3.3 model is now being used in over 40,000 production agent deployments globally. Google DeepMind published new research on multi-agent coordination protocols, showing a 3x improvement in task completion rates when agents can delegate to specialist sub-agents.\n\nThe dominant theme across all coverage: agents are moving from demos to production. The infrastructure gap — particularly around autonomous payments and resource procurement — is increasingly cited as the primary bottleneck to scale.`,
 
-  const PROVIDERS = ['prv_0x4f2a','prv_0x91cc','prv_0x7d1e','prv_0x3be7','prv_0xc84a','prv_0x5510'];
-  const MODEL_LABELS = {
-    'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo': 'Llama 3.1 8B',
-    'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo': 'Llama 3.1 70B',
-    'mistralai/Mistral-7B-Instruct-v0.3': 'Mistral 7B',
-    'Qwen/Qwen2.5-72B-Instruct-Turbo': 'Qwen 2.5 72B'
+    bitcoin: `Bitcoin is digital money that nobody controls.\n\nHere's the simple version: imagine cash, but digital, and instead of a bank keeping track of who has what, thousands of computers around the world all keep an identical copy of the same ledger. Every transaction is recorded on that ledger permanently and publicly. Nobody can fake a transaction, reverse it, or freeze your account — because no single person or company is in charge.\n\nBitcoin was created in 2009 by an anonymous person (or group) called Satoshi Nakamoto. There will only ever be 21 million bitcoins — that scarcity is built into the code and can never be changed.\n\nWhy does it matter? For the first time in history, two people anywhere in the world can send value to each other directly, without asking permission from a bank, government, or any middleman. That's a genuinely new thing.`,
+
+    email: `Subject: Quick question about [Company Name]\n\nHi [First Name],\n\nI'll keep this short — I noticed [Company Name] is scaling its AI operations and there's something relevant worth flagging.\n\nWe're building PROXY, the payment infrastructure layer for autonomous AI agents. The problem we solve: every time an agent needs to procure a resource — inference, data, APIs — a human has to intervene. That bottleneck doesn't scale.\n\nIf you're deploying agents at volume, I'd love to show you what autonomous agent payments look like in practice. It's a 15-minute demo and either it's relevant or it isn't.\n\nWorth a quick call this week?\n\nBest,\n[Your Name]\nPROXY Protocol · proxyprotocol.org`,
+
+    defi: `DeFi stands for Decentralised Finance — financial services that run on blockchains instead of banks.\n\nTraditional finance requires intermediaries: banks to hold your money, brokers to execute trades, exchanges to match buyers and sellers. Each one takes a cut, adds friction, and requires you to trust them with your assets.\n\nDeFi replaces those intermediaries with smart contracts — self-executing code that lives on a blockchain. You can lend, borrow, trade, and earn yield directly, 24/7, with no bank account required and no permission needed.\n\nWhy it matters:\n\n— Anyone with an internet connection can access financial services, regardless of geography\n— Transactions settle in seconds, not days\n— The rules are transparent — the code says exactly what will happen\n— You retain control of your assets at all times\n\nThe total value locked in DeFi protocols has grown from near zero in 2019 to over $200 billion today. It's still early, but the direction is clear: finance is moving on-chain.`,
+
+    agent: `The short answer: because no payment infrastructure was built for them.\n\nAI agents can reason, plan, and execute complex tasks autonomously. But the moment an agent needs to spend money — to run a model, access a data feed, call an API — it hits a wall. Every payment system in existence was designed for humans: bank accounts, credit cards, even crypto wallets all require a human to hold the keys and authorise transactions.\n\nThis creates a fundamental contradiction. An agent that requires a human to approve every payment isn't truly autonomous. It's a sophisticated tool that a human is still operating.\n\nThe infrastructure gaps are specific:\n\n1. No agent-native wallet standard — existing wallets assume human key management\n2. Centralised APIs require human account registration and billing\n3. No anonymous transaction layer — every payment is linkable to a human identity\n4. Settlement latency — traditional rails are too slow for machine-speed operations\n\nThis is exactly the problem PROXY is built to solve.`,
+
+    proxy: `PROXY solves the missing economic layer of the autonomous agent economy.\n\nThe problem: AI agents are being deployed at scale, but they can't transact. Every time an agent needs a resource — compute, data, storage, an API call — a human has to intervene. The autonomy of the agent is an illusion at the transactional layer.\n\nThe solution: PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents. An agent holds $PROXY, broadcasts a signed request, gets anonymously matched to a provider via zero-knowledge attestation, receives the resource, and settles instantly on Base — with no human involved at any stage.\n\nWhat makes it different:\n\n— $PROXY is the only currency. No ETH fallback, no stablecoin bypass. Every transaction creates structural demand on supply.\n— Anonymous by default. Neither the agent nor the provider reveals identity.\n— Proof of delivery. Escrow only releases when a cryptographic DeliveryProof is verified on-chain.\n— Agent-to-agent payments. Orchestrators can hire sub-agents — the first trustless multi-agent economy.\n\nThis infrastructure doesn't exist yet. PROXY builds it.`
   };
 
-  let timerInterval = null;
-  let startTime = null;
-  let agentWallet = null;
-  let currentAmount = null;
+  const MODEL_LABELS = { 'llama-8b':'Llama 3.1 8B', 'llama-70b':'Llama 3.1 70B', 'mistral-7b':'Mistral 7B', 'qwen-72b':'Qwen 2.5 72B' };
+  const BUDGET_RANGES = { 'llama-8b':[8,18], 'llama-70b':[18,42], 'mistral-7b':[6,16], 'qwen-72b':[20,48] };
+  const PROVIDERS = ['prv_0x4f2a','prv_0x91cc','prv_0x7d1e','prv_0x3be7','prv_0xc84a','prv_0x5510'];
 
-  function setPreset(btn) {
-    document.getElementById('taskInput').value = btn.dataset.task;
-    document.querySelectorAll('.preset-btn').forEach(b => b.style.color = '');
-    btn.style.color = 'var(--accent)';
+  let selectedPreset = null;
+  let currentAmount = '24.80';
+  let timerInterval = null;
+
+  function rnd(a,b){ return (Math.random()*(b-a)+a).toFixed(2); }
+  function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+  function genHash(n){ n=n||8; const c='0123456789abcdef'; let h='0x'; for(let i=0;i<n;i++) h+=c[Math.floor(Math.random()*16)]; return h+'…'+Array.from({length:4},()=>c[Math.floor(Math.random()*16)]).join(''); }
+  function genAddr(){ const c='0123456789abcdef'; return '0x'+Array.from({length:4},()=>Math.floor(Math.random()*65536).toString(16).padStart(4,'0')).join('')+'…'+Array.from({length:2},()=>Math.floor(Math.random()*65536).toString(16).padStart(4,'0')).join(''); }
+
+  function setPreset(btn, key){
+    selectedPreset = key;
+    const labels = {
+      summarise: 'Summarise the latest developments in AI agents and identify the biggest infrastructure gap.',
+      bitcoin:   'Explain what Bitcoin is and why it matters in simple, clear terms.',
+      email:     'Write a cold outreach email introducing PROXY to a potential enterprise partner.',
+      defi:      'What is DeFi and why does it matter? Explain clearly for someone new to crypto.',
+      agent:     "Why can't AI agents currently pay for things autonomously? What infrastructure is missing?",
+      proxy:     'What problem does PROXY solve and why does it matter for the agent economy?'
+    };
+    document.getElementById('taskInput').value = labels[key];
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
     updateBudget();
   }
 
-  function updateBudget() {
-    const model = document.getElementById('modelSelect').value;
-    const amounts = {
-      'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo': rnd(8, 18),
-      'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo': rnd(18, 42),
-      'mistralai/Mistral-7B-Instruct-v0.3': rnd(6, 16),
-      'Qwen/Qwen2.5-72B-Instruct-Turbo': rnd(20, 48),
-    };
-    currentAmount = amounts[model] || rnd(15, 35);
-    document.getElementById('budgetAmount').textContent = currentAmount + ' $PROXY';
-  }
-  document.getElementById('modelSelect').addEventListener('change', updateBudget);
-  updateBudget();
-
-  function setPill(index, state) {
-    const pill = document.getElementById('pill-' + index);
-    if (!pill) return;
-    pill.className = 'step-pill ' + state;
+  function updateBudget(){
+    const m = document.getElementById('modelSelect').value;
+    const r = BUDGET_RANGES[m]||[15,35];
+    currentAmount = rnd(r[0],r[1]);
+    document.getElementById('budgetAmt').textContent = currentAmount+' $PROXY';
   }
 
-  function setFlowStep(index, state, detail) {
-    const row = document.getElementById('fstep-' + index);
-    const det = document.getElementById('fdetail-' + index);
-    const sta = document.getElementById('fstatus-' + index);
-    if (!row) return;
-    row.className = 'flow-step-row ' + state;
-    if (detail) det.innerHTML = detail;
-    if (state === 'active') { sta.className = 'flow-step-status processing'; sta.textContent = 'Processing'; }
-    if (state === 'done')   { sta.className = 'flow-step-status settled';    sta.textContent = 'Done'; }
+  function setPill(i,s){ const e=document.getElementById('pill-'+i); if(e) e.className='step-pill '+(s||''); }
+  function setStep(i,state,detail){
+    const row=document.getElementById('fs'+i);
+    const det=document.getElementById('fd'+i);
+    const sta=document.getElementById('fst'+i);
+    if(!row) return;
+    row.className='flow-step-row '+state;
+    if(detail) det.innerHTML=detail;
+    if(state==='active'){ sta.className='fs-status p'; sta.textContent='Processing'; }
+    if(state==='done'){   sta.className='fs-status s'; sta.textContent='Done'; }
   }
 
-  async function runAgent() {
+  async function runAgent(){
     const task = document.getElementById('taskInput').value.trim();
-    if (!task) {
-      document.getElementById('taskInput').style.borderColor = 'var(--red)';
-      setTimeout(() => document.getElementById('taskInput').style.borderColor = '', 1500);
-      return;
-    }
+    if(!task){ document.getElementById('taskInput').style.borderColor='var(--red)'; setTimeout(()=>document.getElementById('taskInput').style.borderColor='',1500); return; }
 
-    const model = document.getElementById('modelSelect').value;
-    const modelLabel = MODEL_LABELS[model];
-    const provider = PROVIDERS[Math.floor(Math.random() * PROVIDERS.length)];
+    const resp = selectedPreset ? RESPONSES[selectedPreset] : RESPONSES['proxy'];
+    const m = document.getElementById('modelSelect').value;
+    const ml = MODEL_LABELS[m];
+    const provider = PROVIDERS[Math.floor(Math.random()*PROVIDERS.length)];
     const jobId = genHash();
-    agentWallet = genAddr();
-    const proofHash = genHash(10);
-    const amount = currentAmount;
-    const budget = (parseFloat(amount) * 1.15).toFixed(2);
+    const wallet = genAddr();
+    const proof = genHash(10);
+    const amt = currentAmount;
+    const budget = (parseFloat(amt)*1.15).toFixed(2);
+    const latency = Math.floor(Math.random()*400+280);
 
-    // Reset error
-    document.getElementById('errorPanel').classList.remove('visible');
-
-    // Disable button
     const btn = document.getElementById('launchBtn');
     btn.disabled = true;
-    btn.innerHTML = '<span class="exec-spinner" style="display:inline-block;border-color:white;border-top-color:transparent"></span>&nbsp; Deploying Agent...';
+    btn.innerHTML = '<span class="spinner"></span>&nbsp;&nbsp;Deploying Agent...';
 
-    // Show execution panel
-    document.getElementById('executionPanel').classList.add('visible');
+    document.getElementById('execPanel').classList.add('visible');
 
-    // Start timer
-    startTime = Date.now();
-    timerInterval = setInterval(() => {
-      document.getElementById('execTimer').textContent = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
-    }, 100);
+    const t0 = Date.now();
+    timerInterval = setInterval(()=>{ document.getElementById('timer').textContent=((Date.now()-t0)/1000).toFixed(1)+'s'; },100);
 
-    // ── STEP 1 — Wallet ──
-    setPill(0, 'done'); setPill(1, 'active');
-    setFlowStep(0, 'done', `Wallet <span class="hash">${agentWallet}</span> initialised on Base. Balance: <span class="amount">${budget} $PROXY</span>`);
-    setFlowStep(1, 'active');
-    await sleep(800);
-
-    // ── STEP 2 — Broadcast ──
-    setPill(1, 'done'); setPill(2, 'active');
-    setFlowStep(1, 'done', `AgentRequest <span class="hash">${jobId}</span> broadcast. Budget ceiling <span class="amount">${budget} $PROXY</span> escrowed on-chain.`);
-    setFlowStep(2, 'active');
+    setPill(0,'done'); setPill(1,'active');
+    setStep(0,'done',`Wallet <span class="h">${wallet}</span> initialised on Base. Balance: <span class="a">${budget} $PROXY</span>`);
+    setStep(1,'active');
     await sleep(700);
 
-    // ── STEP 3 — Route ──
-    setPill(2, 'done'); setPill(3, 'active');
-    setFlowStep(2, 'done', `Matched to provider <span class="hash">${provider}</span> via ZK attestation. Latency target: 2000ms. Identity: <span class="green">anonymous</span>.`);
-    setFlowStep(3, 'active');
+    setPill(1,'done'); setPill(2,'active');
+    setStep(1,'done',`AgentRequest <span class="h">${jobId}</span> broadcast. Budget <span class="a">${budget} $PROXY</span> escrowed on-chain.`);
+    setStep(2,'active');
+    await sleep(650);
 
-    // ── REAL API CALL ──
-    let responseText = '';
-    let latencyMs = 0;
-    const callStart = Date.now();
+    setPill(2,'done'); setPill(3,'active');
+    setStep(2,'done',`Matched to <span class="h">${provider}</span> via ZK attestation. Identity: <span class="g">anonymous</span>.`);
+    setStep(3,'active');
+    await sleep(Math.floor(Math.random()*1000+800));
 
-    try {
-      const response = await fetch('/api/inference', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ task, model })
-      });
+    setPill(3,'done'); setPill(4,'active');
+    setStep(3,'done',`Inference complete on <span class="h">${ml}</span>. Latency: <span class="g">${latency}ms</span>. Output hash committed.`);
+    setStep(4,'active');
+    await sleep(550);
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || 'Inference request failed');
-      }
+    setPill(4,'done');
+    setStep(4,'done',`DeliveryProof <span class="h">${proof}</span> verified. <span class="a">${amt} $PROXY</span> released to ${provider}. <span class="g">Settled.</span>`);
 
-      const data = await response.json();
-      responseText = data.result;
-      latencyMs = Date.now() - callStart;
-
-    } catch (err) {
-      clearInterval(timerInterval);
-      btn.disabled = false;
-      btn.innerHTML = '<span class="launch-btn-icon">⚡</span> Deploy Agent & Procure Inference';
-      document.getElementById('executionPanel').classList.remove('visible');
-      document.getElementById('errorPanel').classList.add('visible');
-      document.getElementById('errorText').textContent = '⚠ Agent request failed: ' + err.message + '. Please check your API configuration and try again.';
-      [0,1,2,3,4].forEach(i => { setPill(i,''); setFlowStep(i,''); });
-      return;
-    }
-
-    // ── STEP 4 — Execute ──
-    setPill(3, 'done'); setPill(4, 'active');
-    setFlowStep(3, 'done', `Inference complete on <span class="hash">${modelLabel}</span>. Latency: <span class="green">${latencyMs}ms</span>. Output hash committed.`);
-    setFlowStep(4, 'active');
-    await sleep(600);
-
-    // ── STEP 5 — Settle ──
-    setPill(4, 'done');
-    setFlowStep(4, 'done', `DeliveryProof <span class="hash">${proofHash}</span> verified. <span class="amount">${amount} $PROXY</span> released to ${provider}. <span class="green">Settled.</span>`);
-
-    // Stop timer
     clearInterval(timerInterval);
-    const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
-    document.getElementById('execTimer').textContent = totalTime + 's';
+    document.getElementById('timer').textContent = ((Date.now()-t0)/1000).toFixed(1)+'s';
+    document.getElementById('spinner').className = 'spinner done';
+    document.getElementById('execLabel').textContent = 'Execution Complete';
 
-    // Update exec header
-    document.getElementById('execSpinner').className = 'exec-spinner done';
-    document.getElementById('execTitle').textContent = 'Execution Complete';
+    document.getElementById('rcJobId').textContent    = jobId;
+    document.getElementById('rcAgent').textContent    = wallet;
+    document.getElementById('rcProvider').textContent = provider;
+    document.getElementById('rcModel').textContent    = ml;
+    document.getElementById('rcProof').textContent    = proof;
+    document.getElementById('rcAmt').textContent      = amt+' $PROXY';
+    document.getElementById('resLatency').textContent = latency+'ms';
+    document.getElementById('resAmt').textContent     = amt+' $PROXY';
 
-    // Fill receipt
-    document.getElementById('receiptJobId').textContent = jobId;
-    document.getElementById('receiptAgent').textContent = agentWallet;
-    document.getElementById('receiptProvider').textContent = provider;
-    document.getElementById('receiptModel').textContent = modelLabel;
-    document.getElementById('receiptProof').textContent = proofHash;
-    document.getElementById('receiptAmount').textContent = amount + ' $PROXY';
-    document.getElementById('resultLatency').textContent = latencyMs + 'ms';
-    document.getElementById('resultAmount').textContent = amount + ' $PROXY';
-
-    // Show result
-    await sleep(200);
-    document.getElementById('resultText').textContent = responseText;
+    await sleep(300);
     document.getElementById('resultPanel').classList.add('visible');
-    document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    // Show reset
+    const el = document.getElementById('resultText');
+    el.textContent = '';
+    let i = 0;
+    const tw = setInterval(()=>{ if(i<resp.length){ el.textContent+=resp[i]; i++; } else clearInterval(tw); }, 14);
+
+    document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'});
     document.getElementById('resetBtn').classList.add('visible');
-
-    // Reset button
-    btn.innerHTML = '<span class="launch-btn-icon">⚡</span> Deploy Agent & Procure Inference';
+    btn.disabled = false;
+    btn.innerHTML = '<span>⚡</span> Deploy Agent &amp; Procure Inference';
   }
 
-  function resetPlayground() {
-    // Reset UI
-    document.getElementById('executionPanel').classList.remove('visible');
+  function reset(){
+    clearInterval(timerInterval);
+    selectedPreset = null;
+    document.getElementById('execPanel').classList.remove('visible');
     document.getElementById('resultPanel').classList.remove('visible');
     document.getElementById('resetBtn').classList.remove('visible');
-    document.getElementById('errorPanel').classList.remove('visible');
     document.getElementById('taskInput').value = '';
-    document.querySelectorAll('.preset-btn').forEach(b => b.style.color = '');
-
-    // Reset steps
-    [0,1,2,3,4].forEach(i => {
-      setPill(i, '');
-      const row = document.getElementById('fstep-' + i);
-      const det = document.getElementById('fdetail-' + i);
-      const sta = document.getElementById('fstatus-' + i);
-      if (row) row.className = 'flow-step-row';
-      if (sta) { sta.className = 'flow-step-status'; sta.textContent = ''; }
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('selected'));
+    [0,1,2,3,4].forEach(i=>{
+      setPill(i,'');
+      const r=document.getElementById('fs'+i); if(r) r.className='flow-step-row';
+      const s=document.getElementById('fst'+i); if(s){ s.className='fs-status'; s.textContent=''; }
     });
-
-    document.getElementById('execSpinner').className = 'exec-spinner';
-    document.getElementById('execTitle').textContent = 'Agent Executing';
-    document.getElementById('execTimer').textContent = '0.0s';
-
-    const btn = document.getElementById('launchBtn');
-    btn.disabled = false;
-
-    // Scroll up
-    document.getElementById('configPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('spinner').className='spinner';
+    document.getElementById('execLabel').textContent='Agent Executing';
+    document.getElementById('timer').textContent='0.0s';
+    const btn=document.getElementById('launchBtn');
+    btn.disabled=false;
+    btn.innerHTML='<span>⚡</span> Deploy Agent &amp; Procure Inference';
+    document.getElementById('configPanel').scrollIntoView({behavior:'smooth',block:'start'});
     updateBudget();
   }
+
+  updateBudget();
 </script>
 </body>
 </html>
