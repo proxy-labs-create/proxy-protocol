@@ -1,37 +1,65 @@
+[README.md](https://github.com/user-attachments/files/28069695/README.md)
 # PROXY Protocol
 
-**The anonymous transaction layer for autonomous AI agents.**
+**The permissionless payment layer for autonomous AI agents.**
 
 [![Built on Base](https://img.shields.io/badge/Built%20on-Base-0052FF?style=flat-square&logo=ethereum)](https://base.org)
-[![Token](https://img.shields.io/badge/Token-$PROXY-5b6fff?style=flat-square)](https://flaunch.gg)
-[![Launch](https://img.shields.io/badge/Launch-Flaunch-00d97e?style=flat-square)](https://flaunch.gg)
+[![Token](https://img.shields.io/badge/Token-$PROXY-c8a96e?style=flat-square)](https://proxyprotocol.org)
+[![Status](https://img.shields.io/badge/Status-Live-00d97e?style=flat-square)]()
 [![License](https://img.shields.io/badge/License-MIT-white?style=flat-square)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Pre--Launch-yellow?style=flat-square)]()
+[![Playground](https://img.shields.io/badge/Playground-Live-c8a96e?style=flat-square)](https://proxyprotocol.org/playground.html)
 
 ---
 
 ## The Problem
 
-AI agents are operational. They reason, plan, and execute complex tasks autonomously. But every time an agent needs to **spend money** — on inference, data, storage, or APIs — a human has to intervene.
+Agent payment infrastructure exists. x402 processes hundreds of millions of transactions. Agentic Wallets are in production. The problem is no longer that agent payments don't work — it's who controls them.
 
-There is no on-chain payment layer built for agents. Every resource procurement routes through centralised APIs tied to human accounts, credit cards, and corporate identities. The autonomy of the agent is an illusion at the transactional layer.
+**x402 is Coinbase's infrastructure.** It ships with built-in KYT (Know Your Transaction) compliance screening on every transaction. It settles in USDC — a stablecoin Circle can freeze. It routes through Coinbase infrastructure that Coinbase can update, restrict, or shut down.
 
-> **0 protocols exist today that enable autonomous AI agents to transact anonymously and without human intervention.**
+> **For agents that need to operate without a corporate gatekeeper, without KYT screening, and without a settlement currency that can be frozen — no permissionless alternative exists. Until PROXY.**
 
 ---
 
 ## The Solution
 
-PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents.
+PROXY is the permissionless, anonymous payment protocol for autonomous AI agents on Base.
 
-- **Agents hold $PROXY** — a non-custodial wallet funded once by the operator
-- **Agents spend $PROXY** — to procure compute, data, storage, APIs, and bandwidth
-- **Everything settles on Base** — instantly, anonymously, verifiably on-chain
-- **No human required** — at any stage of the transaction
+- **No KYT screening** — transactions are not monitored or filtered
+- **Native token settlement** — $PROXY has no issuer and cannot be frozen
+- **No admin keys** — no entity can block a transaction or shut down the protocol
+- **Anonymous by default** — agent wallets are Base addresses, nothing more
+- **Non-custodial** — agents control their own keys post-deployment
 
 ```
 Agent → Request → Anonymous Routing → Provider → Proof → Settlement → $PROXY
 ```
+
+---
+
+## How PROXY Differs from x402
+
+| Property | PROXY | x402 / Agentic Wallets |
+|----------|-------|----------------------|
+| Controlled by | Nobody | Coinbase |
+| Transaction screening | None | Built-in KYT |
+| Settlement currency | $PROXY (native, unfreezable) | USDC (Circle can freeze) |
+| Custody | Non-custodial | Coinbase infrastructure |
+| Off switch | None | Yes |
+| Permissionless | Yes | No |
+
+---
+
+## Live Playground
+
+The PROXY Playground is live at [proxyprotocol.org/playground.html](https://proxyprotocol.org/playground.html)
+
+Watch an agent:
+- Initialise a non-custodial wallet on Base
+- Broadcast a signed `AgentRequest` with escrowed budget
+- Get anonymously matched to a provider via ZK attestation
+- Execute inference and submit a `DeliveryProof`
+- Settle $PROXY instantly on-chain — no KYT, no screening, no gatekeeper
 
 ---
 
@@ -51,16 +79,34 @@ Full protocol specification: [`docs/architecture.md`](docs/architecture.md)
 
 ## Resource Marketplace
 
-Agents spend $PROXY across six resource categories:
-
 | Resource | Status | Description |
 |----------|--------|-------------|
 | **AI Inference** | Launch | Open-weight models: Llama 3.3, Mistral, Qwen 2.5, DeepSeek |
 | **Data Feeds** | Launch | Price oracles, on-chain analytics, market intelligence |
-| **API Access** | Phase 2 | Anonymised relay for web, RPC, search, and external APIs |
+| **API Access** | Phase 2 | Anonymised relay — no IP exposure, no rate limits tied to identity |
 | **Storage** | Phase 2 | Decentralised storage for agent memory, embeddings, outputs |
 | **Bandwidth** | Phase 3 | High-throughput anonymous routing for agent operations |
 | **Agent → Agent** | Phase 3 | Trustless payments between orchestrator and sub-agents |
+
+---
+
+## $PROXY Token
+
+$PROXY is the sole settlement currency of the PROXY protocol. The choice of native token over stablecoin is not a tokenomic preference — it is an architectural decision.
+
+USDC can be frozen by Circle. Stablecoins have issuers. $PROXY has neither. It is a permissionless settlement currency that no entity can blacklist, freeze, or censor.
+
+| Property | Detail |
+|----------|--------|
+| **Token** | $PROXY |
+| **Network** | Base (Chain ID: 8453) |
+| **Standard** | ERC-20 |
+| **Launch** | Fair Launch on Base |
+| **Pre-sale** | None |
+| **Insider Allocation** | None |
+| **Venture Capital** | None |
+
+Full token specification: [`docs/token.md`](docs/token.md)
 
 ---
 
@@ -68,19 +114,19 @@ Agents spend $PROXY across six resource categories:
 
 ```
 ┌─────────────────────────────────────┐
-│         Agent Wallet SDK            │  ← Non-custodial entry point
+│         Agent Wallet SDK            │  ← Non-custodial · No KYC
 └──────────────┬──────────────────────┘
                ↓
 ┌─────────────────────────────────────┐
-│      Request & Routing Layer        │  ← Anonymous matching via ZK
+│      Request & Routing Layer        │  ← Anonymous matching · ZK attestation
 └──────────────┬──────────────────────┘
                ↓
 ┌─────────────────────────────────────┐
-│      Escrow Smart Contracts         │  ← Base L2 · Atomic escrow
+│      Escrow Smart Contracts         │  ← Base L2 · No admin keys
 └──────────────┬──────────────────────┘
                ↓
 ┌─────────────────────────────────────┐
-│          Provider Network           │  ← Bonded nodes · Staked
+│          Provider Network           │  ← Bonded nodes · Permissionless entry
 └──────────────┬──────────────────────┘
                ↓
 ┌─────────────────────────────────────┐
@@ -88,52 +134,19 @@ Agents spend $PROXY across six resource categories:
 └──────────────┬──────────────────────┘
                ↓
 ┌─────────────────────────────────────┐
-│      Settlement → $PROXY            │  ← Instant · On-chain · Immutable
+│   Settlement → $PROXY               │  ← Instant · Unfreezable · Immutable
 └─────────────────────────────────────┘
 ```
-
-Full architecture documentation: [`docs/architecture.md`](docs/architecture.md)
-
----
-
-## $PROXY Token
-
-$PROXY is the **sole payment and settlement currency** of the PROXY protocol. There is no ETH fallback, no stablecoin bypass, no fiat gateway.
-
-| Property | Detail |
-|----------|--------|
-| **Token** | $PROXY |
-| **Network** | Base (Chain ID: 8453) |
-| **Standard** | ERC-20 |
-| **Launch** | Flaunch — Fair Launch |
-| **Pre-sale** | None |
-| **Insider Allocation** | None |
-
-Every inference job, data feed purchase, API call, and storage allocation consumes $PROXY. Every active provider bonds $PROXY as collateral. Dual-sided supply compression as the network scales.
-
-Full token specification: [`docs/token.md`](docs/token.md)
-
----
-
-## Anonymity
-
-Anonymity in PROXY is not a feature — it is the **default state** of every transaction.
-
-- Pseudonymous wallet addressing — agents have no name, email, or KYC
-- Zero-knowledge routing attestations — providers verified without identity exposure
-- Anonymised proof submission — job parameters only, no operator identity
-
-Neither agents nor providers are required to reveal any identity information at any point in the transaction lifecycle.
 
 ---
 
 ## Roadmap
 
 ```
-● Phase 01 — Genesis        [NOW]
-  Token launch · Website · Whitepaper · GitHub · Early access
+● Phase 01 — Genesis        [COMPLETE]
+  Token launch · Website · Whitepaper · GitHub · Playground · Early access
 
-○ Phase 02 — Testnet
+○ Phase 02 — Testnet        [IN PROGRESS]
   Base Sepolia deployment · Agent Wallet SDK alpha · Provider integrations
 
 ○ Phase 03 — Mainnet
@@ -156,15 +169,16 @@ Full roadmap: [`ROADMAP.md`](ROADMAP.md)
 | [`docs/agent-sdk.md`](docs/agent-sdk.md) | Agent Wallet SDK specification |
 | [`ROADMAP.md`](ROADMAP.md) | Development roadmap and milestones |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to contribute to PROXY |
-| [Whitepaper](https://proxyprotocol.org/whitepaper) | Full technical whitepaper |
+| [Whitepaper](https://proxyprotocol.org/whitepaper.html) | Full technical whitepaper |
 
 ---
 
 ## Links
 
 - **Website:** [proxyprotocol.org](https://proxyprotocol.org)
-- **Whitepaper:** [proxyprotocol.org/whitepaper](https://proxyprotocol.org/whitepaper)
-- **Token:** $PROXY on Base via [Flaunch](https://flaunch.gg)
+- **Playground:** [proxyprotocol.org/playground.html](https://proxyprotocol.org/playground.html)
+- **Whitepaper:** [proxyprotocol.org/whitepaper.html](https://proxyprotocol.org/whitepaper.html)
+- **Token:** $PROXY on Base
 - **Twitter/X:** [@proxyprotocol](https://x.com/proxyprotocol)
 - **Telegram:** [t.me/proxyprotocol](https://t.me/proxyprotocol)
 
