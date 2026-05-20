@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PROXY Protocol — Whitepaper v1.0</title>
-  <meta name="description" content="PROXY Protocol Whitepaper. The anonymous transaction layer for autonomous AI agents. Built on Base." />
+  <meta name="description" content="PROXY Protocol Whitepaper. The permissionless payment layer for autonomous AI agents. Built on Base." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -243,7 +243,7 @@
     <div class="cover" id="abstract">
       <div class="cover-eyebrow">PROXY Protocol — Technical Whitepaper</div>
       <div class="cover-title">PROXY<span class="dot">.</span></div>
-      <div class="cover-sub">The anonymous transaction layer for autonomous AI agents.</div>
+      <div class="cover-sub">The permissionless payment layer for autonomous AI agents.</div>
       <div class="chips">
         <div class="chip hi">$PROXY</div>
         <div class="chip">Base · Chain ID 8453</div>
@@ -253,8 +253,8 @@
       </div>
       <div class="abstract-box">
         <div class="abstract-label">Abstract</div>
-        <p class="abstract-text">Autonomous AI agents are being deployed at unprecedented scale. These agents — capable of reasoning, planning, and executing complex tasks — are operationally constrained by a fundamental gap in infrastructure: <strong>they cannot transact.</strong> Every time an agent requires a resource — compute, data, storage, API access — it must route through centralised services tied to human identities and human-managed billing. This dependency is not a minor inconvenience. It is an architectural ceiling on the entire autonomous agent economy.</p>
-        <p class="abstract-text"><strong>PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents.</strong> It enables agents to hold, spend, and settle $PROXY tokens anonymously and autonomously — without human intervention, without centralised intermediaries, and without identity exposure. Every resource in the PROXY marketplace is priced and settled exclusively in $PROXY, creating a structural demand mechanism that grows with agent adoption. PROXY is built on Base and launched via Flaunch as a fully fair-launch token.</p>
+        <p class="abstract-text">Infrastructure for autonomous AI agent payments now exists. x402, Agentic Wallets, and ERC-8004 have been deployed at scale. But every major solution is <strong>Coinbase-controlled, KYT-screened, and stablecoin-denominated.</strong> For agents that need to operate without identity exposure, without a corporate gatekeeper, and without a settlement currency that can be frozen — none of it works.</p>
+        <p class="abstract-text"><strong>PROXY is the permissionless alternative.</strong> It enables autonomous AI agents to hold, spend, and settle $PROXY — a native token with no issuer and no compliance layer — anonymously on Base. No KYC. No KYT screening. No admin keys. No entity that can freeze a balance or block a transaction. PROXY is built on Base, launched as a fully fair-launch token, and governed entirely by its holders.</p>
       </div>
     </div>
 
@@ -262,22 +262,28 @@
     <div class="section">
       <span class="sec-anchor" id="problem"></span>
       <div class="sec-num">01 — The Problem</div>
-      <h2>AI agents can think.<br/><em>They cannot pay.</em></h2>
-      <p>The autonomous agent economy is not a future projection — it is a present reality. Agents built on large language models are being deployed by enterprises, developers, and individuals to execute complex, multi-step workflows: researching, coding, trading, communicating, and operating autonomously across digital environments. The infrastructure to support agent cognition has matured rapidly. The infrastructure to support agent <strong>commerce</strong> has not.</p>
+      <h2>Agent payments exist.<br/><em>But Coinbase controls them.</em></h2>
+      <p>The infrastructure for autonomous AI agent payments has arrived. x402 — Coinbase's open payment protocol — has processed over 165 million transactions. Agentic Wallets provide non-custodial agent wallet infrastructure on Base. BNB Chain has deployed ERC-8004 for agent identity. The problem is no longer that agent payments don't exist. The problem is who controls them.</p>
+
       <div class="stat-row">
-        <div class="stat-cell"><div class="stat-label">Autonomous agent economy</div><div class="stat-fig">$17T</div><div class="stat-desc">Projected economic value managed by AI agents by 2030 (McKinsey, 2024)</div></div>
-        <div class="stat-cell"><div class="stat-label">Agent-native payment protocols</div><div class="stat-fig">0</div><div class="stat-desc">Protocols built specifically for autonomous agent-to-protocol transactions today</div></div>
-        <div class="stat-cell"><div class="stat-label">Requiring human sign-off</div><div class="stat-fig">100%</div><div class="stat-desc">Of all agent resource procurement transactions currently require human intervention</div></div>
+        <div class="stat-cell"><div class="stat-label">Autonomous agent economy by 2030</div><div class="stat-fig">$17T</div><div class="stat-desc">McKinsey projection. The payment rails for this economy are being built — by Coinbase, Visa, and Mastercard. That is not neutral infrastructure.</div></div>
+        <div class="stat-cell"><div class="stat-label">x402 transactions — all KYT-screened</div><div class="stat-fig">165M+</div><div class="stat-desc">x402 operates at scale, but ships with Coinbase's KYT compliance screening on every transaction. Permissionless it is not.</div></div>
+        <div class="stat-cell"><div class="stat-label">Permissionless anonymous native-token protocols</div><div class="stat-fig">0</div><div class="stat-desc">Every existing solution settles in USDC and routes through corporate infrastructure. No permissionless, anonymous alternative exists. Until PROXY.</div></div>
       </div>
-      <p>Today, when an autonomous agent requires a resource to complete a task — inference on a large language model, a real-time data feed, external API access, or decentralised storage — it encounters the same bottleneck in every case: <strong>a human must intervene.</strong> The agent routes through a centralised API tied to a human account, a credit card, and a corporate identity. The autonomy of the agent is therefore an illusion at the transactional layer — the most fundamental layer of all.</p>
-      <h3>1.1 — No Agent-Native Wallet Standard</h3>
-      <p>Existing wallet infrastructure — both Web2 and Web3 — was designed for humans. Seed phrases, hardware signers, and multi-factor authentication assume a human operator. An autonomous agent cannot hold, manage, or spend funds without a human maintaining the underlying key material. This is not a limitation of agent capability — it is a limitation of infrastructure design.</p>
-      <h3>1.2 — Centralised APIs as a Hard Ceiling</h3>
-      <p>Agents accessing compute, data, or services through centralised providers face rate limits tied to human accounts, billing that requires credit card verification, and terms of service that explicitly prohibit automated or autonomous usage at scale. Every centralised API is a point of failure, a point of censorship, and a point of identity exposure.</p>
-      <h3>1.3 — No Anonymity for Agent Activity</h3>
-      <p>Every agent transaction today is linkable to a human identity. In a world where agents act on behalf of individuals and institutions, privacy is not optional — it is structural. No existing payment infrastructure provides anonymity at the transaction level for agent operations.</p>
-      <h3>1.4 — Settlement Latency Kills Autonomy</h3>
-      <p>Traditional payment rails take seconds to days to settle. Agents operating at machine speed cannot function on human-grade settlement timelines. The latency of existing infrastructure is incompatible with autonomous operation at scale.</p>
+
+      <p>The four structural problems with existing agent payment infrastructure are not technical — they are political and architectural:</p>
+
+      <h3>1.1 — Corporate Control of the Rails</h3>
+      <p>x402 is Coinbase's protocol. The x402 Foundation is co-governed by Coinbase and Cloudflare. Coinbase's Agentic Wallets include built-in KYT (Know Your Transaction) screening that cannot be disabled. Infrastructure controlled by a single corporation — however well-intentioned — is not permissionless infrastructure. It can be updated, restricted, or shut down at corporate discretion.</p>
+
+      <h3>1.2 — Stablecoin Settlement is Not Censorship-Resistant</h3>
+      <p>Every major agent payment solution settles in USDC. USDC is issued by Circle, which operates under US regulatory jurisdiction and can freeze balances, blacklist addresses, and comply with law enforcement requests. An agent payment network that settles in a regulatorily-compliant stablecoin inherits all the censorship properties of that stablecoin — regardless of how decentralised the routing layer is.</p>
+
+      <h3>1.3 — KYT Screening Creates a Surveillance Layer</h3>
+      <p>Coinbase's Agentic Wallets include compliance-ready KYT screening that automatically blocks high-risk interactions. This means every agent transaction is evaluated against Coinbase's risk model. For agents operating on behalf of individuals or institutions where transaction privacy is a requirement — not a preference — this is an architectural incompatibility, not a configuration option.</p>
+
+      <h3>1.4 — There Is an Off Switch</h3>
+      <p>Any infrastructure operated by a corporate entity has a corporate kill switch. Coinbase can update x402, restrict Agentic Wallet functionality, or comply with regulatory orders that affect the network. The promise of autonomous, unstoppable agent commerce cannot be built on infrastructure that can be stopped.</p>
     </div>
 
     <hr class="rule"/>
@@ -286,10 +292,10 @@
     <div class="section">
       <span class="sec-anchor" id="solution"></span>
       <div class="sec-num">02 — The Solution</div>
-      <h2>PROXY: The Economic Layer<br/>for Autonomous Agents</h2>
-      <p>PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents. It provides the primitive that the agent economy is missing: <strong>a trustless, anonymous, agent-native transaction layer</strong> on Base, where agents can hold $PROXY, spend $PROXY, and receive resources — entirely without human involvement at any stage of the transaction.</p>
-      <div class="callout"><p><strong>The core insight:</strong> Agents do not need banks. They do not need credit cards. They do not need identity verification. They need a token they can hold autonomously, a marketplace of resources priced in that token, and a settlement layer that is instant, anonymous, and verifiable. PROXY is that system.</p></div>
-      <p>PROXY does not attempt to rebuild general-purpose payment infrastructure. It is purpose-built for one use case: agents procuring resources to complete tasks. Every design decision — from the token's exclusive use as the settlement currency, to the anonymous routing layer, to the proof-of-delivery mechanism — is made in service of that single objective.</p>
+      <h2>PROXY: The Permissionless<br/>Alternative</h2>
+      <p>PROXY is not the first agent payment protocol. It is the first <strong>permissionless, anonymous, native-token</strong> agent payment protocol. The distinction matters. PROXY does not compete with x402 on transaction volume or developer adoption — it exists for the use cases that x402 architecturally cannot serve: agents that need privacy, censorship resistance, and settlement in a currency no entity can freeze.</p>
+      <div class="callout"><p><strong>The core positioning:</strong> x402 is Coinbase's infrastructure. PROXY is the alternative. Built on the same network. Serving a different requirement. For agents where "the payment was screened by Coinbase" is a problem rather than a feature — PROXY is the only option.</p></div>
+      <p>PROXY provides four properties that no existing agent payment infrastructure delivers simultaneously: permissionless access with no corporate gatekeeper, anonymous transactions with no KYT screening, native token settlement with no stablecoin dependency, and governance with no admin keys and no off switch. These are not features bolted onto a product. They are architectural properties of the protocol.</p>
     </div>
 
     <hr class="rule"/>
@@ -407,22 +413,22 @@
     <div class="section">
       <span class="sec-anchor" id="comparison"></span>
       <div class="sec-num">08 — Competitive Landscape</div>
-      <h2>Nothing else was<br/><em>built for agents.</em></h2>
-      <p>Existing payment infrastructure — both traditional and crypto-native — was designed for human operators. PROXY is not competing with general-purpose payment protocols. It is filling a gap those protocols are architecturally incapable of filling.</p>
+      <h2>The alternative to<br/><em>Coinbase's rails.</em></h2>
+      <p>x402 and Agentic Wallets solve the technical problem of agent payments. PROXY solves the architectural problem: who controls the rails, who screens the transactions, and who can intervene.</p>
       <div class="cmp-wrap">
         <table class="cmp">
           <thead>
-            <tr><th>Capability</th><th class="ph">PROXY</th><th>Stripe / Fiat</th><th>Crypto Payments</th><th>Centralised AI APIs</th></tr>
+            <tr><th>Capability</th><th class="ph">PROXY</th><th>x402 / Agentic Wallets</th><th>Stripe / Fiat</th><th>Crypto Payments</th></tr>
           </thead>
           <tbody>
-            <tr><td>Fully autonomous — no human sign-off</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
-            <tr><td>Anonymous by default</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cn">Partial</td><td class="cx">✗</td></tr>
+            <tr><td>Permissionless — no corporate gatekeeper</td><td class="pc ck">✓</td><td class="cx">✗ Coinbase-controlled</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
+            <tr><td>Anonymous — no KYT screening</td><td class="pc ck">✓</td><td class="cx">✗ Built-in KYT</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
+            <tr><td>Native token (not USDC)</td><td class="pc ck">✓</td><td class="cx">✗ USDC only</td><td class="cx">✗</td><td class="cn">Varies</td></tr>
+            <tr><td>No admin keys — no off switch</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
+            <tr><td>Censorship-resistant settlement</td><td class="pc ck">✓</td><td class="cx">✗ USDC can be frozen</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
             <tr><td>On-chain proof of delivery</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
-            <tr><td>Sub-second settlement</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cn">Partial</td><td class="cx">✗</td></tr>
-            <tr><td>Agent-native wallet standard</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
-            <tr><td>Multi-resource marketplace</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
-            <tr><td>Agent-to-agent payments</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
-            <tr><td>Non-custodial</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="ck">✓</td><td class="cx">✗</td></tr>
+            <tr><td>Non-custodial</td><td class="pc ck">✓</td><td class="cx">✗ Coinbase custody</td><td class="cx">✗</td><td class="ck">✓</td></tr>
+            <tr><td>Agent-to-agent payments</td><td class="pc ck">✓</td><td class="cn">Partial</td><td class="cx">✗</td><td class="cx">✗</td></tr>
           </tbody>
         </table>
       </div>
@@ -498,19 +504,19 @@
     <div class="section">
       <span class="sec-anchor" id="conclusion"></span>
       <div class="sec-num">10 — Conclusion</div>
-      <h2>The agent economy<br/><em>needs rails.</em></h2>
-      <p>The transition from AI as a tool to AI as an autonomous economic actor is underway. Agents are being deployed at scale. They are executing tasks, making decisions, and operating in increasingly complex digital environments. The one thing they cannot do — the one thing no existing infrastructure supports — is transact autonomously, anonymously, and at machine speed.</p>
-      <p>PROXY is the protocol that closes that gap. It provides the economic primitive the agent economy needs: a trustless, anonymous, agent-native transaction layer where $PROXY is the sole currency, delivery is cryptographically verified, and humans are removed from the transaction loop entirely.</p>
-      <p>This is not a speculative future use case. The demand exists today. Every agent framework — LangChain, AutoGPT, CrewAI, custom implementations — requires resource procurement to function. Every one of those resource requests currently routes through a centralised, human-gated system. PROXY replaces that system with something that scales with the agent economy rather than bottlenecking it.</p>
-      <div class="callout"><p><strong>The opportunity is simple:</strong> The agent economy will be worth trillions. Every dollar of that economy requires a payment rail. No payment rail exists for agents. PROXY builds it. $PROXY is the token that flows through every transaction on that rail.</p></div>
-      <p>PROXY is launched fairly — no pre-sale, no insider allocation, no venture capital. $PROXY is available to anyone from the first block. The protocol is built in public, documented openly, and governed by its token holders. The team's incentives are aligned with the protocol's success: $PROXY either becomes the economic infrastructure of the agent economy, or it does not. There is no middle path.</p>
-      <p><em class="line">We are building the rails. The trains are already running.</em></p>
+      <h2>The permissionless<br/><em>alternative is here.</em></h2>
+      <p>The rails for agent payments have been built. x402 processes hundreds of millions of transactions. Agentic Wallets are in production. The agent economy has infrastructure. The question is no longer whether agent payments work — it is who controls them, who screens them, and who can turn them off.</p>
+      <p>PROXY is the answer to that question. Not the first agent payment protocol, but the first one nobody controls. No KYT screening. No stablecoin with a freeze function. No corporate entity with an admin key. PROXY settles in $PROXY — a native token — on Base, governed by its holders, with no off switch and no compliance layer baked in.</p>
+      <p>For agents where that distinction doesn't matter, x402 works fine. For agents where it does — for operators who need genuine privacy, genuine censorship resistance, and genuine permissionlessness — PROXY is the only option that exists.</p>
+      <div class="callout"><p><strong>The opportunity:</strong> The agent economy will be worth trillions. The permissionless slice of that economy — the agents that cannot and will not route through Coinbase — needs its own rails. PROXY builds them. $PROXY flows through every transaction on those rails.</p></div>
+      <p>PROXY is launched fairly — no pre-sale, no insider allocation, no venture capital. $PROXY is available to anyone from the first block. The protocol is built in public, documented openly, and governed entirely by its token holders.</p>
+      <p><em class="line">The rails exist. PROXY is the ones nobody controls.</em></p>
       <div class="links-box">
         <div class="links-label">Links</div>
         <div class="lbl">Website: <span>proxyprotocol.org</span></div>
         <div class="lbl">GitHub: <span>github.com/proxy-labs-create/proxy-protocol</span></div>
         <div class="lbl">Token: <span>$PROXY on Base</span></div>
-        <div class="lbl">Launch: <span>Flaunch</span></div>
+        <div class="lbl">Launch: <span>Fair Launch on Base</span></div>
       </div>
       <div class="disclaimer">
         <p><strong>DISCLAIMER.</strong> This whitepaper is for informational purposes only and does not constitute financial advice, investment advice, or a solicitation to purchase any token or security. $PROXY is a utility token designed for use within the PROXY protocol. Participation in any token launch carries significant risk including total loss of capital. The PROXY protocol is in development — features described herein represent the intended design and may change. This document does not constitute a prospectus or offering document of any kind. Readers are advised to conduct their own research and consult appropriate professional advisors before making any financial decision. Nothing in this document should be construed as a guarantee of future performance or outcomes.</p>
