@@ -1,8 +1,9 @@
+[token.md](https://github.com/user-attachments/files/28090654/token.md)
 # $PROXY Token Specification
 
 **PROXY Protocol — Token Economics & Utility**
 
-> Version: 1.0 · 2026
+> Version: 1.1 · May 2026
 
 ---
 
@@ -10,7 +11,7 @@
 
 $PROXY is the sole payment and settlement currency of the PROXY protocol. There is no alternative payment path — no ETH fallback, no stablecoin bypass, no fiat gateway.
 
-Every resource transaction on the PROXY network is denominated in $PROXY and settled in $PROXY. This is not a design preference — it is protocol-level enforcement that creates a direct, structural relationship between network usage and token demand.
+Every resource transaction on the PROXY network is denominated in $PROXY and settled in $PROXY. This is not a design preference — it is protocol-level enforcement. The choice of native token over regulated stablecoin is an architectural decision: $PROXY has no issuer, no compliance layer, and no entity with the technical capability to freeze a balance or blacklist a wallet address.
 
 ---
 
@@ -22,7 +23,7 @@ Every resource transaction on the PROXY network is denominated in $PROXY and set
 | **Ticker** | $PROXY |
 | **Network** | Base (Ethereum L2, Chain ID: 8453) |
 | **Standard** | ERC-20 |
-| **Launch Platform** | Flaunch — Fair Launch Protocol |
+| **Launch Platform** | Doppler — Fair Launch on Base |
 | **Pre-sale** | None |
 | **Insider Allocation** | None |
 | **Venture Capital** | None |
@@ -125,7 +126,7 @@ Operators who want their agents to operate must continuously supply $PROXY. Prov
 
 ## Fair Launch
 
-PROXY launches via [Flaunch](https://flaunch.gg) — a fair launch protocol on Base.
+PROXY launched via Doppler — a fair launch protocol on Base.
 
 **What fair launch means for $PROXY:**
 
