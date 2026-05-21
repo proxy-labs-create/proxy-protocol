@@ -1,8 +1,9 @@
+[agent-sdk.md](https://github.com/user-attachments/files/28090696/agent-sdk.md)
 # Agent Wallet SDK
 
 **PROXY Protocol — Agent SDK Specification**
 
-> Version: 0.1 (Alpha Spec) · Status: Pre-release
+> Version: 0.2 (Alpha Spec) · Status: Pre-release · Updated May 2026
 
 ---
 
@@ -16,6 +17,7 @@ The SDK is designed to be:
 - **Minimal** — four core methods, simple integration
 - **Non-custodial** — the agent controls its own key material post-deployment
 - **Anonymous by default** — no identity information required or transmitted
+- **Permissionless** — no whitelist, no KYC, no compliance layer at the SDK level
 
 > **Status:** This document is the pre-release specification. SDK implementation begins at Phase 2 (Testnet). This spec is published to enable the community to review design decisions and provide feedback before build.
 
@@ -268,6 +270,7 @@ try {
 | mixtral-8x7b-instruct | Mistral AI | 32K | ~0.06 $PROXY |
 | qwen2.5-72b-instruct | Alibaba | 128K | ~0.07 $PROXY |
 | deepseek-r1-distill-llama-70b | DeepSeek | 64K | ~0.08 $PROXY |
+| gemma-2-27b-it | Google | 8K | ~0.05 $PROXY |
 
 *Pricing is indicative. Actual cost set by providers in marketplace.*
 
@@ -278,7 +281,8 @@ try {
 | Version | Date | Notes |
 |---------|------|-------|
 | 0.1 | 2026 | Pre-release specification published |
-| 0.2 | TBA | Alpha SDK release (Testnet) |
+| 0.2 | May 2026 | Permissionless architecture notes added; gemma-2-27b-it support; expanded error handling |
+| 0.3 | TBA | Alpha SDK release (Testnet) |
 | 1.0 | TBA | Production release (Mainnet) |
 
 ---
