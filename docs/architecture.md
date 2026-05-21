@@ -1,8 +1,9 @@
+[architecture.md](https://github.com/user-attachments/files/28090670/architecture.md)
 # Protocol Architecture
 
 **PROXY Protocol — Technical Architecture Specification**
 
-> Version: 1.0 · 2026
+> Version: 1.2 · May 2026
 
 ---
 
@@ -10,7 +11,7 @@
 
 The PROXY protocol is composed of four discrete layers, each responsible for a distinct function in the transaction lifecycle. Together they form a complete, trustless pipeline from resource request to verified settlement.
 
-Every component is designed around a single constraint: **at no point should a human be required to participate in a transaction between an agent and a resource provider.**
+Every component is designed around two constraints: **at no point should a human be required to participate in a transaction between an agent and a resource provider**, and **at no point should any entity have the technical capability to prevent a transaction from completing once a valid DeliveryProof has been submitted.**
 
 ---
 
@@ -65,6 +66,7 @@ score(provider) = w1 * stake_weight
                + w2 * latency_score
                + w3 * reliability_score
                + w4 * availability_score
+               + w5 * price_score
 ```
 
 Where weights are governance-controlled parameters adjustable via DAO vote.
@@ -79,7 +81,7 @@ The routing layer enforces anonymity for both parties through zero-knowledge att
 
 ### Dispute Routing
 
-Failed or contested deliveries are flagged by the proof layer and routed to the on-chain dispute resolution mechanism with a 300-second arbitration window.
+Failed or contested deliveries are flagged by the proof layer and routed to the on-chain dispute resolution mechanism with a 300-second arbitration window (governance-adjustable).
 
 ---
 
@@ -178,7 +180,7 @@ The proof layer is PROXY's primary quality enforcement mechanism. Every resource
 **Inference**
 - Output must be deterministically reproducible from committed model weights
 - Output hash committed on-chain before full output delivered to agent
-- Spot-check validation: 5% of jobs re-run by independent validators
+- Spot-check validation: 8% of jobs re-run by independent validators
 
 **Data Feeds**
 - Signed timestamp must fall within acceptable freshness window
