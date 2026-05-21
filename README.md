@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/28069695/README.md)
+[README (1).md](https://github.com/user-attachments/files/28102575/README.1.md)
 # PROXY Protocol
 
 **The permissionless payment layer for autonomous AI agents.**
@@ -179,8 +179,8 @@ Full roadmap: [`ROADMAP.md`](ROADMAP.md)
 - **Playground:** [proxyprotocol.org/playground.html](https://proxyprotocol.org/playground.html)
 - **Whitepaper:** [proxyprotocol.org/whitepaper.html](https://proxyprotocol.org/whitepaper.html)
 - **Token:** $PROXY on Base
-- **Twitter/X:** [@proxyprotocol](https://x.com/proxyprotocol)
-- **Telegram:** [t.me/proxyprotocol](https://t.me/proxyprotocol)
+- **Twitter/X:** [@ProxyProtocols](https://x.com/ProxyProtocols)
+- **Telegram:** [t.me/proxy_protocol_base](https://t.me/proxy_protocol_base)
 
 ---
 
