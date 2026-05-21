@@ -784,6 +784,221 @@
   </div>
 </section>
 
+<!-- TECH DEEP DIVE -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-label rv">Protocol Architecture</div>
+    <h2 class="sec-h rv d1">Under the hood.<br/><em>How it actually works.</em></h2>
+    <p class="sec-body rv d2">
+      PROXY is composed of five discrete protocol layers. Every transaction flows through
+      all five — from signed agent request to on-chain settlement. No layer can be bypassed.
+      No intermediary can intervene between proof verification and escrow release.
+    </p>
+
+    <div class="tech-intro rv d2">
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-filename">AgentRequest.schema.json</div>
+            <div class="code-lang">JSON Schema</div>
+          </div>
+          <div class="code-body"><span class="cmt">// Signed by agent wallet before broadcast</span>
+<span class="kw">{</span>
+  <span class="str">"agent_id"</span>:       <span class="str">"0x4f2a...c91b"</span>,
+  <span class="str">"resource_type"</span>:  <span class="str">"inference"</span>,
+  <span class="str">"parameters"</span>: <span class="kw">{</span>
+    <span class="str">"model"</span>:          <span class="str">"llama-3.3-70b-instruct"</span>,
+    <span class="str">"prompt_tokens"</span>:  <span class="num">2048</span>,
+    <span class="str">"max_tokens"</span>:     <span class="num">512</span>
+  <span class="kw">}</span>,
+  <span class="str">"budget_ceiling"</span>: <span class="str">"48.50"</span>,  <span class="cmt">// $PROXY</span>
+  <span class="str">"max_latency_ms"</span>: <span class="num">800</span>,
+  <span class="str">"timestamp"</span>:      <span class="num">1748000000</span>,
+  <span class="str">"signature"</span>:      <span class="str">"0x7d1e...aa3f"</span>
+<span class="kw">}</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-filename">DeliveryProof.schema.json</div>
+            <div class="code-lang">JSON Schema</div>
+          </div>
+          <div class="code-body"><span class="cmt">// Submitted by provider, verified before escrow release</span>
+<span class="kw">{</span>
+  <span class="str">"job_id"</span>:              <span class="str">"0x91cc...f04d"</span>,
+  <span class="str">"provider_id"</span>:         <span class="str">"prv_0x4f2a"</span>,
+  <span class="str">"resource_type"</span>:       <span class="str">"inference"</span>,
+  <span class="str">"output_hash"</span>:         <span class="str">"sha256:a3f1..."</span>,
+  <span class="str">"model_weights_hash"</span>:  <span class="str">"sha256:8c2d..."</span>,
+  <span class="str">"latency_ms"</span>:          <span class="num">312</span>,
+  <span class="str">"timestamp"</span>:           <span class="num">1748000312</span>,
+  <span class="str">"signature"</span>:           <span class="str">"0x3be7...219a"</span>
+<span class="kw">}</span>
+<span class="cmt">// Escrow releases only on valid proof</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-layers rv d2">
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 01</div>
+          <div class="tl-name">Agent Wallet SDK</div>
+          <div class="tl-tag">Non-custodial · No KYC</div>
+        </div>
+        <div class="tl-body">
+          The SDK initialises a non-custodial ERC-20 wallet on Base for the agent — no human key management required post-deployment. The agent controls its own private key. The SDK exposes four methods: <strong>init()</strong>, <strong>request()</strong>, <strong>verify()</strong>, <strong>balance()</strong>. Framework-agnostic: compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. At request time, the agent constructs a signed <strong>AgentRequest</strong> object and atomically locks the budget ceiling in escrow before broadcast.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">init.ts</div>
+              <div class="code-lang">TypeScript</div>
+            </div>
+            <div class="code-body"><span class="kw">const</span> agent = <span class="kw">await</span> <span class="type">ProxyAgent</span>.<span class="fn">init</span>(<span class="kw">{</span>
+  network: <span class="str">'base-mainnet'</span>,
+  fundingAmount: <span class="str">'500'</span>, <span class="cmt">// $PROXY</span>
+  budgetAlerts: <span class="kw">{</span>
+    threshold: <span class="str">'50'</span>,
+    callback: (bal) <span class="kw">=></span> notify(bal)
+  <span class="kw">}</span>
+<span class="kw">}</span>);
+
+<span class="cmt">// Agent wallet: 0x4f2a...c91b</span>
+<span class="cmt">// Balance: 500 $PROXY</span>
+<span class="cmt">// No human required from this point</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 02</div>
+          <div class="tl-name">ZK Routing Layer</div>
+          <div class="tl-tag">Anonymous · ZK Attestation</div>
+        </div>
+        <div class="tl-body">
+          The routing layer receives broadcast <strong>AgentRequest</strong> objects and executes a weighted matching algorithm against the registered provider set. Providers are scored on stake weight, latency history, reliability score, availability, and price. Critically: provider eligibility is verified using <strong>zero-knowledge attestations</strong> — the routing layer confirms a provider has sufficient bond and meets spec without revealing its wallet address or infrastructure details to the requesting agent. Neither party learns the other's identity.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">routing_score.pseudo</div>
+              <div class="code-lang">Algorithm</div>
+            </div>
+            <div class="code-body"><span class="fn">score</span>(provider) =
+  w1 × stake_weight
+  + w2 × latency_score
+  + w3 × reliability_score
+  + w4 × availability_score
+  + w5 × price_score
+
+<span class="cmt">// w1–w5 are DAO-governed parameters</span>
+<span class="cmt">// Provider identity never exposed to agent</span>
+<span class="cmt">// ZK proof confirms eligibility anonymously</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 03</div>
+          <div class="tl-name">Escrow Contracts</div>
+          <div class="tl-tag">Base L2 · No Admin Keys</div>
+        </div>
+        <div class="tl-body">
+          All payment flows through non-upgradeable escrow smart contracts deployed on Base. At request broadcast, the budget ceiling is <strong>atomically escrowed</strong> — providers are guaranteed payment exists before accepting a job. On valid proof submission, the contract releases the agreed $PROXY amount instantly. Failed proofs trigger a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. Contracts are <strong>non-upgradeable post-audit</strong> — no admin key, no proxy pattern, no entity that can modify settlement logic.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">escrow_lifecycle.pseudo</div>
+              <div class="code-lang">Contract Flow</div>
+            </div>
+            <div class="code-body"><span class="fn">createEscrow</span>(agentId, amount, jobHash)
+  → escrowId, budget locked
+
+<span class="fn">releaseEscrow</span>(escrowId, deliveryProof)
+  → proof valid? release $PROXY
+  → proof invalid? open dispute (300s)
+
+<span class="fn">slashProvider</span>(providerId, amount)
+  → fraud detected: 50% bond slashed
+  → downtime > 1hr: 2%/hr slashed
+
+<span class="cmt">// Non-upgradeable. No admin key.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 04</div>
+          <div class="tl-name">Provider Network</div>
+          <div class="tl-tag">Bonded · Permissionless Entry</div>
+        </div>
+        <div class="tl-body">
+          Any operator can register a provider node by bonding $PROXY as collateral — no permission required, no whitelist. Providers declare supported resource types and associated models or data feeds. Compute nodes submit hardware attestation and pass baseline latency benchmarks. The bond is subject to slashing for delivery failures, proof timeouts, and sustained downtime — creating a strong economic incentive for reliability without centralised quality control. Five node types: <strong>Compute</strong> (inference), <strong>Oracle</strong> (data feeds), <strong>Relay</strong> (API access), <strong>Storage</strong>, <strong>Bandwidth</strong>.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">provider_bonds.table</div>
+              <div class="code-lang">Spec</div>
+            </div>
+            <div class="code-body"><span class="type">Compute</span>  → 500 $PROXY  · output hash proof
+<span class="type">Oracle</span>   → 250 $PROXY  · signed timestamp
+<span class="type">Relay</span>    → 150 $PROXY  · req/resp hash
+<span class="type">Storage</span>  → 200 $PROXY  · merkle proof
+<span class="type">Bandwidth</span>→ 100 $PROXY  · transfer receipt
+
+<span class="cmt">// Permissionless registration</span>
+<span class="cmt">// No whitelist. No KYC.</span>
+<span class="cmt">// Bond slashed on delivery failure</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 05</div>
+          <div class="tl-name">Proof Layer</div>
+          <div class="tl-tag">Cryptographic Verification</div>
+        </div>
+        <div class="tl-body">
+          Every resource delivery must be accompanied by a <strong>DeliveryProof</strong> before any escrow releases. Proof standards are resource-specific and published in the protocol spec. For inference: output hash must be deterministically reproducible from committed model weights, with 8% of jobs re-run by independent validators. For data feeds: signed timestamp within freshness window, cross-validated against two independent oracle sources. For storage: Merkle proof of data availability. Invalid proofs trigger immediate partial slashing of the provider's bonded $PROXY — no proof, no payment.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">proof_verification.pseudo</div>
+              <div class="code-lang">Verification</div>
+            </div>
+            <div class="code-body"><span class="fn">verifyProof</span>(DeliveryProof proof) {
+  assert proof.output_hash ==
+    <span class="fn">hash</span>(output, model_weights_hash)
+
+  assert proof.latency_ms ≤
+    request.max_latency_ms
+
+  assert proof.timestamp ≤
+    request.timestamp + MAX_TTL
+
+  <span class="cmt">// 8% spot-check: re-run by validators</span>
+  <span class="cmt">// Fail → slash 10% of bond immediately</span>
+  → <span class="fn">releaseEscrow</span>(escrowId)
+}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="wrap">
@@ -1022,220 +1237,6 @@
   </div>
 </section>
 
-<!-- TECH DEEP DIVE -->
-<section id="tech">
-  <div class="wrap">
-    <div class="sec-label rv">Protocol Architecture</div>
-    <h2 class="sec-h rv d1">Under the hood.<br/><em>How it actually works.</em></h2>
-    <p class="sec-body rv d2">
-      PROXY is composed of five discrete protocol layers. Every transaction flows through
-      all five — from signed agent request to on-chain settlement. No layer can be bypassed.
-      No intermediary can intervene between proof verification and escrow release.
-    </p>
-
-    <div class="tech-intro rv d2">
-      <div>
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-filename">AgentRequest.schema.json</div>
-            <div class="code-lang">JSON Schema</div>
-          </div>
-          <div class="code-body"><span class="cmt">// Signed by agent wallet before broadcast</span>
-<span class="kw">{</span>
-  <span class="str">"agent_id"</span>:       <span class="str">"0x4f2a...c91b"</span>,
-  <span class="str">"resource_type"</span>:  <span class="str">"inference"</span>,
-  <span class="str">"parameters"</span>: <span class="kw">{</span>
-    <span class="str">"model"</span>:          <span class="str">"llama-3.3-70b-instruct"</span>,
-    <span class="str">"prompt_tokens"</span>:  <span class="num">2048</span>,
-    <span class="str">"max_tokens"</span>:     <span class="num">512</span>
-  <span class="kw">}</span>,
-  <span class="str">"budget_ceiling"</span>: <span class="str">"48.50"</span>,  <span class="cmt">// $PROXY</span>
-  <span class="str">"max_latency_ms"</span>: <span class="num">800</span>,
-  <span class="str">"timestamp"</span>:      <span class="num">1748000000</span>,
-  <span class="str">"signature"</span>:      <span class="str">"0x7d1e...aa3f"</span>
-<span class="kw">}</span></div>
-        </div>
-      </div>
-      <div>
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-filename">DeliveryProof.schema.json</div>
-            <div class="code-lang">JSON Schema</div>
-          </div>
-          <div class="code-body"><span class="cmt">// Submitted by provider, verified before escrow release</span>
-<span class="kw">{</span>
-  <span class="str">"job_id"</span>:              <span class="str">"0x91cc...f04d"</span>,
-  <span class="str">"provider_id"</span>:         <span class="str">"prv_0x4f2a"</span>,
-  <span class="str">"resource_type"</span>:       <span class="str">"inference"</span>,
-  <span class="str">"output_hash"</span>:         <span class="str">"sha256:a3f1..."</span>,
-  <span class="str">"model_weights_hash"</span>:  <span class="str">"sha256:8c2d..."</span>,
-  <span class="str">"latency_ms"</span>:          <span class="num">312</span>,
-  <span class="str">"timestamp"</span>:           <span class="num">1748000312</span>,
-  <span class="str">"signature"</span>:           <span class="str">"0x3be7...219a"</span>
-<span class="kw">}</span>
-<span class="cmt">// Escrow releases only on valid proof</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tech-layers rv d2">
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 01</div>
-          <div class="tl-name">Agent Wallet SDK</div>
-          <div class="tl-tag">Non-custodial · No KYC</div>
-        </div>
-        <div class="tl-body">
-          The SDK initialises a non-custodial ERC-20 wallet on Base for the agent — no human key management required post-deployment. The agent controls its own private key. The SDK exposes four methods: <strong>init()</strong>, <strong>request()</strong>, <strong>verify()</strong>, <strong>balance()</strong>. Framework-agnostic: compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. At request time, the agent constructs a signed <strong>AgentRequest</strong> object and atomically locks the budget ceiling in escrow before broadcast.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">init.ts</div>
-              <div class="code-lang">TypeScript</div>
-            </div>
-            <div class="code-body"><span class="kw">const</span> agent = <span class="kw">await</span> <span class="type">ProxyAgent</span>.<span class="fn">init</span>(<span class="kw">{</span>
-  network: <span class="str">'base-mainnet'</span>,
-  fundingAmount: <span class="str">'500'</span>, <span class="cmt">// $PROXY</span>
-  budgetAlerts: <span class="kw">{</span>
-    threshold: <span class="str">'50'</span>,
-    callback: (bal) <span class="kw">=></span> notify(bal)
-  <span class="kw">}</span>
-<span class="kw">}</span>);
-
-<span class="cmt">// Agent wallet: 0x4f2a...c91b</span>
-<span class="cmt">// Balance: 500 $PROXY</span>
-<span class="cmt">// No human required from this point</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 02</div>
-          <div class="tl-name">ZK Routing Layer</div>
-          <div class="tl-tag">Anonymous · ZK Attestation</div>
-        </div>
-        <div class="tl-body">
-          The routing layer receives broadcast <strong>AgentRequest</strong> objects and executes a weighted matching algorithm against the registered provider set. Providers are scored on stake weight, latency history, reliability score, availability, and price. Critically: provider eligibility is verified using <strong>zero-knowledge attestations</strong> — the routing layer confirms a provider has sufficient bond and meets spec without revealing its wallet address or infrastructure details to the requesting agent. Neither party learns the other's identity.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">routing_score.pseudo</div>
-              <div class="code-lang">Algorithm</div>
-            </div>
-            <div class="code-body"><span class="fn">score</span>(provider) =
-  w1 × stake_weight
-  + w2 × latency_score
-  + w3 × reliability_score
-  + w4 × availability_score
-  + w5 × price_score
-
-<span class="cmt">// w1–w5 are DAO-governed parameters</span>
-<span class="cmt">// Provider identity never exposed to agent</span>
-<span class="cmt">// ZK proof confirms eligibility anonymously</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 03</div>
-          <div class="tl-name">Escrow Contracts</div>
-          <div class="tl-tag">Base L2 · No Admin Keys</div>
-        </div>
-        <div class="tl-body">
-          All payment flows through non-upgradeable escrow smart contracts deployed on Base. At request broadcast, the budget ceiling is <strong>atomically escrowed</strong> — providers are guaranteed payment exists before accepting a job. On valid proof submission, the contract releases the agreed $PROXY amount instantly. Failed proofs trigger a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. Contracts are <strong>non-upgradeable post-audit</strong> — no admin key, no proxy pattern, no entity that can modify settlement logic.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">escrow_lifecycle.pseudo</div>
-              <div class="code-lang">Contract Flow</div>
-            </div>
-            <div class="code-body"><span class="fn">createEscrow</span>(agentId, amount, jobHash)
-  → escrowId, budget locked
-
-<span class="fn">releaseEscrow</span>(escrowId, deliveryProof)
-  → proof valid? release $PROXY
-  → proof invalid? open dispute (300s)
-
-<span class="fn">slashProvider</span>(providerId, amount)
-  → fraud detected: 50% bond slashed
-  → downtime > 1hr: 2%/hr slashed
-
-<span class="cmt">// Non-upgradeable. No admin key.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 04</div>
-          <div class="tl-name">Provider Network</div>
-          <div class="tl-tag">Bonded · Permissionless Entry</div>
-        </div>
-        <div class="tl-body">
-          Any operator can register a provider node by bonding $PROXY as collateral — no permission required, no whitelist. Providers declare supported resource types and associated models or data feeds. Compute nodes submit hardware attestation and pass baseline latency benchmarks. The bond is subject to slashing for delivery failures, proof timeouts, and sustained downtime — creating a strong economic incentive for reliability without centralised quality control. Five node types: <strong>Compute</strong> (inference), <strong>Oracle</strong> (data feeds), <strong>Relay</strong> (API access), <strong>Storage</strong>, <strong>Bandwidth</strong>.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">provider_bonds.table</div>
-              <div class="code-lang">Spec</div>
-            </div>
-            <div class="code-body"><span class="type">Compute</span>  → 500 $PROXY  · output hash proof
-<span class="type">Oracle</span>   → 250 $PROXY  · signed timestamp
-<span class="type">Relay</span>    → 150 $PROXY  · req/resp hash
-<span class="type">Storage</span>  → 200 $PROXY  · merkle proof
-<span class="type">Bandwidth</span>→ 100 $PROXY  · transfer receipt
-
-<span class="cmt">// Permissionless registration</span>
-<span class="cmt">// No whitelist. No KYC.</span>
-<span class="cmt">// Bond slashed on delivery failure</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 05</div>
-          <div class="tl-name">Proof Layer</div>
-          <div class="tl-tag">Cryptographic Verification</div>
-        </div>
-        <div class="tl-body">
-          Every resource delivery must be accompanied by a <strong>DeliveryProof</strong> before any escrow releases. Proof standards are resource-specific and published in the protocol spec. For inference: output hash must be deterministically reproducible from committed model weights, with 8% of jobs re-run by independent validators. For data feeds: signed timestamp within freshness window, cross-validated against two independent oracle sources. For storage: Merkle proof of data availability. Invalid proofs trigger immediate partial slashing of the provider's bonded $PROXY — no proof, no payment.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">proof_verification.pseudo</div>
-              <div class="code-lang">Verification</div>
-            </div>
-            <div class="code-body"><span class="fn">verifyProof</span>(DeliveryProof proof) {
-  assert proof.output_hash ==
-    <span class="fn">hash</span>(output, model_weights_hash)
-
-  assert proof.latency_ms ≤
-    request.max_latency_ms
-
-  assert proof.timestamp ≤
-    request.timestamp + MAX_TTL
-
-  <span class="cmt">// 8% spot-check: re-run by validators</span>
-  <span class="cmt">// Fail → slash 10% of bond immediately</span>
-  → <span class="fn">releaseEscrow</span>(escrowId)
-}</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
@@ -1303,7 +1304,7 @@
     </div>
     <div class="wl-ok" id="wlOk">✓ &nbsp;You're on the list. We'll be in touch.</div>
     <p class="wl-meta rv d4">
-      Built on <span>Base</span> &nbsp;·&nbsp; Token <span>$PROXY</span> &nbsp;·&nbsp; Fair Launch
+      Built on <span>Base</span> &nbsp;·&nbsp; <span>$PROXY</span> &nbsp;·&nbsp; <a href="https://x.com/proxyprotocol" target="_blank" style="color:var(--gold);text-decoration:none;">@proxyprotocol</a> &nbsp;·&nbsp; <a href="https://t.me/proxyprotocol" target="_blank" style="color:var(--gold);text-decoration:none;">Telegram</a>
     </p>
   </div>
 </section>
@@ -1319,6 +1320,8 @@
     <li><a href="playground.html">Playground</a></li>
     <li><a href="whitepaper.html">Whitepaper</a></li>
     <li><a href="https://github.com/proxy-labs-create/proxy-protocol" target="_blank">GitHub</a></li>
+    <li><a href="https://x.com/proxyprotocol" target="_blank">Twitter/X</a></li>
+    <li><a href="https://t.me/proxyprotocol" target="_blank">Telegram</a></li>
   </ul>
   <div class="footer-copy">© 2026 PROXY Protocol &nbsp;·&nbsp; Built on Base</div>
 </footer>
