@@ -1,4 +1,4 @@
-[ROADMAP.md](https://github.com/user-attachments/files/28090621/ROADMAP.md)
+[ROADMAP.md](https://github.com/user-attachments/files/28102545/ROADMAP.md)
 # Roadmap
 
 **PROXY Protocol — Development Roadmap**
@@ -18,8 +18,8 @@
 - [x] Protocol architecture specification published
 - [x] Agent Playground live at proxyprotocol.org/playground.html
 - [x] Early access waitlist open
-- [x] Twitter/X community launched — @proxyprotocol
-- [x] Telegram community launched — t.me/proxyprotocol
+- [x] Twitter/X community launched — @ProxyProtocols
+- [x] Telegram community launched — t.me/proxy_protocol_base
 
 ---
 
@@ -82,8 +82,8 @@ We build in public. Protocol decisions, architecture changes, and milestone upda
 
 Contribute: [`CONTRIBUTING.md`](CONTRIBUTING.md)  
 Early access: [proxyprotocol.org](https://proxyprotocol.org)  
-Twitter/X: [@proxyprotocol](https://x.com/proxyprotocol)  
-Telegram: [t.me/proxyprotocol](https://t.me/proxyprotocol)
+Twitter/X: [@ProxyProtocols](https://x.com/ProxyProtocols)  
+Telegram: [t.me/proxy_protocol_base](https://t.me/proxy_protocol_base)
 
 ---
 
