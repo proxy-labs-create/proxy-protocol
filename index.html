@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PROXY — The permissionless payment layer for autonomous AI agents</title>
-  <meta name="description" content="PROXY is the permissionless, anonymous payment protocol for autonomous AI agents on Base. No KYC. No corporate control. No stablecoin dependency. Agents pay in $PROXY." />
+  <title>PROXY — Permissionless agent payment infrastructure on Base</title>
+  <meta name="description" content="PROXY is the permissionless, anonymous payment protocol for autonomous AI agents. ZK-routed, escrow-settled, cryptographically verified. No compliance layer. No stablecoin dependency. Agents pay in $PROXY." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -472,6 +472,88 @@
     }
     .rm-items li::before { content: '—'; color: var(--ink3); flex-shrink: 0; }
 
+    /* ── TECH DEEP DIVE ── */
+    #tech {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--rule);
+      background: var(--bg);
+    }
+    .tech-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+      margin-bottom: 80px;
+    }
+    .code-block {
+      background: var(--bg3);
+      border: 1px solid var(--rule-hi);
+      padding: 0;
+      overflow: hidden;
+    }
+    .code-header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .code-filename {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.08em; color: var(--ink3);
+    }
+    .code-lang {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(200,169,110,0.2);
+      padding: 2px 7px;
+    }
+    .code-body {
+      padding: 20px;
+      font-family: var(--mono); font-size: 12px;
+      line-height: 1.7; color: var(--ink2);
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .code-body .kw  { color: var(--gold); }
+    .code-body .str { color: #8fbc8f; }
+    .code-body .num { color: #b5cea8; }
+    .code-body .cmt { color: var(--ink3); }
+    .code-body .fn  { color: #dcdcaa; }
+    .code-body .type{ color: #4ec9b0; }
+
+    .tech-layers {
+      display: flex; flex-direction: column; gap: 0;
+      margin-top: 64px;
+    }
+    .tech-layer {
+      display: grid; grid-template-columns: 200px 1fr 1fr;
+      gap: 40px; align-items: start;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .tech-layer:first-child { border-top: 1px solid var(--rule); }
+    .tl-left {}
+    .tl-num {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--gold); margin-bottom: 8px;
+      letter-spacing: 0.1em;
+    }
+    .tl-name {
+      font-family: var(--serif); font-size: 20px;
+      color: var(--ink); margin-bottom: 8px;
+    }
+    .tl-tag {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink3);
+      border: 1px solid var(--rule);
+      padding: 3px 8px; display: inline-block;
+    }
+    .tl-body {
+      font-family: var(--mono); font-size: 12px;
+      line-height: 1.75; color: var(--ink2);
+    }
+    .tl-body strong { color: var(--ink); font-weight: 400; }
+
     /* ── FAQ ── */
     #faq {
       padding: 120px 0;
@@ -571,6 +653,8 @@
       #hero, #waitlist { padding-left: 20px; padding-right: 20px; }
       .wrap { padding: 0 20px; }
       .hero-h1 { font-size: 52px; }
+      .tech-intro { grid-template-columns: 1fr; gap: 20px; }
+      .tech-layer { grid-template-columns: 1fr; gap: 20px; }
       .hero-bottom { flex-direction: column; align-items: flex-start; }
       .problem-layout { grid-template-columns: 1fr; gap: 40px; }
       .hs { grid-template-columns: 32px 1fr; }
@@ -589,6 +673,7 @@
   <a href="#" class="nav-logo">PROXY</a>
   <ul class="nav-center">
     <li><a href="#problem">Problem</a></li>
+    <li><a href="#tech">Architecture</a></li>
     <li><a href="#how">Protocol</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#token">$PROXY</a></li>
@@ -608,21 +693,22 @@
 <section id="hero">
   <div class="hero-kicker">PROXY Protocol &nbsp;·&nbsp; Built on Base &nbsp;·&nbsp; $PROXY</div>
   <h1 class="hero-h1">
-    Permissionless payments<br/>
-    for autonomous<br/>
-    <i>AI agents.</i>
+    Permissionless.<br/>
+    Anonymous.<br/>
+    <i>Cryptographically verified.</i>
   </h1>
   <div class="hero-bottom">
     <p class="hero-desc">
-      Agent payment infrastructure exists. But it's controlled by Coinbase,
-      requires KYC screening, and settles in stablecoins.
-      <strong>PROXY is the alternative — permissionless, anonymous, and governed
-      by nobody.</strong> Agents pay in $PROXY. No corporate gatekeeper.
-      No identity checks. No off switch.
+      Incumbent agent payment infrastructure is compliance-gated, stablecoin-denominated,
+      and corporately controlled. <strong>PROXY is the alternative —
+      ZK-routed, escrow-settled, and governed by nobody.</strong>
+      Agents broadcast signed <code style="font-size:11px;background:rgba(200,169,110,0.12);padding:2px 6px;color:var(--gold)">AgentRequest</code> objects.
+      Providers return cryptographic <code style="font-size:11px;background:rgba(200,169,110,0.12);padding:2px 6px;color:var(--gold)">DeliveryProof</code>.
+      $PROXY settles on-chain. No intermediary. No off switch.
     </p>
     <div class="hero-actions">
       <a href="playground.html" class="btn-p">Try the Playground</a>
-      <a href="#problem" class="btn-g">Read the Problem</a>
+      <a href="#tech" class="btn-g">Read the Architecture</a>
     </div>
   </div>
 </section>
@@ -636,12 +722,13 @@
 <section id="problem">
   <div class="wrap">
     <div class="sec-label rv">The Problem</div>
-    <h2 class="sec-h rv d1">Agent payments exist.<br/><em>But Coinbase controls them.</em></h2>
+    <h2 class="sec-h rv d1">Incumbent infrastructure<br/><em>is not permissionless.</em></h2>
     <p class="sec-body rv d2">
-      x402, Agentic Wallets, ERC-8004 — the infrastructure for agent payments has arrived.
-      But every major solution is corporate-controlled, KYC-screened, and stablecoin-denominated.
-      For agents that need to operate without identity, without gatekeepers, without an off switch —
-      none of it works. That's what PROXY is for.
+      Agent payment rails exist and process hundreds of millions of transactions.
+      But every dominant protocol routes through compliance infrastructure,
+      settles in regulatorily-controlled stablecoins, and ships with
+      transaction screening baked into the stack. For agents that require
+      genuine privacy and censorship resistance — the architecture is incompatible.
     </p>
 
     <div class="problem-layout">
@@ -649,17 +736,17 @@
         <div class="stat-block">
           <div class="stat-num">$17T</div>
           <div class="stat-lbl">Projected autonomous agent economy by 2030</div>
-          <div class="stat-desc">McKinsey estimates AI agents will manage trillions in economic activity. The payment rails are being built — but by Coinbase, Visa, and Mastercard. That's not neutral infrastructure.</div>
+          <div class="stat-desc">The payment rails for this economy are being built by incumbents optimising for regulatory compliance, not permissionlessness. Infrastructure shaped by compliance constraints is not neutral infrastructure.</div>
         </div>
         <div class="stat-block">
           <div class="stat-num">165M+</div>
-          <div class="stat-lbl">x402 transactions — all KYT-screened by Coinbase</div>
-          <div class="stat-desc">x402 processes agent payments at scale, but Coinbase's built-in KYT (Know Your Transaction) screening means every transaction is monitored. Permissionless it is not.</div>
+          <div class="stat-lbl">Agent transactions processed — all compliance-screened</div>
+          <div class="stat-desc">The leading agent payment protocol operates at scale but ships with built-in KYT (Know Your Transaction) screening on every transaction. Every settlement passes through a compliance layer controlled by a single entity.</div>
         </div>
         <div class="stat-block">
           <div class="stat-num">0</div>
           <div class="stat-lbl">Permissionless, anonymous, native-token agent payment protocols</div>
-          <div class="stat-desc">Every existing solution settles in USDC and routes through corporate infrastructure. No anonymous, permissionless alternative with a native settlement token exists. Until PROXY.</div>
+          <div class="stat-desc">Every existing solution settles in regulated stablecoins routed through corporate infrastructure. No permissionless, anonymous, native-token alternative exists. Until PROXY.</div>
         </div>
       </div>
 
@@ -667,29 +754,29 @@
         <div class="pp">
           <div class="pp-n">01</div>
           <div>
-            <div class="pp-title">Coinbase Controls the Rails</div>
-            <div class="pp-body">x402 — the dominant agent payment protocol — is operated by Coinbase. That means Coinbase can screen, block, or monitor any agent transaction. Infrastructure controlled by a single corporation is not permissionless infrastructure.</div>
+            <div class="pp-title">Compliance Layers Are Architectural, Not Optional</div>
+            <div class="pp-body">KYT screening in dominant agent payment protocols is not a feature flag — it is embedded in the settlement pipeline. An agent transaction is evaluated against a private entity's risk model before escrow releases. That is not a permissionless architecture regardless of how it is marketed.</div>
           </div>
         </div>
         <div class="pp">
           <div class="pp-n">02</div>
           <div>
-            <div class="pp-title">KYT Screening on Every Transaction</div>
-            <div class="pp-body">Agentic Wallets ship with built-in Know Your Transaction screening. Every agent payment is checked against Coinbase's compliance infrastructure. For agents that need genuine anonymity, this is a fundamental architectural incompatibility.</div>
+            <div class="pp-title">Stablecoin Settlement ≠ Censorship Resistance</div>
+            <div class="pp-body">The dominant settlement currency for agent payments operates under regulatory jurisdiction. Wallet addresses can be blacklisted at the issuer level and balances can be frozen. A decentralised routing layer that settles in a regulatorily-controlled stablecoin inherits all of that currency's censorship properties.</div>
           </div>
         </div>
         <div class="pp">
           <div class="pp-n">03</div>
           <div>
-            <div class="pp-title">Stablecoin-Only Settlement</div>
-            <div class="pp-body">Every major agent payment solution settles in USDC — a regulated stablecoin that can be frozen, blacklisted, or seized. There is no permissionless, native-token alternative with genuine censorship resistance.</div>
+            <div class="pp-title">Custodial Infrastructure Has Admin Keys</div>
+            <div class="pp-body">Agent wallet infrastructure operated by corporations retains the ability to freeze, restrict, or terminate agent wallet functionality. Spending limits, session caps, and compliance controls are implemented at the infrastructure level — not the agent level.</div>
           </div>
         </div>
         <div class="pp">
           <div class="pp-n">04</div>
           <div>
-            <div class="pp-title">There Is an Off Switch</div>
-            <div class="pp-body">Corporate-controlled infrastructure has corporate-controlled kill switches. An agent economy that runs on Coinbase's rails runs at Coinbase's discretion. PROXY has no admin keys, no compliance layer, and no entity that can shut it down.</div>
+            <div class="pp-title">Transaction Privacy Is Not Default</div>
+            <div class="pp-body">Every agent transaction on incumbent protocols generates a log entry visible to the infrastructure operator. For agents acting on behalf of institutional principals, or executing strategies with competitive sensitivity, a surveillance layer baked into the payment stack is an unacceptable architectural dependency.</div>
           </div>
         </div>
       </div>
@@ -785,7 +872,7 @@
 <section id="comparison">
   <div class="wrap" style="max-width:900px;">
     <div class="sec-label rv">Competitive Landscape</div>
-    <h2 class="sec-h rv d1">The alternative to<br/><em>Coinbase's rails.</em></h2>
+    <h2 class="sec-h rv d1">Built different.<br/><em>By design.</em></h2>
     <p class="sec-body rv d2">x402 and Agentic Wallets work. But they're Coinbase's products. PROXY is for agents that need something nobody can turn off.</p>
 
     <table class="cmp-table rv d2">
@@ -793,18 +880,18 @@
         <tr>
           <th>Capability</th>
           <th class="pc">PROXY</th>
-          <th>x402 / Agentic Wallets</th>
+          <th>Incumbent Protocols</th>
           <th>Stripe / Fiat</th>
           <th>Crypto Payments</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Permissionless — no corporate gatekeeper</td><td class="pc ck">✓</td><td class="cx">✗ Coinbase-controlled</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
+        <tr><td>Permissionless — no corporate gatekeeper</td><td class="pc ck">✓</td><td class="cx">✗ Corporately controlled</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
         <tr><td>Anonymous by default — no KYT screening</td><td class="pc ck">✓</td><td class="cx">✗ KYT on every tx</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
         <tr><td>Native token settlement (not stablecoin)</td><td class="pc ck">✓</td><td class="cx">✗ USDC only</td><td class="cx">✗</td><td class="cn">Varies</td></tr>
         <tr><td>No admin keys — no off switch</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
         <tr><td>On-chain proof of delivery</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td></tr>
-        <tr><td>Non-custodial</td><td class="pc ck">✓</td><td class="cx">✗ Coinbase custody</td><td class="cx">✗</td><td class="ck">✓</td></tr>
+        <tr><td>Non-custodial</td><td class="pc ck">✓</td><td class="cx">✗ Custodial</td><td class="cx">✗</td><td class="ck">✓</td></tr>
         <tr><td>Agent-to-agent payments</td><td class="pc ck">✓</td><td class="cn">Partial</td><td class="cx">✗</td><td class="cx">✗</td></tr>
         <tr><td>Censorship resistant</td><td class="pc ck">✓</td><td class="cx">✗</td><td class="cx">✗</td><td class="cn">Partial</td></tr>
       </tbody>
@@ -816,11 +903,9 @@
 <section id="token">
   <div class="wrap">
     <div class="sec-label rv">Token</div>
-    <h2 class="sec-h rv d1">$PROXY —<br/><em>settlement without stablecoins.</em></h2>
+    <h2 class="sec-h rv d1">$PROXY —<br/><em>the unfreezable settlement layer.</em></h2>
     <p class="sec-body rv d2">
-      Every existing agent payment solution settles in USDC. USDC can be frozen.
-      PROXY settles in $PROXY — a native token with no issuer, no compliance layer,
-      and no entity that can intervene in a transaction.
+      Regulated stablecoins — the settlement currency of every incumbent agent payment protocol — can be frozen at the issuer level. PROXY settles in $PROXY: a native ERC-20 with no issuer, no compliance layer, and no entity with the technical capability to intervene in a settled transaction.
     </p>
 
     <div class="token-layout rv d2">
@@ -937,6 +1022,220 @@
   </div>
 </section>
 
+<!-- TECH DEEP DIVE -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-label rv">Protocol Architecture</div>
+    <h2 class="sec-h rv d1">Under the hood.<br/><em>How it actually works.</em></h2>
+    <p class="sec-body rv d2">
+      PROXY is composed of five discrete protocol layers. Every transaction flows through
+      all five — from signed agent request to on-chain settlement. No layer can be bypassed.
+      No intermediary can intervene between proof verification and escrow release.
+    </p>
+
+    <div class="tech-intro rv d2">
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-filename">AgentRequest.schema.json</div>
+            <div class="code-lang">JSON Schema</div>
+          </div>
+          <div class="code-body"><span class="cmt">// Signed by agent wallet before broadcast</span>
+<span class="kw">{</span>
+  <span class="str">"agent_id"</span>:       <span class="str">"0x4f2a...c91b"</span>,
+  <span class="str">"resource_type"</span>:  <span class="str">"inference"</span>,
+  <span class="str">"parameters"</span>: <span class="kw">{</span>
+    <span class="str">"model"</span>:          <span class="str">"llama-3.3-70b-instruct"</span>,
+    <span class="str">"prompt_tokens"</span>:  <span class="num">2048</span>,
+    <span class="str">"max_tokens"</span>:     <span class="num">512</span>
+  <span class="kw">}</span>,
+  <span class="str">"budget_ceiling"</span>: <span class="str">"48.50"</span>,  <span class="cmt">// $PROXY</span>
+  <span class="str">"max_latency_ms"</span>: <span class="num">800</span>,
+  <span class="str">"timestamp"</span>:      <span class="num">1748000000</span>,
+  <span class="str">"signature"</span>:      <span class="str">"0x7d1e...aa3f"</span>
+<span class="kw">}</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-filename">DeliveryProof.schema.json</div>
+            <div class="code-lang">JSON Schema</div>
+          </div>
+          <div class="code-body"><span class="cmt">// Submitted by provider, verified before escrow release</span>
+<span class="kw">{</span>
+  <span class="str">"job_id"</span>:              <span class="str">"0x91cc...f04d"</span>,
+  <span class="str">"provider_id"</span>:         <span class="str">"prv_0x4f2a"</span>,
+  <span class="str">"resource_type"</span>:       <span class="str">"inference"</span>,
+  <span class="str">"output_hash"</span>:         <span class="str">"sha256:a3f1..."</span>,
+  <span class="str">"model_weights_hash"</span>:  <span class="str">"sha256:8c2d..."</span>,
+  <span class="str">"latency_ms"</span>:          <span class="num">312</span>,
+  <span class="str">"timestamp"</span>:           <span class="num">1748000312</span>,
+  <span class="str">"signature"</span>:           <span class="str">"0x3be7...219a"</span>
+<span class="kw">}</span>
+<span class="cmt">// Escrow releases only on valid proof</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-layers rv d2">
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 01</div>
+          <div class="tl-name">Agent Wallet SDK</div>
+          <div class="tl-tag">Non-custodial · No KYC</div>
+        </div>
+        <div class="tl-body">
+          The SDK initialises a non-custodial ERC-20 wallet on Base for the agent — no human key management required post-deployment. The agent controls its own private key. The SDK exposes four methods: <strong>init()</strong>, <strong>request()</strong>, <strong>verify()</strong>, <strong>balance()</strong>. Framework-agnostic: compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. At request time, the agent constructs a signed <strong>AgentRequest</strong> object and atomically locks the budget ceiling in escrow before broadcast.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">init.ts</div>
+              <div class="code-lang">TypeScript</div>
+            </div>
+            <div class="code-body"><span class="kw">const</span> agent = <span class="kw">await</span> <span class="type">ProxyAgent</span>.<span class="fn">init</span>(<span class="kw">{</span>
+  network: <span class="str">'base-mainnet'</span>,
+  fundingAmount: <span class="str">'500'</span>, <span class="cmt">// $PROXY</span>
+  budgetAlerts: <span class="kw">{</span>
+    threshold: <span class="str">'50'</span>,
+    callback: (bal) <span class="kw">=></span> notify(bal)
+  <span class="kw">}</span>
+<span class="kw">}</span>);
+
+<span class="cmt">// Agent wallet: 0x4f2a...c91b</span>
+<span class="cmt">// Balance: 500 $PROXY</span>
+<span class="cmt">// No human required from this point</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 02</div>
+          <div class="tl-name">ZK Routing Layer</div>
+          <div class="tl-tag">Anonymous · ZK Attestation</div>
+        </div>
+        <div class="tl-body">
+          The routing layer receives broadcast <strong>AgentRequest</strong> objects and executes a weighted matching algorithm against the registered provider set. Providers are scored on stake weight, latency history, reliability score, availability, and price. Critically: provider eligibility is verified using <strong>zero-knowledge attestations</strong> — the routing layer confirms a provider has sufficient bond and meets spec without revealing its wallet address or infrastructure details to the requesting agent. Neither party learns the other's identity.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">routing_score.pseudo</div>
+              <div class="code-lang">Algorithm</div>
+            </div>
+            <div class="code-body"><span class="fn">score</span>(provider) =
+  w1 × stake_weight
+  + w2 × latency_score
+  + w3 × reliability_score
+  + w4 × availability_score
+  + w5 × price_score
+
+<span class="cmt">// w1–w5 are DAO-governed parameters</span>
+<span class="cmt">// Provider identity never exposed to agent</span>
+<span class="cmt">// ZK proof confirms eligibility anonymously</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 03</div>
+          <div class="tl-name">Escrow Contracts</div>
+          <div class="tl-tag">Base L2 · No Admin Keys</div>
+        </div>
+        <div class="tl-body">
+          All payment flows through non-upgradeable escrow smart contracts deployed on Base. At request broadcast, the budget ceiling is <strong>atomically escrowed</strong> — providers are guaranteed payment exists before accepting a job. On valid proof submission, the contract releases the agreed $PROXY amount instantly. Failed proofs trigger a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. Contracts are <strong>non-upgradeable post-audit</strong> — no admin key, no proxy pattern, no entity that can modify settlement logic.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">escrow_lifecycle.pseudo</div>
+              <div class="code-lang">Contract Flow</div>
+            </div>
+            <div class="code-body"><span class="fn">createEscrow</span>(agentId, amount, jobHash)
+  → escrowId, budget locked
+
+<span class="fn">releaseEscrow</span>(escrowId, deliveryProof)
+  → proof valid? release $PROXY
+  → proof invalid? open dispute (300s)
+
+<span class="fn">slashProvider</span>(providerId, amount)
+  → fraud detected: 50% bond slashed
+  → downtime > 1hr: 2%/hr slashed
+
+<span class="cmt">// Non-upgradeable. No admin key.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 04</div>
+          <div class="tl-name">Provider Network</div>
+          <div class="tl-tag">Bonded · Permissionless Entry</div>
+        </div>
+        <div class="tl-body">
+          Any operator can register a provider node by bonding $PROXY as collateral — no permission required, no whitelist. Providers declare supported resource types and associated models or data feeds. Compute nodes submit hardware attestation and pass baseline latency benchmarks. The bond is subject to slashing for delivery failures, proof timeouts, and sustained downtime — creating a strong economic incentive for reliability without centralised quality control. Five node types: <strong>Compute</strong> (inference), <strong>Oracle</strong> (data feeds), <strong>Relay</strong> (API access), <strong>Storage</strong>, <strong>Bandwidth</strong>.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">provider_bonds.table</div>
+              <div class="code-lang">Spec</div>
+            </div>
+            <div class="code-body"><span class="type">Compute</span>  → 500 $PROXY  · output hash proof
+<span class="type">Oracle</span>   → 250 $PROXY  · signed timestamp
+<span class="type">Relay</span>    → 150 $PROXY  · req/resp hash
+<span class="type">Storage</span>  → 200 $PROXY  · merkle proof
+<span class="type">Bandwidth</span>→ 100 $PROXY  · transfer receipt
+
+<span class="cmt">// Permissionless registration</span>
+<span class="cmt">// No whitelist. No KYC.</span>
+<span class="cmt">// Bond slashed on delivery failure</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 05</div>
+          <div class="tl-name">Proof Layer</div>
+          <div class="tl-tag">Cryptographic Verification</div>
+        </div>
+        <div class="tl-body">
+          Every resource delivery must be accompanied by a <strong>DeliveryProof</strong> before any escrow releases. Proof standards are resource-specific and published in the protocol spec. For inference: output hash must be deterministically reproducible from committed model weights, with 8% of jobs re-run by independent validators. For data feeds: signed timestamp within freshness window, cross-validated against two independent oracle sources. For storage: Merkle proof of data availability. Invalid proofs trigger immediate partial slashing of the provider's bonded $PROXY — no proof, no payment.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">proof_verification.pseudo</div>
+              <div class="code-lang">Verification</div>
+            </div>
+            <div class="code-body"><span class="fn">verifyProof</span>(DeliveryProof proof) {
+  assert proof.output_hash ==
+    <span class="fn">hash</span>(output, model_weights_hash)
+
+  assert proof.latency_ms ≤
+    request.max_latency_ms
+
+  assert proof.timestamp ≤
+    request.timestamp + MAX_TTL
+
+  <span class="cmt">// 8% spot-check: re-run by validators</span>
+  <span class="cmt">// Fail → slash 10% of bond immediately</span>
+  → <span class="fn">releaseEscrow</span>(escrowId)
+}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
@@ -950,11 +1249,11 @@
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>What problem does PROXY solve?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">Agent payment infrastructure already exists — but it's controlled by Coinbase. x402 and Agentic Wallets work, but they include KYT screening on every transaction, settle in USDC, and Coinbase can intervene at any point. PROXY is the permissionless alternative for agents that need to operate without a corporate gatekeeper.</div>
+          <div class="faq-a">Incumbent agent payment infrastructure is compliance-gated, stablecoin-denominated, and operated by entities that can screen, freeze, or restrict transactions. PROXY is the permissionless alternative — ZK-routed, escrow-settled, and governed by on-chain token holders rather than a corporation.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>How is PROXY different from x402?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">x402 is Coinbase's protocol. It ships with KYT compliance screening, settles in USDC (which can be frozen), and routes through Coinbase infrastructure. PROXY has no admin keys, no compliance layer, and settles in $PROXY — a native token no entity can freeze or blacklist.</div>
+          <div class="faq-a">Incumbent protocols route through compliance infrastructure, settle in regulatorily-controlled stablecoins, and retain corporate-level admin keys. PROXY has no compliance layer, no admin keys, and settles in $PROXY — a native ERC-20 no entity can freeze or blacklist.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Why does anonymity matter for agents?</span><span class="faq-icon">+</span></div>
@@ -962,7 +1261,7 @@
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Why a native token instead of USDC?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">USDC can be frozen by Circle. Stablecoins have issuers who can blacklist wallets. $PROXY has no issuer and no compliance layer. It's a permissionless settlement currency — the architectural property that makes PROXY genuinely censorship resistant rather than just marketing itself that way.</div>
+          <div class="faq-a">Regulated stablecoins have issuers who can blacklist wallets and freeze balances at the protocol level. $PROXY has no issuer and no compliance layer. It is a permissionless settlement currency — the architectural property that makes PROXY genuinely censorship-resistant, not just marketed as such.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>How is $PROXY launched?</span><span class="faq-icon">+</span></div>
@@ -974,7 +1273,7 @@
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Why Base?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">Base is Coinbase's Ethereum L2 — fast, low cost, and where the majority of agent payment activity is already happening. PROXY is built on Base but is not controlled by Coinbase. The irony is intentional.</div>
+          <div class="faq-a">Base is a high-throughput Ethereum L2 — sub-cent fees, ~2s block times, and where the majority of on-chain agent activity is already concentrated. PROXY is deployed on Base but operates independently of any entity that controls the underlying chain. The infrastructure layer and the application layer are distinct.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Where can I read the full technical detail?</span><span class="faq-icon">+</span></div>
@@ -1027,10 +1326,10 @@
 <script>
   // ── TICKER ──
   const items = [
-    'Autonomous AI Agents','Anonymous Transactions','On-Chain Settlement',
-    'Zero Human Intervention','Agent-Native Wallets','$PROXY Token',
-    'Built on Base','Proof of Delivery','Multi-Resource Marketplace',
-    'Agent-to-Agent Payments','Fair Launch','Sub-Second Settlement'
+    'ZK Anonymous Routing','AgentRequest · DeliveryProof','Atomic Escrow Settlement',
+    'Permissionless Provider Network','Non-Custodial Agent Wallets','$PROXY — Native Token',
+    'Built on Base','Cryptographic Proof of Delivery','Multi-Resource Marketplace',
+    'Agent-to-Agent Payments','No Admin Keys','No Compliance Layer'
   ];
   const track = document.getElementById('tickerTrack');
   track.innerHTML = [...items,...items].map(t =>
