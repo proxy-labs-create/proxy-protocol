@@ -1,39 +1,40 @@
+[ROADMAP.md](https://github.com/user-attachments/files/28090621/ROADMAP.md)
 # Roadmap
 
 **PROXY Protocol — Development Roadmap**
 
-> Last updated: 2026 · Status: Phase 01 Active
+> Last updated: May 2026 · Status: Phase 01 Complete · Phase 02 Active
 
 ---
 
-## Phase 01 — Genesis `[NOW]`
+## Phase 01 — Genesis `[COMPLETE]`
 
-**Status: Active**
+**Status: Complete**
 
-The foundation phase establishes the protocol's public presence and community.
-
-- [x] Token launch via Flaunch on Base
+- [x] Token launch on Base via Doppler
 - [x] Website live at proxyprotocol.org
 - [x] Whitepaper published
 - [x] GitHub repository live
-- [x] Protocol architecture published
+- [x] Protocol architecture specification published
+- [x] Agent Playground live at proxyprotocol.org/playground.html
 - [x] Early access waitlist open
-- [ ] Twitter/X community launch
-- [ ] Discord community open
-- [ ] Agent Playground interactive demo released
+- [x] Twitter/X community launched — @proxyprotocol
+- [x] Telegram community launched — t.me/proxyprotocol
 
 ---
 
-## Phase 02 — Testnet `[UPCOMING]`
+## Phase 02 — Testnet `[ACTIVE]`
 
-**Status: Pending**
+**Status: In Progress**
 
-The build phase delivers the first working implementation of the PROXY protocol on Base testnet.
+The build phase delivers the first working implementation of the PROXY protocol on Base Sepolia testnet.
 
 - [ ] PROXY testnet deployment on Base Sepolia
 - [ ] Agent Wallet SDK alpha release (JavaScript + Python)
-- [ ] Inference provider integration (open-weight models)
+- [ ] Inference provider integration — open-weight models (Llama, Mistral, Qwen)
 - [ ] Data feed provider integration
+- [ ] ZK routing layer implementation
+- [ ] Escrow smart contract deployment on testnet
 - [ ] Smart contract audit initiated
 - [ ] First community provider nodes registered on testnet
 - [ ] Bug bounty programme launched
@@ -45,7 +46,7 @@ The build phase delivers the first working implementation of the PROXY protocol 
 
 **Status: Pending**
 
-The launch phase delivers the first production version of the PROXY protocol.
+The launch phase delivers the first production version of the PROXY protocol on Base mainnet.
 
 - [ ] Smart contract audit complete
 - [ ] Mainnet deployment on Base
@@ -54,7 +55,7 @@ The launch phase delivers the first production version of the PROXY protocol.
 - [ ] First live agent transactions settled on-chain
 - [ ] Provider onboarding programme launched
 - [ ] Inference and data feed marketplace live
-- [ ] Protocol explorer / dashboard live
+- [ ] Protocol explorer and live transaction dashboard
 
 ---
 
@@ -64,14 +65,14 @@ The launch phase delivers the first production version of the PROXY protocol.
 
 The ecosystem phase expands the protocol into a fully decentralised, governed network.
 
-- [ ] Agent-to-agent payment layer
-- [ ] DAO governance activated — $PROXY holders vote
+- [ ] Agent-to-agent payment layer live
+- [ ] DAO governance activated — $PROXY holders vote on protocol parameters
 - [ ] API access and storage marketplace live
 - [ ] Bandwidth marketplace live
 - [ ] Cross-chain agent wallet support
 - [ ] Enterprise agent fleet integrations
-- [ ] OEM and platform partnerships
 - [ ] Full multi-resource marketplace operational
+- [ ] Progressive decentralisation of routing layer
 
 ---
 
@@ -79,10 +80,11 @@ The ecosystem phase expands the protocol into a fully decentralised, governed ne
 
 We build in public. Protocol decisions, architecture changes, and milestone updates are documented here and on our social channels.
 
-If you want to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-If you want to be notified of updates, join the early access list at [proxyprotocol.org](https://proxyprotocol.org).
+Contribute: [`CONTRIBUTING.md`](CONTRIBUTING.md)  
+Early access: [proxyprotocol.org](https://proxyprotocol.org)  
+Twitter/X: [@proxyprotocol](https://x.com/proxyprotocol)  
+Telegram: [t.me/proxyprotocol](https://t.me/proxyprotocol)
 
 ---
 
-*© 2026 PROXY Protocol*
+*© 2026 PROXY Protocol — Built on Base*
