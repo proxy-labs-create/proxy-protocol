@@ -427,6 +427,19 @@
       line-height: 1.65; color: var(--ink2);
     }
 
+    /* ── BUY BUTTON ── */
+    .buy-btn-large {
+      display: block; margin-top: 20px;
+      padding: 16px 24px;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--mono); font-size: 12px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; text-align: center;
+      transition: opacity .2s;
+    }
+    .buy-btn-large:hover { opacity: .85; }
+
     /* ── ROADMAP ── */
     #roadmap {
       background: var(--bg2);
@@ -685,7 +698,7 @@
   </ul>
   <div class="nav-right">
     <div class="nav-tag">$PROXY · Base</div>
-    <a href="#waitlist" class="nav-cta">Early Access</a>
+    <a href="https://doppler.lol" target="_blank" class="nav-cta" id="buyBtn">Buy $PROXY</a>
   </div>
 </nav>
 
@@ -707,8 +720,9 @@
       $PROXY settles on-chain. No intermediary. No off switch.
     </p>
     <div class="hero-actions">
-      <a href="playground.html" class="btn-p">Try the Playground</a>
-      <a href="#tech" class="btn-g">Read the Architecture</a>
+      <a href="https://doppler.lol" target="_blank" class="btn-p" id="heroBuyBtn">Buy $PROXY</a>
+      <a href="playground.html" class="btn-g">Try the Playground</a>
+      <a href="#tech" class="btn-g">Architecture</a>
     </div>
   </div>
 </section>
@@ -1138,6 +1152,7 @@
           <div class="supply-label">Why a Native Token</div>
           <div class="supply-text">USDC can be frozen by Circle. Stablecoins have issuers. $PROXY has neither. It is a permissionless settlement currency — no entity can blacklist a wallet, freeze a balance, or block a transaction. That's not a tokenomic feature. It's an architectural property.</div>
         </div>
+        <a href="https://doppler.lol" target="_blank" class="buy-btn-large" id="tokenBuyBtn">Buy $PROXY on Doppler →</a>
       </div>
 
       <div class="token-utils">
@@ -1292,7 +1307,7 @@
 <!-- WAITLIST -->
 <section id="waitlist">
   <div class="wl-inner">
-    <div class="sec-label rv" style="text-align:left;">Early Access</div>
+    <div class="sec-label rv" style="text-align:left;">Stay Updated</div>
     <h2 class="wl-h rv d1">The permissionless<br/>alternative <i>is here.</i></h2>
     <p class="wl-sub rv d2">
       Be first to build on PROXY. Join the early access list for protocol
