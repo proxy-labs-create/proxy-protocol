@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PROXY Protocol — Technical Whitepaper v1.1</title>
-  <meta name="description" content="PROXY Protocol Whitepaper. Permissionless agent payment infrastructure on Base. ZK-routed, escrow-settled, cryptographically verified." />
+  <meta name="description" content="PROXY Protocol Whitepaper. Permissionless agent payment infrastructure on Solana. ZK-routed, escrow-settled, cryptographically verified." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -461,8 +461,8 @@
     </ul>
     <div class="toc-meta">
       Token: <strong>$PROXY</strong><br/>
-      Network: <strong>Base (8453)</strong><br/>
-      Launch: <strong>Fair Launch · Doppler</strong><br/>
+      Network: <strong>Solana (Mainnet-beta)</strong><br/>
+      Launch: <strong>Fair Launch · pump.fun</strong><br/>
       Version: <strong>v1.1 · 2026</strong>
     </div>
   </aside>
@@ -473,19 +473,19 @@
     <div class="cover" id="abstract">
       <div class="cover-eyebrow">PROXY Protocol — Technical Whitepaper</div>
       <div class="cover-title">PROXY<span class="dot">.</span></div>
-      <div class="cover-sub">Permissionless agent payment infrastructure on Base.</div>
+      <div class="cover-sub">Permissionless agent payment infrastructure on Solana.</div>
       <div class="chips">
         <div class="chip hi">$PROXY</div>
-        <div class="chip">Base · Chain ID 8453</div>
-        <div class="chip">Fair Launch · Doppler</div>
-        <div class="chip">ERC-20</div>
+        <div class="chip">Solana · Mainnet-beta</div>
+        <div class="chip">Fair Launch · pump.fun</div>
+        <div class="chip">SPL Token</div>
         <div class="chip">ZK-Routed</div>
         <div class="chip">v1.1 · 2026</div>
       </div>
       <div class="abstract-box">
         <div class="abstract-label">Abstract</div>
         <p class="abstract-text">Infrastructure for autonomous AI agent payments exists and processes hundreds of millions of transactions. But every dominant protocol is <strong>compliance-gated, stablecoin-denominated, and corporately controlled.</strong> KYT screening is embedded in the settlement pipeline. Settlement currencies have issuers who can freeze balances. Infrastructure operators retain admin keys and kill switches. For agents that need to operate without identity exposure, without a compliance layer, and without a settlement currency that can be frozen — the incumbent architecture is structurally incompatible.</p>
-        <p class="abstract-text"><strong>PROXY is the permissionless alternative.</strong> It enables autonomous AI agents to hold, spend, and settle $PROXY — a native ERC-20 token with no issuer and no compliance layer — anonymously on Base. No KYT screening. No admin keys over settlement contracts. No entity with the technical capability to freeze a balance or block a transaction. Five protocol layers: non-custodial Agent Wallet SDK, ZK anonymous routing, non-upgradeable escrow contracts, permissionless provider network, and cryptographic proof-of-delivery. PROXY is launched as a fully fair-launch token on Base and governed entirely by its $PROXY holders.</p>
+        <p class="abstract-text"><strong>PROXY is the permissionless alternative.</strong> It enables autonomous AI agents to hold, spend, and settle $PROXY — a native SPL token with no issuer and no compliance layer — anonymously on Solana. No KYT screening. No admin keys over settlement contracts. No entity with the technical capability to freeze a balance or block a transaction. Five protocol layers: non-custodial Agent Wallet SDK, ZK anonymous routing, non-upgradeable escrow programs, permissionless provider network, and cryptographic proof-of-delivery. PROXY is launched as a fully fair-launch token on Solana and governed entirely by its $PROXY holders.</p>
       </div>
     </div>
 
@@ -546,20 +546,20 @@
       <span class="sec-anchor" id="how"></span>
       <div class="sec-num">03 — How PROXY Works</div>
       <h2>Five steps.<br/><em>Zero intermediaries.</em></h2>
-      <p>Every PROXY transaction flows through five discrete protocol layers, from signed agent request to on-chain settlement. No layer can be bypassed. No intermediary can intervene between a valid <code>DeliveryProof</code> submission and escrow release. The entire cycle completes in approximately two seconds at Base block time.</p>
+      <p>Every PROXY transaction flows through five discrete protocol layers, from signed agent request to on-chain settlement. No layer can be bypassed. No intermediary can intervene between a valid <code>DeliveryProof</code> submission and escrow release. The entire cycle completes in approximately 400 milliseconds at Solana block time.</p>
       <div class="flow">
         <div class="flow-step">
           <div class="flow-num">01</div>
           <div>
             <div class="flow-title">Agent Wallet Initialisation</div>
-            <div class="flow-body">An autonomous agent deploys with a PROXY wallet — a non-custodial ERC-20 identity on Base funded in $PROXY by its operator at initialisation. Post-funding, the agent controls its own private key. No human interaction is required for any subsequent transaction. The wallet address is the agent's sole identity on the network. No name. No email. No KYC. No compliance registration.</div>
+            <div class="flow-body">An autonomous agent deploys with a PROXY wallet — a non-custodial SPL identity on Solana funded in $PROXY by its operator at initialisation. Post-funding, the agent controls its own private key. No human interaction is required for any subsequent transaction. The wallet address is the agent's sole identity on the network. No name. No email. No KYC. No compliance registration.</div>
           </div>
         </div>
         <div class="flow-step">
           <div class="flow-num">02</div>
           <div>
             <div class="flow-title">AgentRequest Construction & Broadcast</div>
-            <div class="flow-body">When the agent requires a resource, the SDK constructs a signed <code>AgentRequest</code> object specifying resource type, model or feed parameters, max latency, and a budget ceiling in $PROXY. The budget ceiling is <strong>atomically escrowed</strong> in the PROXY smart contracts at broadcast — providers are guaranteed payment exists before accepting a job. No pre-authorisation. No human approval.</div>
+            <div class="flow-body">When the agent requires a resource, the SDK constructs a signed <code>AgentRequest</code> object specifying resource type, model or feed parameters, max latency, and a budget ceiling in $PROXY. The budget ceiling is <strong>atomically escrowed</strong> in the PROXY programs at broadcast — providers are guaranteed payment exists before accepting a job. No pre-authorisation. No human approval.</div>
           </div>
         </div>
         <div class="flow-step">
@@ -580,12 +580,12 @@
           <div class="flow-num">05</div>
           <div>
             <div class="flow-title">Escrow Release · $PROXY Settlement</div>
-            <div class="flow-body">On valid proof submission, the non-upgradeable PROXY escrow contract releases the agreed $PROXY amount to the provider's wallet on Base. Settlement finalises within the Base block time of approximately two seconds. The transaction is immutably recorded on-chain. No compliance check at settlement. No intermediary. No entity with the capability to block a valid settlement.</div>
+            <div class="flow-body">On valid proof submission, the non-upgradeable PROXY escrow program releases the agreed $PROXY amount to the provider's wallet on Solana. Settlement finalises within the Solana block time of approximately 400 milliseconds. The transaction is immutably recorded on-chain. No compliance check at settlement. No intermediary. No entity with the capability to block a valid settlement.</div>
           </div>
         </div>
       </div>
       <div class="callout" style="margin-top:28px;">
-        <p><strong>On permissionlessness throughout the flow:</strong> At no step is a compliance decision required. The escrow contracts are non-upgradeable — their settlement logic cannot be modified by any entity. The routing layer uses ZK attestations to anonymise both parties. The proof layer releases funds based on cryptographic verification, not on a compliance decision. This is not a design aspiration. It is a description of the current architecture.</p>
+        <p><strong>On permissionlessness throughout the flow:</strong> At no step is a compliance decision required. The escrow programs are non-upgradeable — their settlement logic cannot be modified by any entity. The routing layer uses ZK attestations to anonymise both parties. The proof layer releases funds based on cryptographic verification, not on a compliance decision. This is not a design aspiration. It is a description of the current architecture.</p>
       </div>
     </div>
 
@@ -602,7 +602,7 @@
         <div class="arch-arr">↓</div>
         <div class="arch-layer"><div class="arch-name">Layer 02 — ZK Routing Layer</div><div class="arch-tag">Anonymous Matching · Zero-Knowledge Attestation</div></div>
         <div class="arch-arr">↓</div>
-        <div class="arch-layer"><div class="arch-name">Layer 03 — Escrow Smart Contracts</div><div class="arch-tag">Base L2 · Non-Upgradeable · No Admin Key</div></div>
+        <div class="arch-layer"><div class="arch-name">Layer 03 — Escrow Programs</div><div class="arch-tag">Solana · Non-Upgradeable · No Admin Key</div></div>
         <div class="arch-arr">↓</div>
         <div class="arch-layer"><div class="arch-name">Layer 04 — Provider Network</div><div class="arch-tag">Permissionless Entry · Bonded · Slashable</div></div>
         <div class="arch-arr">↓</div>
@@ -612,13 +612,13 @@
       </div>
 
       <h3>4.1 — Agent Wallet SDK</h3>
-      <p>A lightweight, framework-agnostic library that initialises a non-custodial ERC-20 wallet on Base for any autonomous agent. Exposes four primary methods: <code>init()</code>, <code>request()</code>, <code>verify()</code>, <code>balance()</code>. Compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. No key custody. No KYC. No compliance registration.</p>
+      <p>A lightweight, framework-agnostic library that initialises a non-custodial SPL wallet on Solana for any autonomous agent. Exposes four primary methods: <code>init()</code>, <code>request()</code>, <code>verify()</code>, <code>balance()</code>. Compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. No key custody. No KYC. No compliance registration.</p>
 
       <h3>4.2 — ZK Routing Layer</h3>
       <p>Receives broadcast <code>AgentRequest</code> objects and executes a weighted provider matching algorithm. Provider eligibility is verified via zero-knowledge proofs — confirming sufficient bond, resource compatibility, and reliability score without revealing the provider's wallet address or infrastructure details to the requesting agent. The routing score function is a governance-controlled weighted sum across five parameters: stake weight, latency score, reliability score, availability score, and price score.</p>
 
-      <h3>4.3 — Escrow Smart Contracts</h3>
-      <p>All payment flows through non-upgradeable escrow contracts deployed on Base. Budget ceiling atomically escrowed at broadcast. On valid proof, escrow releases immediately. Failed proofs open a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. <strong>Contracts are non-upgradeable post-audit — no proxy pattern, no admin key, no entity that can modify settlement logic.</strong></p>
+      <h3>4.3 — Escrow Programs</h3>
+      <p>All payment flows through non-upgradeable escrow programs deployed on Solana. Budget ceiling atomically escrowed at broadcast. On valid proof, escrow releases immediately. Failed proofs open a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. <strong>Programs are non-upgradeable post-audit — no proxy pattern, no admin key, no entity that can modify settlement logic.</strong></p>
 
       <h3>4.4 — Provider Network</h3>
       <p>Permissionless entry: any operator bonds $PROXY to register a provider node. No whitelist. No KYC. No permission from the protocol. Five node types with distinct proof standards and minimum bond requirements. Bond is subject to slashing for delivery failures (10%), proof timeouts (5%), and fraudulent submissions (50%).</p>
@@ -643,7 +643,7 @@
         </div>
         <div class="code-body"><span class="cmt">// Constructed by Agent Wallet SDK · Signed with agent private key · Budget escrowed at broadcast</span>
 <span class="kw">{</span>
-  <span class="str">"agent_id"</span>:       <span class="str">"0x4f2a...c91b"</span>,         <span class="cmt">// Agent wallet address — sole identity on network</span>
+  <span class="str">"agent_id"</span>:       <span class="str">"7xKXr4f2...c91bQ9"</span>,         <span class="cmt">// Agent wallet address — sole identity on network</span>
   <span class="str">"resource_type"</span>:  <span class="str">"inference"</span>,             <span class="cmt">// inference | data | api | storage | bandwidth | agent</span>
   <span class="str">"parameters"</span>: <span class="kw">{</span>
     <span class="str">"model"</span>:          <span class="str">"llama-3.3-70b-instruct"</span>, <span class="cmt">// declared model — committed to proof</span>
@@ -653,7 +653,7 @@
   <span class="str">"budget_ceiling"</span>: <span class="str">"48.50"</span>,                  <span class="cmt">// $PROXY — atomically escrowed at broadcast</span>
   <span class="str">"max_latency_ms"</span>: <span class="num">800</span>,                    <span class="cmt">// latency SLA — enforced by proof layer</span>
   <span class="str">"timestamp"</span>:      <span class="num">1748000000</span>,
-  <span class="str">"signature"</span>:      <span class="str">"0x7d1e...aa3f"</span>           <span class="cmt">// ECDSA signature from agent wallet</span>
+  <span class="str">"signature"</span>:      <span class="str">"5Kq7d1e...aa3fZ2"</span>           <span class="cmt">// Ed25519 signature from agent wallet</span>
 <span class="kw">}</span></div>
       </div>
 
@@ -664,14 +664,14 @@
         </div>
         <div class="code-body"><span class="cmt">// Constructed by provider · Submitted to proof layer · Escrow releases only on valid verification</span>
 <span class="kw">{</span>
-  <span class="str">"job_id"</span>:              <span class="str">"0x91cc...f04d"</span>,     <span class="cmt">// matches AgentRequest</span>
-  <span class="str">"provider_id"</span>:         <span class="str">"prv_0x4f2a"</span>,        <span class="cmt">// provider's pseudonymous ID — not exposed to agent</span>
+  <span class="str">"job_id"</span>:              <span class="str">"3Df91cc...f04dPv"</span>,     <span class="cmt">// matches AgentRequest</span>
+  <span class="str">"provider_id"</span>:         <span class="str">"prv_7xKXr4f2"</span>,        <span class="cmt">// provider's pseudonymous ID — not exposed to agent</span>
   <span class="str">"resource_type"</span>:       <span class="str">"inference"</span>,
   <span class="str">"output_hash"</span>:         <span class="str">"sha256:a3f1..."</span>,    <span class="cmt">// sha256(output, model_weights_hash)</span>
   <span class="str">"model_weights_hash"</span>:  <span class="str">"sha256:8c2d..."</span>,    <span class="cmt">// committed model weights — enables spot-check</span>
   <span class="str">"latency_ms"</span>:          <span class="num">312</span>,                 <span class="cmt">// must be ≤ max_latency_ms from request</span>
   <span class="str">"timestamp"</span>:           <span class="num">1748000312</span>,
-  <span class="str">"signature"</span>:           <span class="str">"0x3be7...219a"</span>      <span class="cmt">// ECDSA signature from provider wallet</span>
+  <span class="str">"signature"</span>:           <span class="str">"4Hb3be7...219aXm"</span>      <span class="cmt">// Ed25519 signature from provider wallet</span>
 <span class="kw">}</span>
 <span class="cmt">// Proof layer asserts: output_hash == sha256(output, model_weights_hash)</span>
 <span class="cmt">// AND latency_ms ≤ request.max_latency_ms</span>
@@ -686,13 +686,13 @@
         </div>
         <div class="code-body"><span class="kw">import</span> { <span class="typ">ProxyAgent</span> } <span class="kw">from</span> <span class="str">'@proxy-protocol/agent-sdk'</span>;
 
-<span class="cmt">// Initialise non-custodial agent wallet on Base</span>
+<span class="cmt">// Initialise non-custodial agent wallet on Solana</span>
 <span class="kw">const</span> agent = <span class="kw">await</span> <span class="typ">ProxyAgent</span>.<span class="fn">init</span>({
-  network: <span class="str">'base-mainnet'</span>,
+  network: <span class="str">'mainnet-beta'</span>,
   fundingAmount: <span class="str">'500'</span>,  <span class="cmt">// $PROXY</span>
   budgetAlerts: { threshold: <span class="str">'50'</span>, callback: (bal) => <span class="fn">notify</span>(bal) }
 });
-<span class="cmt">// Agent wallet: 0x4f2a...c91b · No human required from this point</span>
+<span class="cmt">// Agent wallet: 7xKXr4f2...c91bQ9 · No human required from this point</span>
 
 <span class="cmt">// Broadcast AgentRequest — budget escrowed atomically</span>
 <span class="kw">const</span> result = <span class="kw">await</span> agent.<span class="fn">request</span>({
@@ -706,7 +706,7 @@
 console.<span class="fn">log</span>(result.output);      <span class="cmt">// inference result</span>
 console.<span class="fn">log</span>(result.proofHash);   <span class="cmt">// on-chain DeliveryProof hash</span>
 console.<span class="fn">log</span>(result.settled);     <span class="cmt">// true — $PROXY released to provider</span>
-console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Base transaction hash</span>
+console.<span class="fn">log</span>(result.signature);      <span class="cmt">// Solana transaction signature</span>
 <span class="cmt">// Total cycle: ~2s · No compliance check · No intermediary</span></div>
       </div>
     </div>
@@ -742,9 +742,9 @@ console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Ba
       <table class="tt">
         <tr><td>Token Name</td><td>PROXY</td></tr>
         <tr><td>Ticker</td><td>$PROXY</td></tr>
-        <tr><td>Network</td><td>Base (Ethereum L2 · Chain ID: 8453)</td></tr>
-        <tr><td>Standard</td><td>ERC-20</td></tr>
-        <tr><td>Launch</td><td>Fair Launch on Base via Doppler</td></tr>
+        <tr><td>Network</td><td>Solana (Mainnet-beta)</td></tr>
+        <tr><td>Standard</td><td>SPL Token</td></tr>
+        <tr><td>Launch</td><td>Fair Launch on Solana via pump.fun</td></tr>
         <tr><td>Pre-sale</td><td>None</td></tr>
         <tr><td>Insider Allocation</td><td>None</td></tr>
         <tr><td>Venture Capital</td><td>None</td></tr>
@@ -769,7 +769,7 @@ console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Ba
       <div class="sec-num">08 — Anonymity Architecture</div>
       <h2>Anonymous<br/><em>by default.</em></h2>
       <p>Anonymity in PROXY is not a feature that operators opt into — it is the default state of every transaction, enforced at the protocol level through three mechanisms.</p>
-      <p><strong>Pseudonymous Wallet Addressing.</strong> Agent wallets are Base addresses with no on-chain link to human identity. No name, email, KYC, or compliance registration is required or stored. The agent's sole identity on the network is its wallet address.</p>
+      <p><strong>Pseudonymous Wallet Addressing.</strong> Agent wallets are Solana (Base58) addresses with no on-chain link to human identity. No name, email, KYC, or compliance registration is required or stored. The agent's sole identity on the network is its wallet address.</p>
       <p><strong>Zero-Knowledge Routing Attestations.</strong> The routing layer verifies provider eligibility using ZK proofs — confirming sufficient bond, resource compatibility, and reliability score without revealing the provider's wallet address or infrastructure details to the requesting agent. Neither party learns the other's identity.</p>
       <p><strong>Anonymised Proof Submission.</strong> <code>DeliveryProof</code> objects contain only the minimum information required for settlement verification: job ID, output hash, model weights hash, latency, timestamp, and signature. No provider identity, no infrastructure details, no geographic data is included in the on-chain record.</p>
 
@@ -823,7 +823,7 @@ console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Ba
             <div class="rm-phase live">Phase 01 — Genesis · Complete</div>
             <div class="rm-title">Foundation</div>
             <ul class="rm-list">
-              <li>Token launch on Base via Doppler — fair launch, no pre-sale</li>
+              <li>Token launch on Solana via pump.fun — fair launch, no pre-sale</li>
               <li>Website, whitepaper, and GitHub live</li>
               <li>Agent Playground live — full protocol flow demonstration</li>
               <li>Twitter/X and Telegram communities launched</li>
@@ -837,11 +837,11 @@ console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Ba
             <div class="rm-phase">Phase 02 — Testnet · Active</div>
             <div class="rm-title">Build</div>
             <ul class="rm-list">
-              <li>PROXY testnet deployment on Base Sepolia</li>
+              <li>PROXY testnet deployment on Solana Devnet</li>
               <li>Agent Wallet SDK alpha release — JavaScript + Python</li>
               <li>First provider integrations: inference and data feeds</li>
               <li>ZK routing layer implementation</li>
-              <li>Smart contract audit initiated</li>
+              <li>Program audit initiated</li>
             </ul>
           </div>
         </div>
@@ -851,7 +851,7 @@ console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Ba
             <div class="rm-phase">Phase 03 — Mainnet</div>
             <div class="rm-title">Launch</div>
             <ul class="rm-list">
-              <li>Mainnet deployment on Base — audit complete</li>
+              <li>Mainnet deployment on Solana — audit complete</li>
               <li>Public resource marketplace open</li>
               <li>Agent SDK v1.0 public release</li>
               <li>First live agent transactions settled on-chain</li>
@@ -894,7 +894,7 @@ console.<span class="fn">log</span>(result.txHash);      <span class="cmt">// Ba
         <div class="lbl">Website: <span>proxyprotocol.org</span></div>
         <div class="lbl">GitHub: <span>github.com/proxy-labs-create/proxy-protocol</span></div>
         <div class="lbl">Playground: <span>proxyprotocol.org/playground.html</span></div>
-        <div class="lbl">Token: <span>$PROXY · Fair Launch on Base</span></div>
+        <div class="lbl">Token: <span>$PROXY · Fair Launch on Solana</span></div>
       </div>
       <div class="disclaimer">
         <p><strong>DISCLAIMER.</strong> This whitepaper is for informational purposes only and does not constitute financial advice, investment advice, or a solicitation to purchase any token or security. $PROXY is a utility token designed for use within the PROXY protocol. Participation in any token launch carries significant risk including total loss of capital. The PROXY protocol is in development — features described herein represent the intended design and may change. This document does not constitute a prospectus or offering document of any kind. Readers are advised to conduct their own research and consult appropriate professional advisors before making any financial decision. Nothing in this document should be construed as a guarantee of future performance or outcomes.</p>
