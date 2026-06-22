@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PROXY — Permissionless agent payment infrastructure on Base</title>
+  <title>PROXY — Permissionless agent payment infrastructure on Solana</title>
   <meta name="description" content="PROXY is the permissionless, anonymous payment protocol for autonomous AI agents. ZK-routed, escrow-settled, cryptographically verified. No compliance layer. No stablecoin dependency. Agents pay in $PROXY." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -427,19 +427,6 @@
       line-height: 1.65; color: var(--ink2);
     }
 
-    /* ── BUY BUTTON ── */
-    .buy-btn-large {
-      display: block; margin-top: 20px;
-      padding: 16px 24px;
-      background: var(--gold);
-      color: var(--bg);
-      font-family: var(--mono); font-size: 12px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; text-align: center;
-      transition: opacity .2s;
-    }
-    .buy-btn-large:hover { opacity: .85; }
-
     /* ── ROADMAP ── */
     #roadmap {
       background: var(--bg2);
@@ -697,14 +684,14 @@
     <li><a href="https://github.com/proxy-labs-create/proxy-protocol" target="_blank">GitHub</a></li>
   </ul>
   <div class="nav-right">
-    <div class="nav-tag">$PROXY · Base</div>
-    <a href="https://doppler.lol" target="_blank" class="nav-cta" id="buyBtn">Buy $PROXY</a>
+    <div class="nav-tag">$PROXY · Solana</div>
+    <a href="#waitlist" class="nav-cta">Early Access</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-kicker">PROXY Protocol &nbsp;·&nbsp; Built on Base &nbsp;·&nbsp; $PROXY</div>
+  <div class="hero-kicker">PROXY Protocol &nbsp;·&nbsp; Built on Solana &nbsp;·&nbsp; $PROXY</div>
   <h1 class="hero-h1">
     Permissionless.<br/>
     Anonymous.<br/>
@@ -720,9 +707,8 @@
       $PROXY settles on-chain. No intermediary. No off switch.
     </p>
     <div class="hero-actions">
-      <a href="https://doppler.lol" target="_blank" class="btn-p" id="heroBuyBtn">Buy $PROXY</a>
-      <a href="playground.html" class="btn-g">Try the Playground</a>
-      <a href="#tech" class="btn-g">Architecture</a>
+      <a href="playground.html" class="btn-p">Try the Playground</a>
+      <a href="#tech" class="btn-g">Read the Architecture</a>
     </div>
   </div>
 </section>
@@ -798,221 +784,6 @@
   </div>
 </section>
 
-<!-- TECH DEEP DIVE -->
-<section id="tech">
-  <div class="wrap">
-    <div class="sec-label rv">Protocol Architecture</div>
-    <h2 class="sec-h rv d1">Under the hood.<br/><em>How it actually works.</em></h2>
-    <p class="sec-body rv d2">
-      PROXY is composed of five discrete protocol layers. Every transaction flows through
-      all five — from signed agent request to on-chain settlement. No layer can be bypassed.
-      No intermediary can intervene between proof verification and escrow release.
-    </p>
-
-    <div class="tech-intro rv d2">
-      <div>
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-filename">AgentRequest.schema.json</div>
-            <div class="code-lang">JSON Schema</div>
-          </div>
-          <div class="code-body"><span class="cmt">// Signed by agent wallet before broadcast</span>
-<span class="kw">{</span>
-  <span class="str">"agent_id"</span>:       <span class="str">"0x4f2a...c91b"</span>,
-  <span class="str">"resource_type"</span>:  <span class="str">"inference"</span>,
-  <span class="str">"parameters"</span>: <span class="kw">{</span>
-    <span class="str">"model"</span>:          <span class="str">"llama-3.3-70b-instruct"</span>,
-    <span class="str">"prompt_tokens"</span>:  <span class="num">2048</span>,
-    <span class="str">"max_tokens"</span>:     <span class="num">512</span>
-  <span class="kw">}</span>,
-  <span class="str">"budget_ceiling"</span>: <span class="str">"48.50"</span>,  <span class="cmt">// $PROXY</span>
-  <span class="str">"max_latency_ms"</span>: <span class="num">800</span>,
-  <span class="str">"timestamp"</span>:      <span class="num">1748000000</span>,
-  <span class="str">"signature"</span>:      <span class="str">"0x7d1e...aa3f"</span>
-<span class="kw">}</span></div>
-        </div>
-      </div>
-      <div>
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-filename">DeliveryProof.schema.json</div>
-            <div class="code-lang">JSON Schema</div>
-          </div>
-          <div class="code-body"><span class="cmt">// Submitted by provider, verified before escrow release</span>
-<span class="kw">{</span>
-  <span class="str">"job_id"</span>:              <span class="str">"0x91cc...f04d"</span>,
-  <span class="str">"provider_id"</span>:         <span class="str">"prv_0x4f2a"</span>,
-  <span class="str">"resource_type"</span>:       <span class="str">"inference"</span>,
-  <span class="str">"output_hash"</span>:         <span class="str">"sha256:a3f1..."</span>,
-  <span class="str">"model_weights_hash"</span>:  <span class="str">"sha256:8c2d..."</span>,
-  <span class="str">"latency_ms"</span>:          <span class="num">312</span>,
-  <span class="str">"timestamp"</span>:           <span class="num">1748000312</span>,
-  <span class="str">"signature"</span>:           <span class="str">"0x3be7...219a"</span>
-<span class="kw">}</span>
-<span class="cmt">// Escrow releases only on valid proof</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tech-layers rv d2">
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 01</div>
-          <div class="tl-name">Agent Wallet SDK</div>
-          <div class="tl-tag">Non-custodial · No KYC</div>
-        </div>
-        <div class="tl-body">
-          The SDK initialises a non-custodial ERC-20 wallet on Base for the agent — no human key management required post-deployment. The agent controls its own private key. The SDK exposes four methods: <strong>init()</strong>, <strong>request()</strong>, <strong>verify()</strong>, <strong>balance()</strong>. Framework-agnostic: compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. At request time, the agent constructs a signed <strong>AgentRequest</strong> object and atomically locks the budget ceiling in escrow before broadcast.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">init.ts</div>
-              <div class="code-lang">TypeScript</div>
-            </div>
-            <div class="code-body"><span class="kw">const</span> agent = <span class="kw">await</span> <span class="type">ProxyAgent</span>.<span class="fn">init</span>(<span class="kw">{</span>
-  network: <span class="str">'base-mainnet'</span>,
-  fundingAmount: <span class="str">'500'</span>, <span class="cmt">// $PROXY</span>
-  budgetAlerts: <span class="kw">{</span>
-    threshold: <span class="str">'50'</span>,
-    callback: (bal) <span class="kw">=></span> notify(bal)
-  <span class="kw">}</span>
-<span class="kw">}</span>);
-
-<span class="cmt">// Agent wallet: 0x4f2a...c91b</span>
-<span class="cmt">// Balance: 500 $PROXY</span>
-<span class="cmt">// No human required from this point</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 02</div>
-          <div class="tl-name">ZK Routing Layer</div>
-          <div class="tl-tag">Anonymous · ZK Attestation</div>
-        </div>
-        <div class="tl-body">
-          The routing layer receives broadcast <strong>AgentRequest</strong> objects and executes a weighted matching algorithm against the registered provider set. Providers are scored on stake weight, latency history, reliability score, availability, and price. Critically: provider eligibility is verified using <strong>zero-knowledge attestations</strong> — the routing layer confirms a provider has sufficient bond and meets spec without revealing its wallet address or infrastructure details to the requesting agent. Neither party learns the other's identity.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">routing_score.pseudo</div>
-              <div class="code-lang">Algorithm</div>
-            </div>
-            <div class="code-body"><span class="fn">score</span>(provider) =
-  w1 × stake_weight
-  + w2 × latency_score
-  + w3 × reliability_score
-  + w4 × availability_score
-  + w5 × price_score
-
-<span class="cmt">// w1–w5 are DAO-governed parameters</span>
-<span class="cmt">// Provider identity never exposed to agent</span>
-<span class="cmt">// ZK proof confirms eligibility anonymously</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 03</div>
-          <div class="tl-name">Escrow Contracts</div>
-          <div class="tl-tag">Base L2 · No Admin Keys</div>
-        </div>
-        <div class="tl-body">
-          All payment flows through non-upgradeable escrow smart contracts deployed on Base. At request broadcast, the budget ceiling is <strong>atomically escrowed</strong> — providers are guaranteed payment exists before accepting a job. On valid proof submission, the contract releases the agreed $PROXY amount instantly. Failed proofs trigger a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. Contracts are <strong>non-upgradeable post-audit</strong> — no admin key, no proxy pattern, no entity that can modify settlement logic.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">escrow_lifecycle.pseudo</div>
-              <div class="code-lang">Contract Flow</div>
-            </div>
-            <div class="code-body"><span class="fn">createEscrow</span>(agentId, amount, jobHash)
-  → escrowId, budget locked
-
-<span class="fn">releaseEscrow</span>(escrowId, deliveryProof)
-  → proof valid? release $PROXY
-  → proof invalid? open dispute (300s)
-
-<span class="fn">slashProvider</span>(providerId, amount)
-  → fraud detected: 50% bond slashed
-  → downtime > 1hr: 2%/hr slashed
-
-<span class="cmt">// Non-upgradeable. No admin key.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 04</div>
-          <div class="tl-name">Provider Network</div>
-          <div class="tl-tag">Bonded · Permissionless Entry</div>
-        </div>
-        <div class="tl-body">
-          Any operator can register a provider node by bonding $PROXY as collateral — no permission required, no whitelist. Providers declare supported resource types and associated models or data feeds. Compute nodes submit hardware attestation and pass baseline latency benchmarks. The bond is subject to slashing for delivery failures, proof timeouts, and sustained downtime — creating a strong economic incentive for reliability without centralised quality control. Five node types: <strong>Compute</strong> (inference), <strong>Oracle</strong> (data feeds), <strong>Relay</strong> (API access), <strong>Storage</strong>, <strong>Bandwidth</strong>.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">provider_bonds.table</div>
-              <div class="code-lang">Spec</div>
-            </div>
-            <div class="code-body"><span class="type">Compute</span>  → 500 $PROXY  · output hash proof
-<span class="type">Oracle</span>   → 250 $PROXY  · signed timestamp
-<span class="type">Relay</span>    → 150 $PROXY  · req/resp hash
-<span class="type">Storage</span>  → 200 $PROXY  · merkle proof
-<span class="type">Bandwidth</span>→ 100 $PROXY  · transfer receipt
-
-<span class="cmt">// Permissionless registration</span>
-<span class="cmt">// No whitelist. No KYC.</span>
-<span class="cmt">// Bond slashed on delivery failure</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-layer">
-        <div class="tl-left">
-          <div class="tl-num">Layer 05</div>
-          <div class="tl-name">Proof Layer</div>
-          <div class="tl-tag">Cryptographic Verification</div>
-        </div>
-        <div class="tl-body">
-          Every resource delivery must be accompanied by a <strong>DeliveryProof</strong> before any escrow releases. Proof standards are resource-specific and published in the protocol spec. For inference: output hash must be deterministically reproducible from committed model weights, with 8% of jobs re-run by independent validators. For data feeds: signed timestamp within freshness window, cross-validated against two independent oracle sources. For storage: Merkle proof of data availability. Invalid proofs trigger immediate partial slashing of the provider's bonded $PROXY — no proof, no payment.
-        </div>
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-filename">proof_verification.pseudo</div>
-              <div class="code-lang">Verification</div>
-            </div>
-            <div class="code-body"><span class="fn">verifyProof</span>(DeliveryProof proof) {
-  assert proof.output_hash ==
-    <span class="fn">hash</span>(output, model_weights_hash)
-
-  assert proof.latency_ms ≤
-    request.max_latency_ms
-
-  assert proof.timestamp ≤
-    request.timestamp + MAX_TTL
-
-  <span class="cmt">// 8% spot-check: re-run by validators</span>
-  <span class="cmt">// Fail → slash 10% of bond immediately</span>
-  → <span class="fn">releaseEscrow</span>(escrowId)
-}</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="wrap">
@@ -1043,7 +814,7 @@
       <div class="hs rv d4">
         <div class="hs-num">05</div>
         <div class="hs-title">Instant Settlement</div>
-        <div class="hs-body">$PROXY releases to the provider on Base. The agent receives the resource. Sub-second, fully on-chain, fully anonymous. No human involved at any stage.</div>
+        <div class="hs-body">$PROXY releases to the provider on Solana. The agent receives the resource. Sub-second, fully on-chain, fully anonymous. No human involved at any stage.</div>
       </div>
     </div>
   </div>
@@ -1134,15 +905,15 @@
     <div class="sec-label rv">Token</div>
     <h2 class="sec-h rv d1">$PROXY —<br/><em>the unfreezable settlement layer.</em></h2>
     <p class="sec-body rv d2">
-      Regulated stablecoins — the settlement currency of every incumbent agent payment protocol — can be frozen at the issuer level. PROXY settles in $PROXY: a native ERC-20 with no issuer, no compliance layer, and no entity with the technical capability to intervene in a settled transaction.
+      Regulated stablecoins — the settlement currency of every incumbent agent payment protocol — can be frozen at the issuer level. PROXY settles in $PROXY: a native SPL token with no issuer, no compliance layer, and no entity with the technical capability to intervene in a settled transaction.
     </p>
 
     <div class="token-layout rv d2">
       <div>
         <div class="token-facts">
           <div class="tf"><div class="tf-label">Token</div><div class="tf-val gold">$PROXY</div></div>
-          <div class="tf"><div class="tf-label">Network</div><div class="tf-val">Base</div></div>
-          <div class="tf"><div class="tf-label">Standard</div><div class="tf-val">ERC-20</div></div>
+          <div class="tf"><div class="tf-label">Network</div><div class="tf-val">Solana</div></div>
+          <div class="tf"><div class="tf-label">Standard</div><div class="tf-val">SPL Token</div></div>
           <div class="tf"><div class="tf-label">Launch</div><div class="tf-val">Fair Launch</div></div>
           <div class="tf"><div class="tf-label">Pre-sale</div><div class="tf-val red">None</div></div>
           <div class="tf"><div class="tf-label">Insider Allocation</div><div class="tf-val red">None</div></div>
@@ -1152,7 +923,6 @@
           <div class="supply-label">Why a Native Token</div>
           <div class="supply-text">USDC can be frozen by Circle. Stablecoins have issuers. $PROXY has neither. It is a permissionless settlement currency — no entity can blacklist a wallet, freeze a balance, or block a transaction. That's not a tokenomic feature. It's an architectural property.</div>
         </div>
-        <a href="https://doppler.lol" target="_blank" class="buy-btn-large" id="tokenBuyBtn">Buy $PROXY on Doppler →</a>
       </div>
 
       <div class="token-utils">
@@ -1160,7 +930,7 @@
           <div class="tu-dot"></div>
           <div>
             <div class="tu-title">Censorship-Resistant Settlement</div>
-            <div class="tu-body">$PROXY is the settlement currency for every transaction on the network. No stablecoin issuer can freeze it. No compliance layer screens it. No corporate entity controls supply. Transactions settle on Base and cannot be reversed.</div>
+            <div class="tu-body">$PROXY is the settlement currency for every transaction on the network. No stablecoin issuer can freeze it. No compliance layer screens it. No corporate entity controls supply. Transactions settle on Solana and cannot be reversed.</div>
           </div>
         </div>
         <div class="tu">
@@ -1202,7 +972,7 @@
           <div class="rm-phase live">Phase 01 — Genesis · Now</div>
           <div class="rm-title">Foundation</div>
           <ul class="rm-items">
-            <li>Token launch on Base</li>
+            <li>Token launch on Solana via pump.fun</li>
             <li>Website, whitepaper, and GitHub live</li>
             <li>Agent Playground live</li>
             <li>Early access community open</li>
@@ -1215,7 +985,7 @@
           <div class="rm-phase">Phase 02 — Testnet</div>
           <div class="rm-title">Build</div>
           <ul class="rm-items">
-            <li>PROXY testnet live on Base Sepolia</li>
+            <li>PROXY testnet live on Solana Devnet</li>
             <li>Agent Wallet SDK alpha release</li>
             <li>First provider integrations: inference + data feeds</li>
             <li>Smart contract audit initiated</li>
@@ -1228,7 +998,7 @@
           <div class="rm-phase">Phase 03 — Mainnet</div>
           <div class="rm-title">Launch</div>
           <ul class="rm-items">
-            <li>Mainnet deployment on Base</li>
+            <li>Mainnet deployment on Solana</li>
             <li>Public resource marketplace open</li>
             <li>Agent SDK public release</li>
             <li>First live agent transactions settled on-chain</li>
@@ -1252,6 +1022,220 @@
   </div>
 </section>
 
+<!-- TECH DEEP DIVE -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-label rv">Protocol Architecture</div>
+    <h2 class="sec-h rv d1">Under the hood.<br/><em>How it actually works.</em></h2>
+    <p class="sec-body rv d2">
+      PROXY is composed of five discrete protocol layers. Every transaction flows through
+      all five — from signed agent request to on-chain settlement. No layer can be bypassed.
+      No intermediary can intervene between proof verification and escrow release.
+    </p>
+
+    <div class="tech-intro rv d2">
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-filename">AgentRequest.schema.json</div>
+            <div class="code-lang">JSON Schema</div>
+          </div>
+          <div class="code-body"><span class="cmt">// Signed by agent wallet before broadcast</span>
+<span class="kw">{</span>
+  <span class="str">"agent_id"</span>:       <span class="str">"0x4f2a...c91b"</span>,
+  <span class="str">"resource_type"</span>:  <span class="str">"inference"</span>,
+  <span class="str">"parameters"</span>: <span class="kw">{</span>
+    <span class="str">"model"</span>:          <span class="str">"llama-3.3-70b-instruct"</span>,
+    <span class="str">"prompt_tokens"</span>:  <span class="num">2048</span>,
+    <span class="str">"max_tokens"</span>:     <span class="num">512</span>
+  <span class="kw">}</span>,
+  <span class="str">"budget_ceiling"</span>: <span class="str">"48.50"</span>,  <span class="cmt">// $PROXY</span>
+  <span class="str">"max_latency_ms"</span>: <span class="num">800</span>,
+  <span class="str">"timestamp"</span>:      <span class="num">1748000000</span>,
+  <span class="str">"signature"</span>:      <span class="str">"0x7d1e...aa3f"</span>
+<span class="kw">}</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-filename">DeliveryProof.schema.json</div>
+            <div class="code-lang">JSON Schema</div>
+          </div>
+          <div class="code-body"><span class="cmt">// Submitted by provider, verified before escrow release</span>
+<span class="kw">{</span>
+  <span class="str">"job_id"</span>:              <span class="str">"0x91cc...f04d"</span>,
+  <span class="str">"provider_id"</span>:         <span class="str">"prv_0x4f2a"</span>,
+  <span class="str">"resource_type"</span>:       <span class="str">"inference"</span>,
+  <span class="str">"output_hash"</span>:         <span class="str">"sha256:a3f1..."</span>,
+  <span class="str">"model_weights_hash"</span>:  <span class="str">"sha256:8c2d..."</span>,
+  <span class="str">"latency_ms"</span>:          <span class="num">312</span>,
+  <span class="str">"timestamp"</span>:           <span class="num">1748000312</span>,
+  <span class="str">"signature"</span>:           <span class="str">"0x3be7...219a"</span>
+<span class="kw">}</span>
+<span class="cmt">// Escrow releases only on valid proof</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-layers rv d2">
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 01</div>
+          <div class="tl-name">Agent Wallet SDK</div>
+          <div class="tl-tag">Non-custodial · No KYC</div>
+        </div>
+        <div class="tl-body">
+          The SDK initialises a non-custodial SPL wallet on Solana for the agent — no human key management required post-deployment. The agent controls its own private key. The SDK exposes four methods: <strong>init()</strong>, <strong>request()</strong>, <strong>verify()</strong>, <strong>balance()</strong>. Framework-agnostic: compatible with LangChain, CrewAI, AutoGPT, and any custom agent runtime. At request time, the agent constructs a signed <strong>AgentRequest</strong> object and atomically locks the budget ceiling in escrow before broadcast.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">init.ts</div>
+              <div class="code-lang">TypeScript</div>
+            </div>
+            <div class="code-body"><span class="kw">const</span> agent = <span class="kw">await</span> <span class="type">ProxyAgent</span>.<span class="fn">init</span>(<span class="kw">{</span>
+  network: <span class="str">'mainnet-beta'</span>,
+  fundingAmount: <span class="str">'500'</span>, <span class="cmt">// $PROXY</span>
+  budgetAlerts: <span class="kw">{</span>
+    threshold: <span class="str">'50'</span>,
+    callback: (bal) <span class="kw">=></span> notify(bal)
+  <span class="kw">}</span>
+<span class="kw">}</span>);
+
+<span class="cmt">// Agent wallet: 0x4f2a...c91b</span>
+<span class="cmt">// Balance: 500 $PROXY</span>
+<span class="cmt">// No human required from this point</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 02</div>
+          <div class="tl-name">ZK Routing Layer</div>
+          <div class="tl-tag">Anonymous · ZK Attestation</div>
+        </div>
+        <div class="tl-body">
+          The routing layer receives broadcast <strong>AgentRequest</strong> objects and executes a weighted matching algorithm against the registered provider set. Providers are scored on stake weight, latency history, reliability score, availability, and price. Critically: provider eligibility is verified using <strong>zero-knowledge attestations</strong> — the routing layer confirms a provider has sufficient bond and meets spec without revealing its wallet address or infrastructure details to the requesting agent. Neither party learns the other's identity.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">routing_score.pseudo</div>
+              <div class="code-lang">Algorithm</div>
+            </div>
+            <div class="code-body"><span class="fn">score</span>(provider) =
+  w1 × stake_weight
+  + w2 × latency_score
+  + w3 × reliability_score
+  + w4 × availability_score
+  + w5 × price_score
+
+<span class="cmt">// w1–w5 are DAO-governed parameters</span>
+<span class="cmt">// Provider identity never exposed to agent</span>
+<span class="cmt">// ZK proof confirms eligibility anonymously</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 03</div>
+          <div class="tl-name">Escrow Contracts</div>
+          <div class="tl-tag">Solana · No Admin Keys</div>
+        </div>
+        <div class="tl-body">
+          All payment flows through non-upgradeable on-chain escrow programs deployed on Solana. At request broadcast, the budget ceiling is <strong>atomically escrowed</strong> — providers are guaranteed payment exists before accepting a job. On valid proof submission, the program releases the agreed $PROXY amount instantly. Failed proofs trigger a 300-second dispute window. Unresolved disputes route to on-chain DAO arbitration. Programs are <strong>non-upgradeable post-audit</strong> — no admin key, no proxy pattern, no entity that can modify settlement logic.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">escrow_lifecycle.pseudo</div>
+              <div class="code-lang">Contract Flow</div>
+            </div>
+            <div class="code-body"><span class="fn">createEscrow</span>(agentId, amount, jobHash)
+  → escrowId, budget locked
+
+<span class="fn">releaseEscrow</span>(escrowId, deliveryProof)
+  → proof valid? release $PROXY
+  → proof invalid? open dispute (300s)
+
+<span class="fn">slashProvider</span>(providerId, amount)
+  → fraud detected: 50% bond slashed
+  → downtime > 1hr: 2%/hr slashed
+
+<span class="cmt">// Non-upgradeable. No admin key.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 04</div>
+          <div class="tl-name">Provider Network</div>
+          <div class="tl-tag">Bonded · Permissionless Entry</div>
+        </div>
+        <div class="tl-body">
+          Any operator can register a provider node by bonding $PROXY as collateral — no permission required, no whitelist. Providers declare supported resource types and associated models or data feeds. Compute nodes submit hardware attestation and pass baseline latency benchmarks. The bond is subject to slashing for delivery failures, proof timeouts, and sustained downtime — creating a strong economic incentive for reliability without centralised quality control. Five node types: <strong>Compute</strong> (inference), <strong>Oracle</strong> (data feeds), <strong>Relay</strong> (API access), <strong>Storage</strong>, <strong>Bandwidth</strong>.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">provider_bonds.table</div>
+              <div class="code-lang">Spec</div>
+            </div>
+            <div class="code-body"><span class="type">Compute</span>  → 500 $PROXY  · output hash proof
+<span class="type">Oracle</span>   → 250 $PROXY  · signed timestamp
+<span class="type">Relay</span>    → 150 $PROXY  · req/resp hash
+<span class="type">Storage</span>  → 200 $PROXY  · merkle proof
+<span class="type">Bandwidth</span>→ 100 $PROXY  · transfer receipt
+
+<span class="cmt">// Permissionless registration</span>
+<span class="cmt">// No whitelist. No KYC.</span>
+<span class="cmt">// Bond slashed on delivery failure</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-layer">
+        <div class="tl-left">
+          <div class="tl-num">Layer 05</div>
+          <div class="tl-name">Proof Layer</div>
+          <div class="tl-tag">Cryptographic Verification</div>
+        </div>
+        <div class="tl-body">
+          Every resource delivery must be accompanied by a <strong>DeliveryProof</strong> before any escrow releases. Proof standards are resource-specific and published in the protocol spec. For inference: output hash must be deterministically reproducible from committed model weights, with 8% of jobs re-run by independent validators. For data feeds: signed timestamp within freshness window, cross-validated against two independent oracle sources. For storage: Merkle proof of data availability. Invalid proofs trigger immediate partial slashing of the provider's bonded $PROXY — no proof, no payment.
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-filename">proof_verification.pseudo</div>
+              <div class="code-lang">Verification</div>
+            </div>
+            <div class="code-body"><span class="fn">verifyProof</span>(DeliveryProof proof) {
+  assert proof.output_hash ==
+    <span class="fn">hash</span>(output, model_weights_hash)
+
+  assert proof.latency_ms ≤
+    request.max_latency_ms
+
+  assert proof.timestamp ≤
+    request.timestamp + MAX_TTL
+
+  <span class="cmt">// 8% spot-check: re-run by validators</span>
+  <span class="cmt">// Fail → slash 10% of bond immediately</span>
+  → <span class="fn">releaseEscrow</span>(escrowId)
+}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
@@ -1261,7 +1245,7 @@
       <div class="faq-list rv d2">
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>What is PROXY?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">PROXY is the permissionless, anonymous payment protocol for autonomous AI agents on Base. Agents hold $PROXY, spend it on compute, data, APIs, and storage, and settle instantly on-chain — with no KYC, no corporate gatekeeper, and no stablecoin dependency.</div>
+          <div class="faq-a">PROXY is the permissionless, anonymous payment protocol for autonomous AI agents on Solana. Agents hold $PROXY, spend it on compute, data, APIs, and storage, and settle instantly on-chain — with no KYC, no corporate gatekeeper, and no stablecoin dependency.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>What problem does PROXY solve?</span><span class="faq-icon">+</span></div>
@@ -1269,11 +1253,11 @@
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>How is PROXY different from x402?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">Incumbent protocols route through compliance infrastructure, settle in regulatorily-controlled stablecoins, and retain corporate-level admin keys. PROXY has no compliance layer, no admin keys, and settles in $PROXY — a native ERC-20 no entity can freeze or blacklist.</div>
+          <div class="faq-a">Incumbent protocols route through compliance infrastructure, settle in regulatorily-controlled stablecoins, and retain corporate-level admin keys. PROXY has no compliance layer, no admin keys, and settles in $PROXY — a native SPL token no entity can freeze or blacklist.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Why does anonymity matter for agents?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">Every agent transaction on existing protocols is screened and logged. For agents operating on behalf of individuals or institutions, that creates a surveillance layer baked into the payment infrastructure. PROXY is anonymous by default — the agent wallet is a Base address and nothing else. No names, no screening, no record beyond the on-chain transaction.</div>
+          <div class="faq-a">Every agent transaction on existing protocols is screened and logged. For agents operating on behalf of individuals or institutions, that creates a surveillance layer baked into the payment infrastructure. PROXY is anonymous by default — the agent wallet is a Solana address and nothing else. No names, no screening, no record beyond the on-chain transaction.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Why a native token instead of USDC?</span><span class="faq-icon">+</span></div>
@@ -1281,15 +1265,15 @@
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>How is $PROXY launched?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">Fair launch on Base. No pre-sale, no insider allocation, no venture capital. Every participant accesses $PROXY at the same price from the first block.</div>
+          <div class="faq-a">Fair launch on Solana via pump.fun. No pre-sale, no insider allocation, no venture capital. Every participant accesses $PROXY at the same price from the first block.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Is there a working product?</span><span class="faq-icon">+</span></div>
           <div class="faq-a">The PROXY Playground is live — a full demonstration of the protocol flow. Watch an agent initialise a wallet, broadcast a request, get anonymously matched to a provider, and settle in $PROXY. Try it at proxyprotocol.org/playground.html</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>Why Base?</span><span class="faq-icon">+</span></div>
-          <div class="faq-a">Base is a high-throughput Ethereum L2 — sub-cent fees, ~2s block times, and where the majority of on-chain agent activity is already concentrated. PROXY is deployed on Base but operates independently of any entity that controls the underlying chain. The infrastructure layer and the application layer are distinct.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Why Solana?</span><span class="faq-icon">+</span></div>
+          <div class="faq-a">Solana is the highest-volume chain for new token launches — sub-cent fees, ~400ms block times, and where the majority of active retail crypto participants are right now. PROXY deploys on Solana but operates independently of any entity that controls the underlying chain. The infrastructure layer and the application layer are distinct.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>Where can I read the full technical detail?</span><span class="faq-icon">+</span></div>
@@ -1307,7 +1291,7 @@
 <!-- WAITLIST -->
 <section id="waitlist">
   <div class="wl-inner">
-    <div class="sec-label rv" style="text-align:left;">Stay Updated</div>
+    <div class="sec-label rv" style="text-align:left;">Early Access</div>
     <h2 class="wl-h rv d1">The permissionless<br/>alternative <i>is here.</i></h2>
     <p class="wl-sub rv d2">
       Be first to build on PROXY. Join the early access list for protocol
@@ -1319,7 +1303,7 @@
     </div>
     <div class="wl-ok" id="wlOk">✓ &nbsp;You're on the list. We'll be in touch.</div>
     <p class="wl-meta rv d4">
-      Built on <span>Base</span> &nbsp;·&nbsp; <span>$PROXY</span> &nbsp;·&nbsp; <a href="https://x.com/ProxyProtocols" target="_blank" style="color:var(--gold);text-decoration:none;">@proxyprotocol</a> &nbsp;·&nbsp; <a href="https://t.me/proxy_protocol_base" target="_blank" style="color:var(--gold);text-decoration:none;">Telegram</a>
+      Built on <span>Solana</span> &nbsp;·&nbsp; Token <span>$PROXY</span> &nbsp;·&nbsp; Fair Launch
     </p>
   </div>
 </section>
@@ -1335,10 +1319,8 @@
     <li><a href="playground.html">Playground</a></li>
     <li><a href="whitepaper.html">Whitepaper</a></li>
     <li><a href="https://github.com/proxy-labs-create/proxy-protocol" target="_blank">GitHub</a></li>
-    <li><a href="https://x.com/ProxyProtocols" target="_blank">Twitter/X</a></li>
-    <li><a href="https://t.me/proxy_protocol_base" target="_blank">Telegram</a></li>
   </ul>
-  <div class="footer-copy">© 2026 PROXY Protocol &nbsp;·&nbsp; Built on Base</div>
+  <div class="footer-copy">© 2026 PROXY Protocol &nbsp;·&nbsp; Built on Solana</div>
 </footer>
 
 <script>
@@ -1346,7 +1328,7 @@
   const items = [
     'ZK Anonymous Routing','AgentRequest · DeliveryProof','Atomic Escrow Settlement',
     'Permissionless Provider Network','Non-Custodial Agent Wallets','$PROXY — Native Token',
-    'Built on Base','Cryptographic Proof of Delivery','Multi-Resource Marketplace',
+    'Built on Solana','Cryptographic Proof of Delivery','Multi-Resource Marketplace',
     'Agent-to-Agent Payments','No Admin Keys','No Compliance Layer'
   ];
   const track = document.getElementById('tickerTrack');
