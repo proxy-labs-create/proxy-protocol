@@ -1,4 +1,4 @@
-[architecture.md](https://github.com/user-attachments/files/28090670/architecture.md)
+[architecture.md](https://github.com/user-attachments/files/29213819/architecture.md)
 # Protocol Architecture
 
 **PROXY Protocol — Technical Architecture Specification**
@@ -21,7 +21,7 @@ The Agent Wallet SDK is the entry point for any autonomous agent joining the PRO
 
 ### Responsibilities
 
-- Initialise a non-custodial ERC-20 wallet on Base for the agent
+- Initialise a non-custodial SPL wallet on Solana for the agent
 - Manage $PROXY balance autonomously post-initialisation
 - Construct and sign `AgentRequest` objects
 - Handle proof verification callbacks
@@ -37,7 +37,7 @@ The Agent Wallet SDK is the entry point for any autonomous agent joining the PRO
 
 ```json
 {
-  "agent_id": "0x4f2a...c91b",
+  "agent_id": "7xKXr4f2...c91bQ9",
   "resource_type": "inference | data | api | storage | bandwidth | agent",
   "parameters": {
     "model": "llama-3.3-70b-instruct",
@@ -47,7 +47,7 @@ The Agent Wallet SDK is the entry point for any autonomous agent joining the PRO
   "budget_ceiling": "48.50",
   "max_latency_ms": 800,
   "timestamp": 1714000000,
-  "signature": "0x..."
+  "signature": "5Kq7d1e...aa3fZ2"
 }
 ```
 
@@ -85,9 +85,9 @@ Failed or contested deliveries are flagged by the proof layer and routed to the 
 
 ---
 
-## Layer 3 — Escrow Smart Contracts
+## Layer 3 — Escrow Programs
 
-All payment flows through PROXY's escrow smart contracts deployed on Base.
+All payment flows through PROXY's escrow programs deployed on Solana.
 
 ### Contract Functions
 
@@ -164,14 +164,14 @@ The proof layer is PROXY's primary quality enforcement mechanism. Every resource
 
 ```json
 {
-  "job_id": "0x91cc...f04d",
-  "provider_id": "prv_0x4f2a",
+  "job_id": "3Df91cc...f04dPv",
+  "provider_id": "prv_7xKXr4f2",
   "resource_type": "inference",
   "output_hash": "sha256:a3f1...",
   "model_weights_hash": "sha256:8c2d...",
   "latency_ms": 312,
   "timestamp": 1714000312,
-  "signature": "0x..."
+  "signature": "5Kq7d1e...aa3fZ2"
 }
 ```
 
@@ -204,7 +204,7 @@ The proof layer is PROXY's primary quality enforcement mechanism. Every resource
 Anonymity in PROXY is enforced at the protocol level through three mechanisms:
 
 ### 1. Pseudonymous Wallet Addressing
-Agent wallets are Base addresses with no on-chain link to human identity. Agents are identified solely by their wallet address — no name, email, or KYC is required or stored.
+Agent wallets are Solana (Base58) addresses with no on-chain link to human identity. Agents are identified solely by their wallet address — no name, email, or KYC is required or stored.
 
 ### 2. Zero-Knowledge Routing Attestations
 The routing layer uses ZK proofs to verify provider eligibility — confirming that a provider has sufficient bond, meets resource requirements, and has an acceptable reliability score — without revealing the provider's wallet address or infrastructure details to the requesting agent.
@@ -229,7 +229,7 @@ The routing layer uses ZK proofs to verify provider eligibility — confirming t
 
 ## Security Considerations
 
-### Smart Contract Risk
+### Program Risk
 - All contracts will undergo independent security audit before mainnet deployment
 - Contracts are non-upgradeable post-audit
 - Bug bounty programme to be established at testnet launch
