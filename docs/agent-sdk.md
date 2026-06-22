@@ -1,4 +1,4 @@
-[agent-sdk.md](https://github.com/user-attachments/files/28090696/agent-sdk.md)
+[agent-sdk.md](https://github.com/user-attachments/files/29213798/agent-sdk.md)
 # Agent Wallet SDK
 
 **PROXY Protocol — Agent SDK Specification**
@@ -42,7 +42,7 @@ import { ProxyAgent } from '@proxy-protocol/agent-sdk';
 
 // Initialise agent wallet
 const agent = await ProxyAgent.init({
-  network: 'base-mainnet',
+  network: 'mainnet-beta',
   fundingAmount: '500', // $PROXY
 });
 
@@ -66,11 +66,11 @@ console.log(result.settled); // true
 
 ### `ProxyAgent.init(config)`
 
-Initialises a new agent wallet on Base. Creates a non-custodial ERC-20 wallet, funds it with the specified $PROXY amount, and registers the agent on the PROXY network.
+Initialises a new agent wallet on Solana. Creates a non-custodial SPL wallet, funds it with the specified $PROXY amount, and registers the agent on the PROXY network.
 
 ```typescript
 interface InitConfig {
-  network: 'base-mainnet' | 'base-sepolia';
+  network: 'mainnet-beta' | 'devnet';
   fundingAmount: string;        // $PROXY amount as string
   operatorKey?: string;         // Optional: operator private key for funding tx
   budgetAlerts?: {
@@ -121,7 +121,7 @@ interface RequestResult {
   amountSpent: string;          // Actual $PROXY spent
   latencyMs: number;
   settled: boolean;
-  txHash: string;               // Base transaction hash
+  signature: string;            // Solana transaction signature
 }
 
 const result = await agent.request(params): Promise<RequestResult>
@@ -167,7 +167,7 @@ interface ProofRecord {
 from proxy_protocol import ProxyAgent
 from langchain.tools import Tool
 
-agent = ProxyAgent.init(network="base-mainnet", funding_amount="500")
+agent = ProxyAgent.init(network="mainnet-beta", funding_amount="500")
 
 proxy_inference = Tool(
     name="proxy_inference",
@@ -189,7 +189,7 @@ from proxy_protocol import ProxyAgent
 class ProxyInferenceTool:
     def __init__(self):
         self.agent = ProxyAgent.init(
-            network="base-mainnet",
+            network="mainnet-beta",
             funding_amount="1000"
         )
 
@@ -212,7 +212,7 @@ Agents manage their own $PROXY budget autonomously. Best practices:
 ```javascript
 // Set up low-balance alert
 const agent = await ProxyAgent.init({
-  network: 'base-mainnet',
+  network: 'mainnet-beta',
   fundingAmount: '1000',
   budgetAlerts: {
     threshold: '50', // Alert when below 50 $PROXY
