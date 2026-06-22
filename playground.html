@@ -158,7 +158,7 @@
 <div class="hero">
   <div class="hero-tag">
     <div class="hero-tag-dot"></div>
-    Live Demo · Agent Inference · Base Network
+    Live Demo · Agent Inference · Solana Network
   </div>
   <h1 class="hero-title" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,60px);line-height:1.0;letter-spacing:-0.01em;font-weight:400;">Give your agent a task.<br/><em style="color:var(--gold)">Watch it procure.</em></h1>
   <p class="hero-sub">
@@ -182,7 +182,7 @@
   <div class="config-panel" id="configPanel">
     <div class="panel-header">
       <div class="panel-title">Agent Configuration</div>
-      <div class="panel-badge">$PROXY · Base</div>
+      <div class="panel-badge">$PROXY · Solana</div>
     </div>
     <div class="panel-body">
       <label class="task-label">Agent Task</label>
@@ -231,7 +231,7 @@
       <div style="font-size:10px;color:var(--muted)" id="timer">0.0s</div>
     </div>
     <div id="flowSteps">
-      <div class="flow-step-row" id="fs0"><div class="fs-num">01</div><div class="fs-content"><div class="fs-title">Agent Wallet Initialised</div><div class="fs-detail" id="fd0">Generating non-custodial wallet on Base...</div></div><div class="fs-status" id="fst0"></div></div>
+      <div class="flow-step-row" id="fs0"><div class="fs-num">01</div><div class="fs-content"><div class="fs-title">Agent Wallet Initialised</div><div class="fs-detail" id="fd0">Generating non-custodial wallet on Solana...</div></div><div class="fs-status" id="fst0"></div></div>
       <div class="flow-step-row" id="fs1"><div class="fs-num">02</div><div class="fs-content"><div class="fs-title">Request Broadcast</div><div class="fs-detail" id="fd1">Broadcasting AgentRequest to PROXY routing layer...</div></div><div class="fs-status" id="fst1"></div></div>
       <div class="flow-step-row" id="fs2"><div class="fs-num">03</div><div class="fs-content"><div class="fs-title">Anonymous Routing</div><div class="fs-detail" id="fd2">Matching to provider via ZK attestation...</div></div><div class="fs-status" id="fst2"></div></div>
       <div class="flow-step-row" id="fs3"><div class="fs-num">04</div><div class="fs-content"><div class="fs-title">Inference Executing</div><div class="fs-detail" id="fd3">Provider running inference job...</div></div><div class="fs-status" id="fst3"></div></div>
@@ -283,7 +283,7 @@
 
     agent: `The short answer: because no payment infrastructure was built for them.\n\nAI agents can reason, plan, and execute complex tasks autonomously. But the moment an agent needs to spend money — to run a model, access a data feed, call an API — it hits a wall. Every payment system in existence was designed for humans: bank accounts, credit cards, even crypto wallets all require a human to hold the keys and authorise transactions.\n\nThis creates a fundamental contradiction. An agent that requires a human to approve every payment isn't truly autonomous. It's a sophisticated tool that a human is still operating.\n\nThe infrastructure gaps are specific:\n\n1. No agent-native wallet standard — existing wallets assume human key management\n2. Centralised APIs require human account registration and billing\n3. No anonymous transaction layer — every payment is linkable to a human identity\n4. Settlement latency — traditional rails are too slow for machine-speed operations\n\nThis is exactly the problem PROXY is built to solve.`,
 
-    proxy: `PROXY solves the missing economic layer of the autonomous agent economy.\n\nThe problem: AI agents are being deployed at scale, but they can't transact. Every time an agent needs a resource — compute, data, storage, an API call — a human has to intervene. The autonomy of the agent is an illusion at the transactional layer.\n\nThe solution: PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents. An agent holds $PROXY, broadcasts a signed request, gets anonymously matched to a provider via zero-knowledge attestation, receives the resource, and settles instantly on Base — with no human involved at any stage.\n\nWhat makes it different:\n\n— $PROXY is the only currency. No ETH fallback, no stablecoin bypass. Every transaction creates structural demand on supply.\n— Anonymous by default. Neither the agent nor the provider reveals identity.\n— Proof of delivery. Escrow only releases when a cryptographic DeliveryProof is verified on-chain.\n— Agent-to-agent payments. Orchestrators can hire sub-agents — the first trustless multi-agent economy.\n\nThis infrastructure doesn't exist yet. PROXY builds it.`
+    proxy: `PROXY solves the missing economic layer of the autonomous agent economy.\n\nThe problem: AI agents are being deployed at scale, but they can't transact. Every time an agent needs a resource — compute, data, storage, an API call — a human has to intervene. The autonomy of the agent is an illusion at the transactional layer.\n\nThe solution: PROXY is the on-chain payment and resource procurement protocol built exclusively for autonomous AI agents. An agent holds $PROXY, broadcasts a signed request, gets anonymously matched to a provider via zero-knowledge attestation, receives the resource, and settles instantly on Solana — with no human involved at any stage.\n\nWhat makes it different:\n\n— $PROXY is the only currency. No ETH fallback, no stablecoin bypass. Every transaction creates structural demand on supply.\n— Anonymous by default. Neither the agent nor the provider reveals identity.\n— Proof of delivery. Escrow only releases when a cryptographic DeliveryProof is verified on-chain.\n— Agent-to-agent payments. Orchestrators can hire sub-agents — the first trustless multi-agent economy.\n\nThis infrastructure doesn't exist yet. PROXY builds it.`
   };
 
   const MODEL_LABELS = { 'llama-8b':'Llama 3.1 8B', 'llama-70b':'Llama 3.1 70B', 'mistral-7b':'Mistral 7B', 'qwen-72b':'Qwen 2.5 72B' };
@@ -359,7 +359,7 @@
     timerInterval = setInterval(()=>{ document.getElementById('timer').textContent=((Date.now()-t0)/1000).toFixed(1)+'s'; },100);
 
     setPill(0,'done'); setPill(1,'active');
-    setStep(0,'done',`Wallet <span class="h">${wallet}</span> initialised on Base. Balance: <span class="a">${budget} $PROXY</span>`);
+    setStep(0,'done',`Wallet <span class="h">${wallet}</span> initialised on Solana. Balance: <span class="a">${budget} $PROXY</span>`);
     setStep(1,'active');
     await sleep(700);
 
