@@ -1,4 +1,4 @@
-[token.md](https://github.com/user-attachments/files/28090654/token.md)
+[token.md](https://github.com/user-attachments/files/29213827/token.md)
 # $PROXY Token Specification
 
 **PROXY Protocol — Token Economics & Utility**
@@ -21,9 +21,9 @@ Every resource transaction on the PROXY network is denominated in $PROXY and set
 |----------|-------|
 | **Name** | PROXY |
 | **Ticker** | $PROXY |
-| **Network** | Base (Ethereum L2, Chain ID: 8453) |
-| **Standard** | ERC-20 |
-| **Launch Platform** | Doppler — Fair Launch on Base |
+| **Network** | Solana (Mainnet-beta) |
+| **Standard** | SPL Token |
+| **Launch Platform** | pump.fun — Fair Launch on Solana |
 | **Pre-sale** | None |
 | **Insider Allocation** | None |
 | **Venture Capital** | None |
@@ -126,7 +126,7 @@ Operators who want their agents to operate must continuously supply $PROXY. Prov
 
 ## Fair Launch
 
-PROXY launched via Doppler — a fair launch protocol on Base.
+PROXY launched via pump.fun — a fair launch protocol on Solana.
 
 **What fair launch means for $PROXY:**
 
