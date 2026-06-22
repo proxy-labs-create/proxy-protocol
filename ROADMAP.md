@@ -1,4 +1,4 @@
-[ROADMAP.md](https://github.com/user-attachments/files/28102545/ROADMAP.md)
+[ROADMAP (1).md](https://github.com/user-attachments/files/29213698/ROADMAP.1.md)
 # Roadmap
 
 **PROXY Protocol — Development Roadmap**
@@ -11,7 +11,7 @@
 
 **Status: Complete**
 
-- [x] Token launch on Base via Doppler
+- [x] Token launch on Solana via pump.fun
 - [x] Website live at proxyprotocol.org
 - [x] Whitepaper published
 - [x] GitHub repository live
@@ -19,7 +19,7 @@
 - [x] Agent Playground live at proxyprotocol.org/playground.html
 - [x] Early access waitlist open
 - [x] Twitter/X community launched — @ProxyProtocols
-- [x] Telegram community launched — t.me/proxy_protocol_base
+- [x] Telegram community launched — t.me/YOUR_NEW_GROUP
 
 ---
 
@@ -27,15 +27,15 @@
 
 **Status: In Progress**
 
-The build phase delivers the first working implementation of the PROXY protocol on Base Sepolia testnet.
+The build phase delivers the first working implementation of the PROXY protocol on Solana Devnet.
 
-- [ ] PROXY testnet deployment on Base Sepolia
+- [ ] PROXY testnet deployment on Solana Devnet
 - [ ] Agent Wallet SDK alpha release (JavaScript + Python)
 - [ ] Inference provider integration — open-weight models (Llama, Mistral, Qwen)
 - [ ] Data feed provider integration
 - [ ] ZK routing layer implementation
-- [ ] Escrow smart contract deployment on testnet
-- [ ] Smart contract audit initiated
+- [ ] Escrow program deployment on testnet
+- [ ] Program audit initiated
 - [ ] First community provider nodes registered on testnet
 - [ ] Bug bounty programme launched
 - [ ] Developer documentation complete
@@ -46,10 +46,10 @@ The build phase delivers the first working implementation of the PROXY protocol 
 
 **Status: Pending**
 
-The launch phase delivers the first production version of the PROXY protocol on Base mainnet.
+The launch phase delivers the first production version of the PROXY protocol on Solana mainnet.
 
-- [ ] Smart contract audit complete
-- [ ] Mainnet deployment on Base
+- [ ] Program audit complete
+- [ ] Mainnet deployment on Solana
 - [ ] Public resource marketplace open
 - [ ] Agent Wallet SDK v1.0 public release
 - [ ] First live agent transactions settled on-chain
@@ -83,8 +83,8 @@ We build in public. Protocol decisions, architecture changes, and milestone upda
 Contribute: [`CONTRIBUTING.md`](CONTRIBUTING.md)  
 Early access: [proxyprotocol.org](https://proxyprotocol.org)  
 Twitter/X: [@ProxyProtocols](https://x.com/ProxyProtocols)  
-Telegram: [t.me/proxy_protocol_base](https://t.me/proxy_protocol_base)
+Telegram: [t.me/YOUR_NEW_GROUP](https://t.me/YOUR_NEW_GROUP)
 
 ---
 
-*© 2026 PROXY Protocol — Built on Base*
+*© 2026 PROXY Protocol — Built on Solana*
