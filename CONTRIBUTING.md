@@ -1,4 +1,4 @@
-[CONTRIBUTING.md](https://github.com/user-attachments/files/28102625/CONTRIBUTING.md)
+[CONTRIBUTING (1).md](https://github.com/user-attachments/files/29213672/CONTRIBUTING.1.md)
 # Contributing to PROXY Protocol
 
 Thank you for your interest in PROXY. We are building in public and welcome contributions from the community.
@@ -54,7 +54,7 @@ If you are a developer who wants to integrate the PROXY Agent SDK:
 
 - **Website:** [proxyprotocol.org](https://proxyprotocol.org)
 - **Twitter/X:** [@ProxyProtocols](https://x.com/ProxyProtocols)
-- **Telegram:** [t.me/proxy_protocol_base](https://t.me/proxy_protocol_base)
+- **Telegram:** [t.me/YOUR_NEW_GROUP](https://t.me/YOUR_NEW_GROUP)
 
 ---
 
